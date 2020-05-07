@@ -1,36 +1,57 @@
 <img src="https://nhub.app/_media/logo.png" alt="Logo of ni" width="256"/>
 
-> Profile Framework for World of Warcraft and its older expansions.
+## Profile Status & [ChangeLog](https://github.com/darhanger/Ni-Profiles_Public/wiki/ChangeLog)
+### Support Status Meanings 
+* ✔️ - works well, for simmple raiding;
+* ⁉️ - currently unknown or in development;
 
-See the [Quick start](https://nhub.app/#/getting-started/quickstart) guide for more details.
+### Death Knight
+* Blood_DPS_DarhangeR - ✔️
+* Frost2W_DarhangeR - ✔️
+* Unholy_DarhangeR - ✔️
+* Blood_Tank_DarhangeR - ✔️
 
-[Download here](https://github.com/scizzydo/ni/releases)
+### Druid
+* Resto_DarhangeR - ⁉️
+* Balance_DarhangeR - ⁉️
+* Feral_Cat_DarhangeR - ⁉️
+* Feral_Bear_DarhangeR - ⁉️
 
-## Features
+### Hunter
+* BeastMaster_DarhangeR - ✔️
+* Mark_DarhangeR - ✔️
+* Survival_DarhangeR -  ✔️
 
-⚡️ Wrapper for Protected Lua Functions<br>
-⚡️ Anti Warden<br>
-⚡️ PQR Converter<br>
-⚡️ Support for 3.3.5, 4.3.4 and 5.4.8<br>
-⚡️ Party/Raid Support<br>
-⚡️ Object Manager<br>
-⚡️ Ground Spells Support<br>
-⚡️ Healing Engine<br>
-⚡️ Time to Die Calculations<br>
-⚡️ Framework for Top Tier PvE/PvP Profiles<br>
+### Mage
+* Arcane_DarhangeR - ✔️
+* Fire_DarhangeR - ✔️
+* Frost_DarhangeR - ✔️
 
-## Program Developer
+### Paladin
+* Holy_DarhangeR - ⁉️
+* Protection_DarhangeR - ⁉️
+* Retri_DarhangeR - ⁉️
 
-- **Scott**
+### Priest
+* Discipline_DarhangeR - ⁉️
+* Holy_DarhangeR - ⁉️
+* Shadow_DarhangeR - ⁉️
 
-## Contributors
+### Rogue
+* Assassination_DarhangeR - ✔️
+* Combat_DarhangeR - ✔️
 
-- **brajevicm**
+### Shaman
+* Restoration_DarhangeR - ⁉️
+* Enhancement_DarhangeR - ⁉️
+* Elemental_DarhangeR - ⁉️
 
-## Community 👋
+### Warlock
+* Affliction_DarhangeR - ✔️
+* Demon_DarhangeR - ✔️
+* Destruction_DarhangeR - ✔️
 
-Users and the development team are usually in the [Discord Channel](https://discord.gg/mBdcX5).
-
-## Profile Creator
-
-- **DarhangeR**
+### Warrior
+* Arms_DarhangeR - ✔️
+* Fury_DarhangeR - ✔️
+* Protection_DarhangeR - ✔️
