@@ -13,9 +13,9 @@
 
 ### Druid
 * Resto_DarhangeR - ⁉️
-* Balance_DarhangeR - ⁉️
-* Feral_Cat_DarhangeR - ⁉️
-* Feral_Bear_DarhangeR - ⁉️
+* Balance_DarhangeR - ✔️
+* Feral_Cat_DarhangeR - ✔️
+* Feral_Bear_DarhangeR - ✔️
 
 ### Hunter
 * BeastMaster_DarhangeR - ✔️
@@ -29,13 +29,13 @@
 
 ### Paladin
 * Holy_DarhangeR - ⁉️
-* Protection_DarhangeR - ⁉️
-* Retri_DarhangeR - ⁉️
+* Protection_DarhangeR - ✔️
+* Retri_DarhangeR - ✔️
 
 ### Priest
 * Discipline_DarhangeR - ⁉️
 * Holy_DarhangeR - ⁉️
-* Shadow_DarhangeR - ⁉️
+* Shadow_DarhangeR - ✔️
 
 ### Rogue
 * Assassination_DarhangeR - ✔️
@@ -43,8 +43,8 @@
 
 ### Shaman
 * Restoration_DarhangeR - ⁉️
-* Enhancement_DarhangeR - ⁉️
-* Elemental_DarhangeR - ⁉️
+* Enhancement_DarhangeR - ✔️
+* Elemental_DarhangeR - ✔️
 
 ### Warlock
 * Affliction_DarhangeR - ✔️
