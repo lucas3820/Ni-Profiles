@@ -12,7 +12,7 @@
 * Blood_Tank_DarhangeR - ✔️
 
 ### Druid
-* Resto_DarhangeR - ⁉️
+* Resto_DarhangeR - ✔️
 * Balance_DarhangeR - ✔️
 * Feral_Cat_DarhangeR - ✔️
 * Feral_Bear_DarhangeR - ✔️
@@ -28,13 +28,13 @@
 * Frost_DarhangeR - ✔️
 
 ### Paladin
-* Holy_DarhangeR - ⁉️
+* Holy_DarhangeR - ✔️
 * Protection_DarhangeR - ✔️
 * Retri_DarhangeR - ✔️
 
 ### Priest
-* Discipline_DarhangeR - ⁉️
-* Holy_DarhangeR - ⁉️
+* Discipline_DarhangeR - ✔️
+* Holy_DarhangeR - ✔️
 * Shadow_DarhangeR - ✔️
 
 ### Rogue
@@ -42,7 +42,7 @@
 * Combat_DarhangeR - ✔️
 
 ### Shaman
-* Restoration_DarhangeR - ⁉️
+* Restoration_DarhangeR - ✔️
 * Enhancement_DarhangeR - ✔️
 * Elemental_DarhangeR - ✔️
 
