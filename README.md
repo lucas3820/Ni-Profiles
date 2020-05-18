@@ -7,30 +7,30 @@
 
 ### Death Knight
 * [Blood_DPS_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#blood_dps_darhanger--frost2w_darhanger--unholy_darhanger--blood_tank_darhanger) - ✔️
-* Frost2W_DarhangeR - ✔️
-* Unholy_DarhangeR - ✔️
-* Blood_Tank_DarhangeR - ✔️
+* [Frost2W_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#blood_dps_darhanger--frost2w_darhanger--unholy_darhanger--blood_tank_darhanger)  - ✔️
+* [Unholy_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#blood_dps_darhanger--frost2w_darhanger--unholy_darhanger--blood_tank_darhanger)  - ✔️
+* [Blood_Tank_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#blood_dps_darhanger--frost2w_darhanger--unholy_darhanger--blood_tank_darhanger)  - ✔️
 
 ### Druid
-* Resto_DarhangeR - ✔️
-* Balance_DarhangeR - ✔️
-* Feral_Cat_DarhangeR - ✔️
-* Feral_Bear_DarhangeR - ✔️
+* [Resto_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#resto_darhanger) - ✔️
+* [Balance_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#balance_darhanger)- ✔️
+* [Feral_Cat_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#feral_cat_darhanger--feral_bear_darhanger)- ✔️
+* [Feral_Bear_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#feral_cat_darhanger--feral_bear_darhanger) - ✔️
 
 ### Hunter
-* BeastMaster_DarhangeR - ✔️
-* Mark_DarhangeR - ✔️
-* Survival_DarhangeR -  ✔️
+* [BeastMaster_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#beastmaster_darhanger--mark_darhanger--survival_darhanger) - ✔️
+* [Mark_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#beastmaster_darhanger--mark_darhanger--survival_darhanger) - ✔️
+* [Survival_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#beastmaster_darhanger--mark_darhanger--survival_darhanger) - ✔️
 
 ### Mage
-* Arcane_DarhangeR - ✔️
-* Fire_DarhangeR - ✔️
-* Frost_DarhangeR - ✔️
+* [Arcane_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#arcane_darhanger--fire_darhanger--frost_darhanger )- ✔️
+* [Fire_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#arcane_darhanger--fire_darhanger--frost_darhanger )- ✔️
+* [Frost_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#arcane_darhanger--fire_darhanger--frost_darhanger )- ✔️
 
 ### Paladin
-* Holy_DarhangeR - ✔️
-* Protection_DarhangeR - ✔️
-* Retri_DarhangeR - ✔️
+* [Holy_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#holy_darhanger) - ✔️
+* [Protection_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#retri_darhanger--protection_darhanger) - ✔️
+* [Retri_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#retri_darhanger--protection_darhanger) - ✔️
 
 ### Priest
 * Discipline_DarhangeR - ✔️
