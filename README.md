@@ -6,7 +6,7 @@
 * ⁉️ - currently unknown or in development;
 
 ### Death Knight
-* Blood_DPS_DarhangeR - ✔️
+* [Blood_DPS_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#blood_dps_darhanger--frost2w_darhanger--unholy_darhanger--blood_tank_darhanger) - ✔️
 * Frost2W_DarhangeR - ✔️
 * Unholy_DarhangeR - ✔️
 * Blood_Tank_DarhangeR - ✔️
