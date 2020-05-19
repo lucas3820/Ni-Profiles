@@ -33,25 +33,25 @@
 * [Retri_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#retri_darhanger--protection_darhanger) - ✔️
 
 ### Priest
-* Discipline_DarhangeR - ✔️
-* Holy_DarhangeR - ✔️
-* Shadow_DarhangeR - ✔️
+* [Discipline_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#discipline_darhanger--holy_darhanger) - ✔️
+* [Holy_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#discipline_darhanger--holy_darhanger) - ✔️
+* [Shadow_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#shadow_darhanger) - ✔️
 
 ### Rogue
-* Assassination_DarhangeR - ✔️
-* Combat_DarhangeR - ✔️
+* [Assassination_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#assassination_darhanger--combat_darhanger )- ✔️
+* [Combat_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#assassination_darhanger--combat_darhanger) - ✔️
 
 ### Shaman
-* Restoration_DarhangeR - ✔️
-* Enhancement_DarhangeR - ✔️
-* Elemental_DarhangeR - ✔️
+* [Restoration_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#restoration_darhanger) - ✔️
+* [Enhancement_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#elemental_darhanger--enhancement_darhanger) - ✔️
+* [Elemental_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#elemental_darhanger--enhancement_darhanger) - ✔️
 
 ### Warlock
-* Affliction_DarhangeR - ✔️
-* Demon_DarhangeR - ✔️
-* Destruction_DarhangeR - ✔️
+* [Affliction_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#affliction_darhanger--demon_darhanger--destruction_darhanger) - ✔️
+* [Demon_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#affliction_darhanger--demon_darhanger--destruction_darhanger) - ✔️
+* [Destruction_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#affliction_darhanger--demon_darhanger--destruction_darhanger) - ✔️
 
 ### Warrior
-* Arms_DarhangeR - ✔️
-* Fury_DarhangeR - ✔️
-* Protection_DarhangeR - ✔️
+* [Arms_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#arms_darhanger--fury_darhanger--protection_darhanger) - ✔️
+* [Fury_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#arms_darhanger--fury_darhanger--protection_darhanger) - ✔️
+* [Protection_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#arms_darhanger--fury_darhanger--protection_darhanger) - ✔️
