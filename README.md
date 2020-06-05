@@ -32,7 +32,7 @@
 ### Paladin
 * [Holy_DarhangeR]-- ⁉️
 * [Protection_DarhangeR] -- ✔️
-* [Retri_DarhangeR] -- ⁉️
+* [Retri_DarhangeR] -- Reworked to leveling. Needs testing
 
 ### Priest
 * [Discipline_DarhangeR] -- ⁉️
