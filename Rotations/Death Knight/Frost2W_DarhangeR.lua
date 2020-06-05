@@ -1,5 +1,22 @@
 local data = {"DarhangeR.lua"}
 
+local hornofwinter = GetSpellInfo(57623)
+local deathanddecay = GetSpellInfo(49938)
+local hysteria = GetSpellInfo(49016)
+local bloodstrike = GetSpellInfo(49930)
+local icytouch = GetSpellInfo(49909)
+local plaguestrike = GetSpellInfo(49921)
+local pestilence = GetSpellInfo(50842)
+local deathstrike = GetSpellInfo(49924)
+local runestrike = GetSpellInfo(56815)
+local bloodboil = GetSpellInfo(49941)
+local heartstrike = GetSpellInfo(55262)
+local deathcoil = GetSpellInfo(49895)
+local howlingblast = GetSpellInfo(51411)
+local obliterate = GetSpellInfo(51425)
+local froststrike = GetSpellInfo(55268)
+
+
 local popup_shown = false;
 local queue = {
 	"Window",		
@@ -45,8 +62,8 @@ local abilities = {
 		 or UnitChannelInfo("player")
 		 or UnitCastingInfo("player")
 		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
+		 or ni.unit.buff("player", 430)
+		 or ni.unit.buff("player", 433)
 		 or (not UnitAffectingCombat("player")
 		 and ni.vars.followEnabled) then
 			return true
@@ -78,10 +95,10 @@ local abilities = {
 	end,
 -----------------------------------
 	["Horn of Winter"] = function()
-		if not ni.player.buff(57623)
-		 and ni.spell.isinstant(57623) 
-		 and ni.spell.available(57623) then 		
-			ni.spell.cast(57623)
+		if not ni.player.buff(hornofwinter)
+		 and ni.spell.isinstant(hornofwinter) 
+		 and ni.spell.available(hornofwinter) then 		
+			ni.spell.cast(hornofwinter)
 			return true
 		end
 	end,
@@ -221,9 +238,9 @@ local abilities = {
 -----------------------------------
 	["Death and Decay"] = function()
 		if ni.vars.combat.aoe
-		 and ni.spell.isinstant(49938)
-		 and ni.spell.available(49938) then
-			ni.spell.castat(49938, "target")
+		 and ni.spell.isinstant(deathanddecay)
+		 and ni.spell.available(deathanddecay) then
+			ni.spell.castat(deathanddecay, "target")
 			return true
 		end
 	end,
@@ -234,7 +251,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(51271)
 		 and ni.spell.available(51271)
-		 and ni.spell.valid("target", 49930, true, true) then
+		 and ni.spell.valid("target", bloodstrike, true, true) then
 			if BR == 0 and DR == 0
 			and ni.spell.cd(45529) == 0 then
 				ni.spell.cast(45529)
@@ -254,7 +271,7 @@ local abilities = {
 		 and ni.spell.isinstant(46584)
 		 and not ni.spell.available(51271)
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
-		 and IsUsableSpell(GetSpellInfo(46584))
+		 and IsUsableSpell(46584)
 		 and ( ni.player.hasitem(37201) 
 		 or	ni.player.hasglyph(60200) ) then
 			ni.spell.cast(46584)
@@ -275,10 +292,10 @@ local abilities = {
 	["Icy Touch"] = function()
 		local icy = ni.data.darhanger.dk.icy()
 		if ( icy == nil or ( icy - GetTime() <= 2 ) )
-		 and ni.spell.available(49909)
-		 and ni.spell.isinstant(49909)
-		 and ni.spell.valid("target", 49909, true, true) then
-			ni.spell.cast(49909, "target")
+		 and ni.spell.available(icytouch)
+		 and ni.spell.isinstant(icytouch)
+		 and ni.spell.valid("target", icytouch, true, true) then
+			ni.spell.cast(icytouch, "target")
 			return true
 		end
 	end,
@@ -286,10 +303,10 @@ local abilities = {
 	["Plague Strike"] = function()
 		local plague = ni.data.darhanger.dk.plague()
 		if ( plague == nil or ( plague - GetTime() <= 2 ) )
-	     and ni.spell.available(49921)
-		 and ni.spell.isinstant(49921)
-		 and ni.spell.valid("target", 49921, true, true) then
-			ni.spell.cast(49921, "target")
+	     and ni.spell.available(plaguestrike)
+		 and ni.spell.isinstant(plaguestrike)
+		 and ni.spell.valid("target", plaguestrike, true, true) then
+			ni.spell.cast(plaguestrike, "target")
 			return true
 		end
 	end,
@@ -306,14 +323,14 @@ local abilities = {
 		 and plague
 		 and UnitExists("target")
 		 and UnitCanAttack("player", "target")
-		 and ni.spell.isinstant(50842)
-		 and ni.spell.valid("target", 50842, true, true) then
+		 and ni.spell.isinstant(pestilence)
+		 and ni.spell.valid("target", pestilence, true, true) then
 		  for i = 1, #enemies do
 		   if ni.unit.creaturetype(enemies[i].guid) ~= 8
 		    and ni.unit.creaturetype(enemies[i].guid) ~= 11
 		    and (not ni.unit.debuff(enemies[i].guid, 55078, "player")
 		    or not ni.unit.debuff(enemies[i].guid, 55095, "player")) then
-				ni.spell.cast(50842)
+				ni.spell.cast(pestilence)
 						return true
 					end
 				end
@@ -328,10 +345,10 @@ local abilities = {
 		local _, DR = ni.rune.deathrunecd()
 		if ( BR >= 1 or DR >= 1 )
 		 and ni.player.hasglyph(63334)
-		 and ni.spell.valid("target", 50842, true, true)
+		 and ni.spell.valid("target", pestilence, true, true)
 		 and ( ( icy ~= nil and icy - GetTime() <= 5 )
 		 or ( plague ~= nil and plague - GetTime() <= 5 ) ) then 
-			ni.spell.cast(50842, "target")
+			ni.spell.cast(pestilence, "target")
 			return true
 		end
 	end,
@@ -339,10 +356,10 @@ local abilities = {
 	["Howling Blast"] = function()
 		if ni.player.buff(59052)
 		 and ni.player.power() < 90		
-		 and ni.spell.available(51411)
-		 and ni.spell.isinstant(51411)
-		 and ni.spell.valid("target", 51411, true, true) then
-			ni.spell.cast(51411, "target")
+		 and ni.spell.available(howlingblast)
+		 and ni.spell.isinstant(howlingblast)
+		 and ni.spell.valid("target", howlingblast, true, true) then
+			ni.spell.cast(howlingblast, "target")
 			return true
 		end
 	end,
@@ -352,10 +369,10 @@ local abilities = {
 		if ni.player.buff(51124)
 		 and #enemies >= 2
 		 and ni.player.power() < 90
-		 and ni.spell.available(51411)
-		 and ni.spell.isinstant(51411)
-		 and ni.spell.valid("target", 51411, true, true) then
-			ni.spell.cast(51411, "target")
+		 and ni.spell.available(howlingblast)
+		 and ni.spell.isinstant(howlingblast)
+		 and ni.spell.valid("target", howlingblast, true, true) then
+			ni.spell.cast(howlingblast, "target")
 			return true
 		end
 	end,
@@ -376,10 +393,10 @@ local abilities = {
 		 and icy
 		 and ni.player.power() < 90
 		 and not ni.player.buff(51124)
-		 and ni.spell.isinstant(51425)
-		 and ni.spell.available(51425)
-		 and ni.spell.valid("target", 51425, true, true) then
-			ni.spell.cast(51425, "target")
+		 and ni.spell.isinstant(obliterate)
+		 and ni.spell.available(obliterate)
+		 and ni.spell.valid("target", obliterate, true, true) then
+			ni.spell.cast(obliterate, "target")
 			return true
 		end
 	end,
@@ -399,20 +416,20 @@ local abilities = {
 		 and plague
 		 and icy
 		 and ni.player.power() < 90
-		 and ni.spell.isinstant(51425)
-		 and ni.spell.available(51425)
-		 and ni.spell.valid("target", 51425, true, true) then
-			ni.spell.cast(51425, "target")
+		 and ni.spell.isinstant(obliterate)
+		 and ni.spell.available(obliterate)
+		 and ni.spell.valid("target", obliterate, true, true) then
+			ni.spell.cast(obliterate, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Rune Strike"] = function()
-		if IsUsableSpell(GetSpellInfo(56815))
-		 and ni.spell.available(56815, true)
-		 and not IsCurrentSpell(56815)
-		 and ni.spell.valid("target", 56815, true, true) then
-			ni.spell.cast(56815, "target")
+		if IsUsableSpell(runestrike)
+		 and ni.spell.available(runestrike, true)
+		 and not IsCurrentSpell(runestrike)
+		 and ni.spell.valid("target", runestrike, true, true) then
+			ni.spell.cast(runestrike, "target")
 			return true
 		end
 	end,
@@ -423,10 +440,10 @@ local abilities = {
 		if ni.player.buff(51124)
 		and plague
 		and icy
-		and ni.spell.isinstant(55268)
-		and ni.spell.available(55268)
-		and ni.spell.valid("target", 55268, true, true) then
-			ni.spell.cast(55268, "target")
+		and ni.spell.isinstant(froststrike)
+		and ni.spell.available(froststrike)
+		and ni.spell.valid("target", froststrike, true, true) then
+			ni.spell.cast(froststrike, "target")
 			return true
 		end
 	end,
@@ -437,10 +454,10 @@ local abilities = {
 		if ni.player.power() > 96
 		and plague
 		and icy
-		and ni.spell.isinstant(55268)
-		and ni.spell.available(55268)
-		and ni.spell.valid("target", 55268, true, true) then
-			ni.spell.cast(55268, "target")
+		and ni.spell.isinstant(froststrike)
+		and ni.spell.available(froststrike)
+		and ni.spell.valid("target", froststrike, true, true) then
+			ni.spell.cast(froststrike, "target")
 			return true
 		end
 	end,
@@ -451,10 +468,10 @@ local abilities = {
 		if ni.player.power() >= 32
 		and plague
 		and icy
-		and ni.spell.isinstant(55268)
-		and ni.spell.available(55268)
-		and ni.spell.valid("target", 55268, true, true) then
-			ni.spell.cast(55268, "target")
+		and ni.spell.isinstant(froststrike)
+		and ni.spell.available(froststrike)
+		and ni.spell.valid("target", froststrike, true, true) then
+			ni.spell.cast(froststrike, "target")
 			return true
 		end
 	end,
@@ -467,10 +484,10 @@ local abilities = {
 		 and plague
 		 and icy
 		 and ni.player.power() < 95
-		 and ni.spell.isinstant(49930)
-		 and ni.spell.available(49930)
-		 and ni.spell.valid("target", 49930, true, true) then
-			ni.spell.cast(49930, "target")
+		 and ni.spell.isinstant(bloodstrike)
+		 and ni.spell.available(bloodstrike)
+		 and ni.spell.valid("target", bloodstrike, true, true) then
+			ni.spell.cast(bloodstrike, "target")
 			return true
 		end
 	end,
