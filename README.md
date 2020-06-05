@@ -5,14 +5,14 @@
 
 ## Support Status Meanings 
 * ✔️ - works well, for leveling;
-* ❓ - Added, but needs testing.
+* 👷 - Added, but needs testing.
 * ⁉️ - currently unknown or in development;
 
 ### Death Knight
-* [Blood_DPS_DarhangeR] -- ❓
-* [Frost2W_DarhangeR]- - ❓
-* [Unholy_DarhangeR]-- ❓
-* [Blood_Tank_DarhangeR]-- ❓
+* [Blood_DPS_DarhangeR] -- 👷
+* [Frost2W_DarhangeR]- - 👷
+* [Unholy_DarhangeR]-- 👷
+* [Blood_Tank_DarhangeR]-- 👷
 
 ### Druid
 * [Resto_DarhangeR]-- ⁉️
@@ -32,8 +32,8 @@
 
 ### Paladin
 * [Holy_DarhangeR]-- ⁉️
-* [Protection_DarhangeR] -- ❓
-* [Retri_DarhangeR] -- ❓
+* [Protection_DarhangeR] -- 👷
+* [Retri_DarhangeR] -- 👷
 
 ### Priest
 * [Discipline_DarhangeR] -- ⁉️
