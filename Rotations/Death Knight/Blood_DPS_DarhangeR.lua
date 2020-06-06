@@ -411,22 +411,6 @@ local abilities = {
 		end
 	end,
 -----------------------------------
-	["Blood Strike"] = function()
-		local _, BR = ni.rune.bloodrunecd()
-		local icy = ni.data.darhanger.dk.icy()
-		local plague = ni.data.darhanger.dk.plague()
-		if BR >= 1
-		 and plague
-		 and icy
-		 and not ni.spell.available(heartstrike)
-		 and ni.player.power() < 95
-		 and ni.spell.isinstant(bloodstrike)
-		 and ni.spell.available(bloodstrike)
-		 and ni.spell.valid("target", bloodstrike, true, true) then
-			ni.spell.cast(bloodstrike, "target")
-			return true
-		end
-	end,
 	["Blood Boil"] = function()
 		local _, BR = ni.rune.bloodrunecd()
 		local icy = ni.data.darhanger.dk.icy()
