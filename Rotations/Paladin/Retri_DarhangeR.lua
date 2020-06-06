@@ -12,6 +12,8 @@ local judgementofwisdom = GetSpellInfo(53408)
 local holywrath = GetSpellInfo(48817)
 local conc = GetSpellInfo(48819)
 local hammerofwrath = GetSpellInfo(48806)
+local crusaderstrike = GetSpellInfo(35395)
+local hammeroftherighteous = GetSpellInfo(53595)
 
 
 
@@ -112,6 +114,7 @@ local abilities = {
 		and not ni.spell.available(sealofvengance) 
 		and ni.spell.available(sealofrighteousness) then
 		if not ni.player.buff(sealofrighteousness) 
+		and UnitLevel("player") < 22
 		and GetTime() - ni.data.darhanger.paladin.LastSeal > 3 then
 		ni.spell.cast(sealofrighteousness)
 		ni.data.darhanger.paladin.LastSeal = GetTime()
@@ -124,25 +127,38 @@ local abilities = {
 		and not ni.spell.available(sealofcommand) 
 		and ni.spell.available(sealofrighteousness) then
 		if not ni.player.buff(sealofrighteousness) 
+		and not ni.player.buff(sealofcommand)
+		and UnitLevel("player") < 22
 		and GetTime() - ni.data.darhanger.paladin.LastSeal > 3 then
 		ni.spell.cast(sealofrighteousness)
 		ni.data.darhanger.paladin.LastSeal = GetTime()
 		return true
 		end
 		end
-		
-	end,
+	
+			if #enemies <= 1
+		and ni.spell.available(sealofvengance) then
+		if not ni.player.buff(sealofvengance) 
+		 and GetTime() - ni.data.darhanger.paladin.LastSeal > 3
+		 and not ni.player.buff(sealofcorruption) then
+			ni.spell.cast(sealofvengance)
+			ni.data.darhanger.paladin.LastSeal = GetTime()
+			return true
+			end
+		end
+		end,
 -----------------------------------
 	["Seal of Command"] = function()
 		local enemies = ni.unit.enemiesinrange("player", 5)
-		if #enemies > 1	
-		 and IsSpellKnown(sealofcommand)
-		 and ni.spell.available(sealofcommand)
+		if (#enemies > 1	or 
+		UnitLevel("player") < 60) 
+		and ni.spell.available(sealofcommand) then
+		if not ni.player.buff(sealofcommand) 
 		 and GetTime() - ni.data.darhanger.paladin.LastSeal > 3
-		 and not ni.player.buff(sealofcommand) then 
 			ni.spell.cast(sealofcommand)
 			ni.data.darhanger.paladin.LastSeal = GetTime()
 			return true
+		end
 		end
 	end,
 -----------------------------------
@@ -378,10 +394,10 @@ local abilities = {
 	end,
 -----------------------------------
 	["Crusader Strike"] = function()
-		if ni.spell.available(35395)
-		 and ni.spell.isinstant(35395) 
-		 and ni.spell.valid("target", 35395, true, true) then
-			ni.spell.cast(35395, "target")
+		if ni.spell.available(crusaderstrike)
+		 and ni.spell.isinstant(crusaderstrike) 
+		 and ni.spell.valid("target", crusaderstrike, true, true) then
+			ni.spell.cast(crusaderstrike, "target")
 			return true
 		end
 	end,
@@ -390,7 +406,7 @@ local abilities = {
 		if ni.vars.combat.aoe
 		 and ni.spell.isinstant(holywrath)
 		 and ni.spell.available(holywrath)
-		 and ni.spell.valid("target", 53595, true, true) then
+		 and ni.spell.valid("target", hammeroftherighteous, true, true) then
 			ni.spell.cast(holywrath, "target")
 			return true
 		end
@@ -400,7 +416,7 @@ local abilities = {
 		if ni.player.power() > 30
 		 and ni.spell.isinstant(conc)
 		 and ni.spell.available(conc)
-		 and ni.spell.valid("target", 35395) then
+		 and ni.spell.valid("target", crusaderstrike) then
 			ni.spell.cast(conc, "target")
 			return true
 		end
