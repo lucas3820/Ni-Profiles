@@ -31,7 +31,7 @@
 * [Frost_DarhangeR]-- ⁉️
 
 ### Paladin
-* [Holy_DarhangeR]-- ⁉️
+* [Holy_DarhangeR]-- 👷
 * [Protection_DarhangeR] -- 👷
 * [Retri_DarhangeR] -- 👷
 
