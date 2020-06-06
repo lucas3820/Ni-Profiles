@@ -308,6 +308,26 @@ local abilities = {
 			return true
 		end
 	end,
+	
+	-----------------------------------
+	["Blood Strike"] = function()
+		local _, BR = ni.rune.bloodrunecd()
+		local icy = ni.data.darhanger.dk.icy()
+		local plague = ni.data.darhanger.dk.plague()
+		local enemies = ni.unit.enemiesinrange("target", 7)
+		if not IsSpellKnown(heartstrike)
+		 and BR >= 1
+		 and ( #enemies == 1 or #enemies < 2 )
+		 and plague
+		 and icy
+		 and ni.spell.isinstant(bloodstrike)
+		 and ni.spell.available(bloodstrike)
+		 and ni.spell.valid("target", bloodstrike, true, true) then
+			ni.spell.cast(bloodstrike, "target")
+			return true
+		end
+	end,	
+
 -----------------------------------
 	["Pestilence (AoE)"] = function()
 		local icy = ni.data.darhanger.dk.icy()
