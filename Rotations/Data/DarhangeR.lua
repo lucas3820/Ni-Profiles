@@ -8,6 +8,13 @@ local tbuff = { 642, 45438, 33786, 21892, 40733, 19263, 1022, 69051 };
 local forsdebuff = { 6215, 8122, 5484, 2637, 5246, 6358, 605 };
 local _, class = UnitClass("player");
 local renewBuild = nil;
+local moonfiredebuff = GetSpellInfo(48463)
+local insectswarmdebuff = GetSpellInfo(48468)
+local mangledebuff = GetSpellInfo(48564)
+local laceratedebuff = GetSpellInfo(48568)
+local manglecatdebuff = GetSpellInfo(48566)
+local ripdebuff = GetSpellInfo(49800)
+local rakedebuff = GetSpellInfo(48574)
 
 	-- Debuger -- 
 local function changedebug(msg)
@@ -118,7 +125,6 @@ if classlower == "deathknight" then
 end
 ni.data.darhanger[classlower] = { };
 if classlower == "dk" then
-	ni.data.darhanger[classlower].LastGrip = 0;
 	ni.data.darhanger[classlower].icy = function()
 		return select(7, ni.unit.debuff("target", 55095, "player")) 
 	end;
@@ -153,10 +159,10 @@ elseif classlower == "druid" then
 		return select(7, ni.unit.debuff("target", 16857)) 
 	end
 	ni.data.darhanger[classlower].iSwarm = function()
-		return select(7, ni.unit.debuff("target", 48468, "player")) 
+		return select(7, ni.unit.debuff("target", insectswarmdebuff, "player")) 
 	end
 	ni.data.darhanger[classlower].mFire = function() 
-		return select(7, ni.unit.debuff("target", 48463, "player")) 
+		return select(7, ni.unit.debuff("target", moonfiredebuff, "player")) 
 	end
 	ni.data.darhanger[classlower].lunar = function() 
 		return select(7, ni.unit.buff("player", 48517)) 
@@ -168,19 +174,19 @@ elseif classlower == "druid" then
 		return select(11, ni.unit.buff("player", 50334))
 	end
 	ni.data.darhanger[classlower].bmangle = function()
-		return select(7, ni.unit.debuff("target", 48564))
+		return select(7, ni.unit.debuff("target", mangledebuff))
 	end
 	ni.data.darhanger[classlower].lacerate = function() 
-		return select(7, ni.unit.debuff("target", 48568, "player"))
+		return select(7, ni.unit.debuff("target", laceratedebuff, "player"))
 	end
 	ni.data.darhanger[classlower].mangle = function() 
-		return select(7, ni.unit.debuff("target", 48566)) 
+		return select(7, ni.unit.debuff("target", manglecatdebuff)) 
 	end
 	ni.data.darhanger[classlower].rip = function() 
-		return select(7, ni.unit.debuff("target", 49800, "player")) 
+		return select(7, ni.unit.debuff("target", ripdebuff, "player")) 
 	end
 	ni.data.darhanger[classlower].rake = function() 
-		return select(7, ni.unit.debuff("target", 48574, "player"))
+		return select(7, ni.unit.debuff("target", rakedebuff, "player"))
 	end
 	ni.data.darhanger[classlower].tiger = function() 
 		return ni.unit.buff("player", 50213) 

@@ -1,5 +1,18 @@
 local data = {"DarhangeR.lua"}
 
+local giftofthewild = GetSpellInfo(48470)
+local thorns = GetSpellInfo(53307)
+local faeriefiredr = GetSpellInfo(16857)
+local tigersfury = GetSpellInfo(50213)
+local ferociousbite = GetSpellInfo(48577)
+local rake = GetSpellInfo(48574)
+local savageroar = GetSpellInfo(52610)
+local rip = GetSpellInfo(49800)
+local mangle = GetSpellInfo(48566)
+local catswipe = GetSpellInfo(62078)
+local shred = GetSpellInfo(48572)
+
+
 local popup_shown = false;
 local queue = {
 	"Window",	
@@ -7,8 +20,8 @@ local queue = {
 	"Universal pause",
 	"AutoTarget",
 	"Gift of the Wild",
-	"Thorns",
-	"Cat Form",
+	--"Thorns",
+	--"Cat Form",
 	"Combat specific Pause",
 	"Healthstone (Use)",
 	"Potions (Use)",
@@ -75,11 +88,11 @@ local abilities = {
 	end,
 -----------------------------------
 	["Thorns"] = function()
-		if not ni.player.buff(53307)
-		 and ni.spell.available(53307)
-		 and ni.spell.isinstant(53307)
+		if not ni.player.buff(thorns)
+		 and ni.spell.available(thorns)
+		 and ni.spell.isinstant(thorns)
 		 and UnitAffectingCombat("player") == nil then
-			ni.spell.cast(53307)
+			ni.spell.cast(thorns)
 			return true
 		end
 	end,
@@ -208,9 +221,9 @@ local abilities = {
 		local fFaerieFire = ni.data.darhanger.druid.fFaerieFire() 
 		if not fFaerieFire
 		 and not mFaerieFire
-		 and ni.spell.isinstant(16857)
-		 and ni.spell.available(16857) then
-			ni.spell.cast(16857, "target")
+		 and ni.spell.isinstant(faeriefiredr)
+		 and ni.spell.available(faeriefiredr) then
+			ni.spell.cast(faeriefiredr, "target")
 			return true
 		end
 	end,
@@ -218,10 +231,10 @@ local abilities = {
 	["Tigers Fury"] = function()
 		local berserk = ni.data.darhanger.druid.berserk()
 		if berserk == nil
-		 and ni.spell.isinstant(50213)
-		 and ni.spell.available(50213)
+		 and ni.spell.isinstant(tigersfury)
+		 and ni.spell.available(tigersfury)
 		 and ni.player.power() < 30 then
-			ni.spell.cast(50213)
+			ni.spell.cast(tigersfury)
 			return true
 		end
 	end,
@@ -249,14 +262,14 @@ local abilities = {
 		local savage = ni.data.darhanger.druid.savage() 
 		local rip = ni.data.darhanger.druid.rip()
 		local mangle = ni.data.darhanger.druid.mangle()
-		if ni.spell.available(48577)
+		if ni.spell.available(ferociousbite)
 		 and mangle
 		 and ( savage ~= nil and ( savage - GetTime() > 11 ) )
 		 and ( rip ~= nil and ( rip - GetTime() > 8 ) )
-		 and ni.spell.isinstant(48577)
+		 and ni.spell.isinstant(ferociousbite)
 		 and GetComboPoints("player") >= 5
-		 and ni.spell.valid("target", 48574, true, true) then
-			ni.spell.cast(48577, "target")
+		 and ni.spell.valid("target", rake, true, true) then
+			ni.spell.cast(ferociousbite, "target")
 			return true
 		end
 	end,
@@ -264,13 +277,13 @@ local abilities = {
 	["Savage Roar"] = function()
 		local savage = ni.data.darhanger.druid.savage() 
 		local mangle = ni.data.darhanger.druid.mangle()
-		if ni.spell.available(52610)
+		if ni.spell.available(savageroar)
 		 and mangle
 		 and ( savage == nil or ( savage - GetTime() <= 2 ) )
 		 and GetComboPoints("player") >= 1
-		 and ni.spell.isinstant(48574)
-		 and ni.spell.valid("target", 48574, true, true) then
-			ni.spell.cast(52610)
+		 and ni.spell.isinstant(rake)
+		 and ni.spell.valid("target", rake, true, true) then
+			ni.spell.cast(savageroar)
 			return true
 		end
 	end,
@@ -279,12 +292,12 @@ local abilities = {
 		local mangle = ni.data.darhanger.druid.mangle()
 		local rip = ni.data.darhanger.druid.rip()
 		if GetComboPoints("player") >= 5
-		 and ni.spell.available(52610)
+		 and ni.spell.available(savageroar)
 		 and mangle
 		 and ( rip == nil or ( rip - GetTime() <= 2 ) )
-		 and ni.spell.isinstant(49800)
-		 and ni.spell.valid("target", 49800, true, true) then
-			ni.spell.cast(49800, "target")
+		 and ni.spell.isinstant(rip)
+		 and ni.spell.valid("target", rip, true, true) then
+			ni.spell.cast(rip, "target")
 			return true
 		end
 	end,
@@ -293,15 +306,15 @@ local abilities = {
 		local savage = ni.data.darhanger.druid.savage() 
 		local mangle = ni.data.darhanger.druid.mangle()
 		local rip = ni.data.darhanger.druid.rip()
-		if ni.spell.available(52610)
+		if ni.spell.available(savageroar)
 		 and GetComboPoints("player") >= 3
 		 and mangle
 		 and ( savage == nil or ( savage - GetTime() <= 8 ) )
 		 and ( savage == nil or ( savage and rip == nil ) 
 		 or ( savage and rip and rip - GetTime() >= -3 ) ) 
-		 and ni.spell.isinstant(52610)
-		 and ni.spell.valid("target", 48574, true, true) then
-			ni.spell.cast(52610)
+		 and ni.spell.isinstant(savageroar)
+		 and ni.spell.valid("target", rake, true, true) then
+			ni.spell.cast(savageroar)
 			return true
 		end
 	end,
@@ -309,23 +322,23 @@ local abilities = {
 	["Mangle (Cat)"] = function()
 		local mangle = ni.data.darhanger.druid.mangle()
 		local enemies = ni.unit.enemiesinrange("target", 7)
-		if ni.spell.available(48566)
+		if ni.spell.available(mangle)
 		 and ( #enemies == 1 or #enemies < 2 )
 		 and ( mangle == nil or ( mangle - GetTime() <= 2 ) )
-		 and ni.spell.isinstant(48566)		 
-		 and ni.spell.valid("target", 48566, true, true) then
-			ni.spell.cast(48566, "target")
+		 and ni.spell.isinstant(mangle)		 
+		 and ni.spell.valid("target", mangle, true, true) then
+			ni.spell.cast(mangle, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Swipe (Cat)"] = function()
-		local enemies = ni.unit.enemiesinrange("target", 7)
-		if ni.spell.available(62078)
+		local enemies = ni.unit.enemiesinrange("player", 7)
+		if ni.spell.available(catswipe)
 		 and #enemies > 2
-		 and ni.spell.isinstant(62078)	
-		 and ni.spell.valid("target", 48566, true, true) then
-			ni.spell.cast(62078, "target")
+		 and ni.spell.isinstant(catswipe)	
+		 and ni.spell.valid("target", mangle, true, true) then
+			ni.spell.cast(catswipe, "target")
 			return true
 		end
 	end,
@@ -333,12 +346,12 @@ local abilities = {
 	["Rake"] = function()
 		local mangle = ni.data.darhanger.druid.mangle()
 		local rake = ni.data.darhanger.druid.rake()
-		if ni.spell.available(48574)
+		if ni.spell.available(rake)
 		 and mangle
-		 and ni.spell.isinstant(48574)	
+		 and ni.spell.isinstant(rake)	
 		 and ( rake == nil or ( rake - GetTime() <= 1 ) )
-		 and ni.spell.valid("target", 48574, true, true) then
-			ni.spell.cast(48574, "target")
+		 and ni.spell.valid("target", rake, true, true) then
+			ni.spell.cast(rake, "target")
 			return true
 		end
 	end,
@@ -350,7 +363,7 @@ local abilities = {
 		local rip = ni.data.darhanger.druid.rip()
 		local berserk = ni.data.darhanger.druid.berserk()
 		local enemies = ni.unit.enemiesinrange("target", 7)
-		if ni.spell.available(48572)
+		if ni.spell.available(shred)
 		 and mangle
 		 and ( #enemies == 1 or #enemies < 2 )
 		 and ((GetComboPoints("player") <= 4
@@ -364,10 +377,10 @@ local abilities = {
 		 and ( savage == nil 
 		 or ( savage - GetTime() <= 2 ) ) ) ) then 
 			if ni.player.isbehind("target") then
-				ni.spell.cast(48572, "target")
+				ni.spell.cast(shred, "target")
 				return true
 			else
-				ni.spell.cast(48566, "target")
+				ni.spell.cast(mangle, "target")
 				return true
 			end
 		end

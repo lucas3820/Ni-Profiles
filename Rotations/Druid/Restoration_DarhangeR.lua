@@ -1,13 +1,28 @@
 local data = {"DarhangeR.lua"}
 
+--Ability Convert
+local giftofthewild = GetSpellInfo(48470)
+local thorns = GetSpellInfo(53307)
+local moonkinform = GetSpellInfo(24858)
+local innervate = GetSpellInfo(29166)
+local faeriefiredr = GetSpellInfo(770)
+local lifebloom = GetSpellInfo(48451)
+local regrowth = GetSpellInfo(48443)
+local rejuvenation = GetSpellInfo(48441)
+local tranquility = GetSpellInfo(48447)
+local healingtouch = GetSpellInfo(48378)
+local swiftmend = GetSpellInfo(18562)
+local wildgrowth = GetSpellInfo(53251)
+local nourish = GetSpellInfo(50464)
+
 local popup_shown = false;
 local queue = {
 	"Window",
 	"Stutter cast pause",
 	"Universal pause",
 	"Gift of the Wild",
-	"Thorns",
-	"Tree of Life",
+	--"Thorns",
+	--"Tree of Life",
 	"Innervate",
 	"Combat specific Pause",
 	"Healthstone (Use)",
@@ -53,13 +68,13 @@ local abilities = {
 	end,
 -----------------------------------
 	["Gift of the Wild"] = function()
-		if ni.player.buff(48470)
-		 or not IsUsableSpell(GetSpellInfo(48470)) then 
+		if ni.player.buff(giftofthewild)
+		 or not IsUsableSpell(giftofthewild) then 
 		 return false
 	end
-		if ni.spell.available(48470)
-		 and ni.spell.isinstant(48470) then
-			ni.spell.cast(48470)	
+		if ni.spell.available(giftofthewild)
+		 and ni.spell.isinstant(giftofthewild) then
+			ni.spell.cast(giftofthewild)	
 			return true
 		end
 	end,
@@ -84,9 +99,9 @@ local abilities = {
 -----------------------------------
 	["Innervate"] = function()
 		if ni.player.power() < 30
-		 and not ni.player.buff(29166)
-		 and ni.spell.available(29166) then
-			ni.spell.cast(29166)
+		 and not ni.player.buff(innervate)
+		 and ni.spell.available(innervate) then
+			ni.spell.cast(innervate)
 			return true
 		end
 	end,
@@ -184,78 +199,78 @@ local abilities = {
 		local tank, offTank = ni.tanks()
 		-- Main Tank Heal
 		if UnitExists(tank) then
-		 local lbtank, _, _, lbtank_count, _, _, lbtank_time = ni.unit.buff(tank, 48451, "player")
-		 local rgtank, _, _, _, _, _, rgtank_time = ni.unit.buff(tank, 48443, "player")
-		 local rjtank, _, _, _, _, _, rjtank_time = ni.unit.buff(tank, 48441, "player")
+		 local lbtank, _, _, lbtank_count, _, _, lbtank_time = ni.unit.buff(tank, lifebloom, "player")
+		 local rgtank, _, _, _, _, _, rgtank_time = ni.unit.buff(tank, regrowth, "player")
+		 local rjtank, _, _, _, _, _, rjtank_time = ni.unit.buff(tank, rejuvenation, "player")
 		-- Buff Thorns on MT -- 
-		if ni.spell.available(53307)
-		 and ni.spell.isinstant(53307)
-		 and not ni.unit.buff(tank, 53307)
-		 and ni.spell.valid(tank, 53307, false, true, true) then
-			ni.spell.cast(53307, tank)
+		if ni.spell.available(thorns)
+		 and ni.spell.isinstant(thorns)
+		 and not ni.unit.buff(tank, thorns)
+		 and ni.spell.valid(tank, thorns, false, true, true) then
+			ni.spell.cast(thorns, tank)
 			return true
 		end
 		-- Heal MT with Lifebloom --
-		if ni.spell.available(48451)
-		 and ni.spell.isinstant(48451)
+		if ni.spell.available(lifebloom)
+		 and ni.spell.isinstant(lifebloom)
 		 and (not lbtank
 		 or (lbtank and lbtank_count < 3))
-		 and ni.spell.valid(tank, 48451, false, true, true) then
-			ni.spell.cast(48451, tank)
+		 and ni.spell.valid(tank, lifebloom, false, true, true) then
+			ni.spell.cast(lifebloom, tank)
 			return true
 		end
 		-- Heal MT with Regrowth --
-		if ni.spell.available(48443)
+		if ni.spell.available(regrowth)
 		 and (not rgtank
 		 or (rgtank and rgtank_time - GetTime() < 2))
 		 and GetTime() - ni.data.darhanger.druid.lastRegrowth > 2
 		 and not ni.player.ismoving() 
-		 and ni.spell.valid(tank, 48443, false, true, true) then
+		 and ni.spell.valid(tank, regrowth, false, true, true) then
 			ni.data.darhanger.druid.lastRegrowth = GetTime()
-			ni.spell.cast(48443, tank)
+			ni.spell.cast(regrowth, tank)
 			return true
 		end
 		-- Heal MT with Rejuvenation --
-		if ni.spell.available(48441)
-		 and ni.spell.isinstant(48441)
+		if ni.spell.available(rejuvenation)
+		 and ni.spell.isinstant(rejuvenation)
 		 and (not rjtank
 		 or (rjtank and rjtank_time - GetTime() < 2))
-		 and ni.spell.valid(tank, 48441, false, true, true) then
-			ni.spell.cast(48441, tank)
+		 and ni.spell.valid(tank, rejuvenation, false, true, true) then
+			ni.spell.cast(rejuvenation, tank)
 			return true
 			end
 		end
 		-- Off Tank heal
 		if offTank ~= nil
 		 and UnitExists(offTank) then
-		 local rgotank, _, _, _, _, _, rgotank_time = ni.unit.buff(offTank, 48443, "player")
-		 local rjotank, _, _, _, _, _, rjotank_time = ni.unit.buff(offTank, 48441, "player")
+		 local rgotank, _, _, _, _, _, rgotank_time = ni.unit.buff(offTank, regrowth, "player")
+		 local rjotank, _, _, _, _, _, rjotank_time = ni.unit.buff(offTank, rejuvenation, "player")
 		 -- Buff Thorns on OT -- 
-		if ni.spell.available(53307)
-		 and ni.spell.isinstant(53307)
-		 and not ni.unit.buff(tank, 53307)
-		 and ni.spell.valid(tank, 53307, false, true, true) then
-			ni.spell.cast(53307, tank)
+		if ni.spell.available(thorns)
+		 and ni.spell.isinstant(thorns)
+		 and not ni.unit.buff(tank, thorns)
+		 and ni.spell.valid(tank, thorns, false, true, true) then
+			ni.spell.cast(thorns, tank)
 			return true
 		end
 		-- Heal OT with Regrowth --
-		if ni.spell.available(48443)
+		if ni.spell.available(regrowth)
 		 and (not rgotank
 		 or (rgotank and rgotank_time - GetTime() < 2))
 		 and GetTime() - ni.data.darhanger.druid.lastRegrowth > 2
 		 and not ni.player.ismoving() 
-		 and ni.spell.valid(offTank, 48443, false, true, true) then
+		 and ni.spell.valid(offTank, regrowth, false, true, true) then
 			ni.data.darhanger.druid.lastRegrowth = GetTime()
-			ni.spell.cast(48443, offTank)
+			ni.spell.cast(regrowth, offTank)
 			return true
 		end
 		-- Heal OT with Rejuvenation --
-		if ni.spell.available(48441)
-		 and ni.spell.isinstant(48441)
+		if ni.spell.available(rejuvenation)
+		 and ni.spell.isinstant(rejuvenation)
 		 and (not rjotank
 		 or (rjotank and rjotank_time - GetTime() < 2))
-		 and ni.spell.valid(offTank, 48441, false, true, true) then
-			ni.spell.cast(48441, offTank)
+		 and ni.spell.valid(offTank, rejuvenation, false, true, true) then
+			ni.spell.cast(rejuvenation, offTank)
 			return true
 			end
 		end
@@ -264,9 +279,9 @@ local abilities = {
 	["Tranquility"] = function()
 		if ni.healing.averagehp(9) < 35
 		 and not ni.player.ismoving()
-		 and ni.spell.available(48447) 
+		 and ni.spell.available(tranquility) 
 		 and UnitChannelInfo("player") == nil then
-			ni.spell.cast(48447)
+			ni.spell.cast(tranquility)
 			return true
 		end
 	end,
@@ -275,10 +290,10 @@ local abilities = {
 		for i = 1, #ni.members do
 		if ni.members[i].hp < 40
 		 and ni.spell.available(17116)
-		 and ni.spell.available(48378)
-		 and ni.spell.valid(ni.members[i].unit, 48378, false, true, true) then
+		 and ni.spell.available(healingtouch)
+		 and ni.spell.valid(ni.members[i].unit, healingtouch, false, true, true) then
 			ni.spell.cast(17116)
-			ni.spell.cast(48378, ni.members[i].unit)
+			ni.spell.cast(healingtouch, ni.members[i].unit)
 			return true
 			end
 		end
@@ -287,12 +302,12 @@ local abilities = {
 	["Swiftmend"] = function()
 		for i = 1, #ni.members do
 		if ni.members[i].hp < 50
-		 and ni.spell.available(18562)
-		 and ni.spell.isinstant(18562)
-		 and ni.spell.valid(ni.members[i].unit, 18562, false, true, true)
-		 and (ni.unit.buff(ni.members[i].unit, 48441, "player")
-		 or ni.unit.buff(ni.members[i].unit, 48443, "player")) then
-			ni.spell.cast(18562, ni.members[i].unit)
+		 and ni.spell.available(swiftmend)
+		 and ni.spell.isinstant(swiftmend)
+		 and ni.spell.valid(ni.members[i].unit, swiftmend, false, true, true)
+		 and (ni.unit.buff(ni.members[i].unit, rejuvenation, "player")
+		 or ni.unit.buff(ni.members[i].unit, regrowth, "player")) then
+			ni.spell.cast(swiftmend, ni.members[i].unit)
 			return true
 			end
 		end
@@ -300,10 +315,10 @@ local abilities = {
 -----------------------------------
 	["Wild Growth"] = function()
 		if ni.healing.averagehp(4) < 95
-		 and ni.spell.available(53251)
-		 and ni.spell.isinstant(18562)
-		 and ni.spell.valid(ni.members[1].unit, 53251, false, true, true) then
-			ni.spell.cast(53251, ni.members[1].unit)
+		 and ni.spell.available(wildgrowth)
+		 and ni.spell.isinstant(swiftmend)
+		 and ni.spell.valid(ni.members[1].unit, wildgrowth, false, true, true) then
+			ni.spell.cast(wildgrowth, ni.members[1].unit)
 			return true
 		end
 	end,
@@ -311,11 +326,11 @@ local abilities = {
 	["Rejuvenation"] = function()
 		for i = 1, #ni.members do
 		 if ni.members[i].hp < 95
-		 and ni.spell.available(48441)
-		 and ni.spell.isinstant(48441)
-		 and not ni.unit.buff(ni.members[i].unit, 48441, "player")
-		 and ni.spell.valid(ni.members[i].unit, 48441, false, true, true) then
-			ni.spell.cast(48441, ni.members[i].unit)
+		 and ni.spell.available(rejuvenation)
+		 and ni.spell.isinstant(rejuvenation)
+		 and not ni.unit.buff(ni.members[i].unit, rejuvenation, "player")
+		 and ni.spell.valid(ni.members[i].unit, rejuvenation, false, true, true) then
+			ni.spell.cast(rejuvenation, ni.members[i].unit)
 			return true
 			end
 		end
@@ -324,13 +339,13 @@ local abilities = {
 	["Nourish"] = function()
 		for i = 1, #ni.members do
 		if ni.members[i].hp < 75
-		 and ni.spell.available(50464)
-		 and (ni.unit.buff(ni.members[i].unit, 48441, "player")
-		 or ni.unit.buff(ni.members[i].unit, 48443, "player")
-		 or ni.unit.buff(ni.members[i].unit, 48451, "player")
-		 or ni.unit.buff(ni.members[i].unit, 53251, "player"))
-		 and ni.spell.valid(ni.members[i].unit, 50464, false, true, true) then
-			ni.spell.cast(50464, ni.members[i].unit)
+		 and ni.spell.available(nourish)
+		 and (ni.unit.buff(ni.members[i].unit, rejuvenation, "player")
+		 or ni.unit.buff(ni.members[i].unit, regrowth, "player")
+		 or ni.unit.buff(ni.members[i].unit, lifebloom, "player")
+		 or ni.unit.buff(ni.members[i].unit, wildgrowth, "player"))
+		 and ni.spell.valid(ni.members[i].unit, nourish, false, true, true) then
+			ni.spell.cast(nourish, ni.members[i].unit)
 			return true
 			end
 		end
@@ -338,10 +353,10 @@ local abilities = {
 -----------------------------------
 	["Wild Growth all"] = function()
 		if ni.healing.averagehp(6) < 100
-		 and ni.spell.available(53251)
-		 and ni.spell.isinstant(53251)
-		 and ni.spell.valid(ni.members[1].unit, 53251, false, true, true) then
-			ni.spell.cast(53251, ni.members[1].unit)
+		 and ni.spell.available(wildgrowth)
+		 and ni.spell.isinstant(wildgrowth)
+		 and ni.spell.valid(ni.members[1].unit, wildgrowth, false, true, true) then
+			ni.spell.cast(wildgrowth, ni.members[1].unit)
 			return true
 		end
 	end,
@@ -388,11 +403,11 @@ local abilities = {
 	["Rejuvenation all"] = function()
 		for i = 1, #ni.members do
 		if ni.members[i].hp <= 100
-		 and ni.spell.available(48411)
-		 and ni.spell.isinstant(48411)
-		 and not ni.unit.buff(ni.members[i].unit, 48441, "player")
-		 and ni.spell.valid(ni.members[i].unit, 48441, false, true, true) then
-			ni.spell.cast(48441, ni.members[i].unit)
+		 and ni.spell.available(rejuvenation)
+		 and ni.spell.isinstant(rejuvenation)
+		 and not ni.unit.buff(ni.members[i].unit, rejuvenation, "player")
+		 and ni.spell.valid(ni.members[i].unit, rejuvenation, false, true, true) then
+			ni.spell.cast(rejuvenation, ni.members[i].unit)
 			return true
 			end
 		end

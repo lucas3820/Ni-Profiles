@@ -1,5 +1,20 @@
 local data = {"DarhangeR.lua"}
 
+--Ability Convert
+local giftofthewild = GetSpellInfo(48470)
+local thorns = GetSpellInfo(53307)
+local moonkinform = GetSpellInfo(24858)
+local innervate = GetSpellInfo(29166)
+local faeriefiredr = GetSpellInfo(770)
+local hurricane = GetSpellInfo(48467)
+local starfall = GetSpellInfo(53201)
+local wrath = GetSpellInfo(48461)
+local moonfire = GetSpellInfo(48463)
+local insectswarm = GetSpellInfo(48468)
+local starfire = GetSpellInfo(48465)
+
+
+
 local popup_shown = false;
 local queue = {
 	"Window",
@@ -7,8 +22,6 @@ local queue = {
 	"Universal pause",
 	"AutoTarget",
 	"Gift of the Wild",
-	"Thorns",
-	"Moonkin Form",
 	"Innervate",		
 	"Combat specific Pause",
 	"Healthstone (Use)",
@@ -62,42 +75,42 @@ local abilities = {
 	end,
 -----------------------------------
 	["Gift of the Wild"] = function()
-		if ni.player.buff(48470)
-		 or not IsUsableSpell(GetSpellInfo(48470)) then 
+		if ni.player.buff(giftofthewild)
+		 or not IsUsableSpell(giftofthewild) then 
 		 return false
 	end
-		if ni.spell.available(48470)
-		 and ni.spell.isinstant(48470) then
-			ni.spell.cast(48470)	
+		if ni.spell.available(giftofthewild)
+		 and ni.spell.isinstant(giftofthewild) then
+			ni.spell.cast(giftofthewild)	
 			return true
 		end
 	end,
 -----------------------------------
 	["Thorns"] = function()
-		if not ni.player.buff(53307)
-		 and ni.spell.available(53307)
-		 and ni.spell.isinstant(53307)
+		if not ni.player.buff(thorns)
+		 and ni.spell.available(thorns)
+		 and ni.spell.isinstant(thorns)
 		 and UnitAffectingCombat("player") == nil then
-			ni.spell.cast(53307)
+			ni.spell.cast(thorns)
 			return true
 		end
 	end,
 -----------------------------------
 	["Moonkin Form"] = function()
-		if not ni.player.buff(24858)
-		 and ni.spell.available(24858)
+		if not ni.player.buff(moonkinform)
+		 and ni.spell.available(moonkinform)
 		 and not ni.player.buff(33357) then
-			ni.spell.cast(24858)
+			ni.spell.cast(moonkinform)
 			return true
 		end
 	end,
 -----------------------------------
 	["Innervate"] = function()
 		if ni.player.power() < 30
-		 and not ni.player.buff(29166)
-		 and ni.spell.isinstant(29166)
-		 and ni.spell.available(29166) then
-			ni.spell.cast(29166)
+		 and not ni.player.buff(innvervate)
+		 and ni.spell.isinstant(innvervate)
+		 and ni.spell.available(innvervate) then
+			ni.spell.cast(innvervate)
 			return true
 		end
 	end,
@@ -222,9 +235,9 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and not fFaerieFire
 		 and not mFaerieFire
-		 and ni.spell.isinstant(770)
-		 and ni.spell.available(770) then
-			ni.spell.cast(770)
+		 and ni.spell.isinstant(faeriefiredr)
+		 and ni.spell.available(faeriefiredr) then
+			ni.spell.cast(faeriefiredr, target)
 			return true
 		end
 	end,
@@ -232,18 +245,18 @@ local abilities = {
 	["Hurricane"] = function()
 		if ni.vars.combat.aoe
 		 and not ni.player.ismoving()
-	         and ni.spell.available(48467) then
-			ni.spell.castat(48467, "target")
+	         and ni.spell.available(hurricane) then
+			ni.spell.castat(hurricane, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Starfall"] = function()
 		if ni.rotation.custommod()
-		 and ni.spell.isinstant(53201)
-		 and ni.spell.available(53201)
-		 and ni.spell.valid("target", 48461) then
-			ni.spell.cast(53201)
+		 and ni.spell.isinstant(starfall)
+		 and ni.spell.available(starfall)
+		 and ni.spell.valid("target", wrath) then
+			ni.spell.cast(starfall)
 			return true
 		end
 	end,
@@ -260,16 +273,16 @@ local abilities = {
 	["Moonfire"] = function()
 		local mFire = ni.data.darhanger.druid.mFire()
 		local solar = ni.data.darhanger.druid.solar()
-		if ni.spell.available(48463)
+		if ni.spell.available(moonfire)
 		 and (ni.player.ismoving()
 		 and (not mFire
 		 or (mFire and mFire - GetTime() < 6 )))
 		 or ((not solar 
 		 or (solar and solar - GetTime() > 5))
 		 and not mFire)
-		 and ni.spell.isinstant(48463)
-		 and ni.spell.valid("target", 48463, true, true) then
-			ni.spell.cast(48463, "target")
+		 and ni.spell.isinstant(moonfire)
+		 and ni.spell.valid("target", moonfire, true, true) then
+			ni.spell.cast(moonfire, "target")
 			return true
 		end
 	end,
@@ -277,16 +290,16 @@ local abilities = {
 	["Insect Swarm"] = function()
 		local iSwarm = ni.data.darhanger.druid.iSwarm()
 		local lunar = ni.data.darhanger.druid.lunar()
-		if ni.spell.available(48468)
+		if ni.spell.available(insectswarm)
 		 and (ni.player.ismoving()
 		 and (not iSwarm
 		 or (iSwarm and iSwarm - GetTime() < 2 )))
 		 or ((not lunar 
 		 or (lunar and lunar - GetTime() > 1))
 		 and not iSwarm)
-		 and ni.spell.isinstant(48468)
-		 and ni.spell.valid("target", 48468, false, true, true) then
-			ni.spell.cast(48468, "target")
+		 and ni.spell.isinstant(insectswarm)
+		 and ni.spell.valid("target", insectswarm, false, true, true) then
+			ni.spell.cast(insectswarm, "target")
 			return true
 		end
 	end,
@@ -306,9 +319,9 @@ local abilities = {
 	["Wrath"] = function()
 		if eclipse == "solar"
 		 and not ni.player.ismoving()
-		 and ni.spell.available(48468)
-		 and ni.spell.valid("target", 48461, true, true) then
-			ni.spell.cast(48461, "target")
+		 and ni.spell.available(wrath)
+		 and ni.spell.valid("target", wrath, true, true) then
+			ni.spell.cast(wrath, "target")
 			return true
 		end
 	end,
@@ -316,9 +329,9 @@ local abilities = {
 	["Starfire"] = function()
 		if eclipse == "lunar"
 		 and not ni.player.ismoving() 
-		 and ni.spell.available(48465)
-		 and ni.spell.valid("target", 48465, true, true) then
-			ni.spell.cast(48465, "target")
+		 and ni.spell.available(starfire)
+		 and ni.spell.valid("target", starfire, true, true) then
+			ni.spell.cast(starfire, "target")
 			return true
 		end
 	end,

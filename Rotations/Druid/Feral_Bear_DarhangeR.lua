@@ -1,4 +1,15 @@
 local data = {"DarhangeR.lua"}
+--Ability Convert
+local giftofthewild = GetSpellInfo(48470)
+local thorns = GetSpellInfo(53307)
+local faeriefiredr = GetSpellInfo(16857)
+local direbearform = GetSpellInfo(9634)
+local bearform = GetSpellInfo(5487)
+local swipebear = GetSpellInfo(48562)
+local maul = GetSpellInfo(48480)
+local manglebear = GetSpellInfo(48564)
+local lacerate = GetSpellInfo(48568)
+local demoroar = GetSpellInfo(48560)
 
 local popup_shown = false;
 local queue = {
@@ -7,8 +18,8 @@ local queue = {
 	"Universal pause",
 	"AutoTarget",
 	"Gift of the Wild",
-	"Thorns",
-	"Bear Form",
+--	"Thorns",
+--	"Bear Form",
 	"Combat specific Pause",
 	"Healthstone (Use)",
 	"Potions (Use)",
@@ -60,23 +71,23 @@ local abilities = {
 	end,
 -----------------------------------
 	["Gift of the Wild"] = function()
-		if ni.player.buff(48470)
-		 or not IsUsableSpell(GetSpellInfo(48470)) then 
+		if ni.player.buff(giftofthewild)
+		 or not IsUsableSpell(giftofthewild) then 
 		 return false
 	end
-		if ni.spell.available(48470)
-		 and ni.spell.isinstant(48470) then
-			ni.spell.cast(48470)	
+		if ni.spell.available(giftofthewild)
+		 and ni.spell.isinstant(giftofthewild) then
+			ni.spell.cast(giftofthewild)	
 			return true
 		end
 	end,
 -----------------------------------
 	["Thorns"] = function()
-		if not ni.player.buff(53307)
-		 and ni.spell.available(53307)
-		 and ni.spell.isinstant(53307)
+		if not ni.player.buff(thorns)
+		 and ni.spell.available(thorns)
+		 and ni.spell.isinstant(thorns)
 		 and UnitAffectingCombat("player") == nil then
-			ni.spell.cast(53307)
+			ni.spell.cast(thorns)
 			return true
 		end
 	end,
@@ -231,47 +242,47 @@ local abilities = {
 		local fFaerieFire = ni.data.darhanger.druid.fFaerieFire() 
 		if not fFaerieFire
 		 and not mFaerieFire
-		 and ni.spell.isinstant(16857)
-		 and ni.spell.available(16857) then
-			ni.spell.cast(16857, "target")
+		 and ni.spell.isinstant(faeriefiredr)
+		 and ni.spell.available(faeriefiredr) then
+			ni.spell.cast(faeriefiredr, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Swipe (Bear)"] = function()
-		local enemies = ni.unit.enemiesinrange("target", 7)
-		if ni.spell.available(48562)
-		 and #enemies >= 1
-		 and IsSpellInRange(GetSpellInfo(48564), "target") == 1 then
-			if ni.spell.available(48480, true)
-			 and not IsCurrentSpell(48480) then 
-				ni.spell.cast(48480, "target")
+		local enemies = ni.unit.enemiesinrange("player", 7)
+		if ni.spell.available(swipebear)
+		 and #enemies > 1
+		 and IsSpellInRange(manglebear, "target") == 1 then
+			if ni.spell.available(maul, true)
+			 and not IsCurrentSpell(maul) then 
+				ni.spell.cast(maul, "target")
 		end
-				ni.spell.cast(48562, "target")
+				ni.spell.cast(swipebear, "target")
 			return true;
 		end
 	end,
 
 -----------------------------------
 	["Mangle (Bear)"] = function()
-		if ni.spell.available(48564)
-		 and ni.spell.isinstant(48564)
-		 and ni.spell.valid("target", 48564, true, true) then
-			ni.spell.cast(48564, "target")
+		if ni.spell.available(manglebear)
+		 and ni.spell.isinstant(manglebear)
+		 and ni.spell.valid("target", manglebear, true, true) then
+			ni.spell.cast(manglebear, "target")
 			return true
 		end
 	end,		
 -----------------------------------
 	["Lacerate"] = function()
-		local lacerate, _, _, count = ni.unit.debuff("target", 48568, "player")
+		local lacerate, _, _, count = ni.unit.debuff("target", lacerate, "player")
 		local bmangle = ni.data.darhanger.druid.bmangle()  
 		if (lacerate == nil
-		 or count < 5 or ni.unit.debuffremaining("target", 48568, "player") < 3)
+		 or count < 5 or ni.unit.debuffremaining("target", lacerate, "player") < 3)
 		 and bmangle
-		 and ni.spell.isinstant(48568)
-		 and ni.spell.available(48568)
-		 and ni.spell.valid("target", 48568, true, true) then 
-			ni.spell.cast(48568, "target")
+		 and ni.spell.isinstant(lacerate)
+		 and ni.spell.available(lacerate)
+		 and ni.spell.valid("target", lacerate, true, true) then 
+			ni.spell.cast(lacerate, "target")
 			return true
 		end
 	end,
@@ -284,10 +295,10 @@ local abilities = {
 			for i = 1, # enemies do
 				local tar = enemies[i].guid;
 				if ni.unit.creaturetype(enemies[i].guid) ~= 8 
-				 and not ni.unit.debuff(tar, 48560)
+				 and not ni.unit.debuff(tar, demoroar)
 				 and GetTime() - ni.data.darhanger.druid.LastShout > 4
-				 and ni.spell.available(48560) then
-					ni.spell.cast(48560, tar)
+				 and ni.spell.available(demoroar) then
+					ni.spell.cast(demoroar, tar)
 					ni.data.darhanger.druid.LastShout = GetTime()
 					return true
 				end
@@ -296,10 +307,10 @@ local abilities = {
 	end,
 -----------------------------------
 	["Maul"] = function()
-		if ni.spell.available(48480, true)
-		 and not IsCurrentSpell(48480)
-		 and IsSpellInRange(GetSpellInfo(48564), "target") == 1 then
-			ni.spell.cast(48480, "target")
+		if ni.spell.available(maul, true)
+		 and not IsCurrentSpell(maul)
+		 and IsSpellInRange(manglebear, "target") == 1 then
+			ni.spell.cast(maul, "target")
 			return true
 		end
 	end,

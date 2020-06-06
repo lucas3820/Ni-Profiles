@@ -15,10 +15,10 @@
 * [Blood_Tank_DarhangeR]-- 👷
 
 ### Druid
-* [Resto_DarhangeR]-- ⁉️
-* [Balance_DarhangeR]-- ⁉️
-* [Feral_Cat_DarhangeR]-- ⁉️
-* [Feral_Bear_DarhangeR] -- ⁉️
+* [Resto_DarhangeR]-- 👷
+* [Balance_DarhangeR]-- 👷
+* [Feral_Cat_DarhangeR]-- 👷
+* [Feral_Bear_DarhangeR] -- 👷
 
 ### Hunter
 * [BeastMaster_DarhangeR]-- ⁉️
