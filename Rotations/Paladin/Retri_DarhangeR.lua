@@ -150,17 +150,17 @@ local abilities = {
 -----------------------------------
 	["Seal of Command"] = function()
 		local enemies = ni.unit.enemiesinrange("player", 5)
-		if (#enemies > 1	or 
+		if (#enemies > 1 or 
 		UnitLevel("player") < 60) 
 		and ni.spell.available(sealofcommand) then
 		if not ni.player.buff(sealofcommand) 
-		 and GetTime() - ni.data.darhanger.paladin.LastSeal > 3
+		 and GetTime() - ni.data.darhanger.paladin.LastSeal > 3 then
 			ni.spell.cast(sealofcommand)
 			ni.data.darhanger.paladin.LastSeal = GetTime()
 			return true
 		end
 		end
-	end,
+	end,	
 -----------------------------------
 	["Cancel Righteous Fury"] = function()
 		local p="player" for i = 1,40 
@@ -416,7 +416,8 @@ local abilities = {
 		if ni.player.power() > 30
 		 and ni.spell.isinstant(conc)
 		 and ni.spell.available(conc)
-		 and ni.spell.valid("target", crusaderstrike) then
+		 and ni.unit.inmelee("player", "target") 
+		 and ni.spell.valid("target", judgementofwisdom) then
 			ni.spell.cast(conc, "target")
 			return true
 		end
@@ -424,7 +425,8 @@ local abilities = {
 -----------------------------------
 	["Exorcism"] = function()
 		local aow = ni.data.darhanger.paladin.aow()
-		if aow
+		local artofwartalent = select(5, GetTalentInfo(3,17))
+		if (aow or artofwartalent == 0)
 		 and ni.spell.isinstant(exorcism)
 		 and ni.spell.available(exorcism)
 		 and ni.spell.valid("target", exorcism, true, true) then
