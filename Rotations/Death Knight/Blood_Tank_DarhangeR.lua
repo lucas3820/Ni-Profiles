@@ -87,6 +87,7 @@ local abilities = {
 -----------------------------------
 	["Frost presence check"] = function()
 		if not ni.player.buff(48263)
+	     and UnitLevel("player") >= 60
 	     and ni.spell.isinstant(48263)
 		 and ni.spell.available(48263) then
 			ni.spell.cast(48263)
@@ -520,7 +521,7 @@ local abilities = {
 		if ni.spell.available(deathcoil)
 		 and ni.spell.isinstant(deathcoil)
 		 and not (IsUsableSpell(runestrike)
-		 or not IsSpellInRange(runestrike), "target") == 1 )
+		 or not IsSpellInRange(runestrike, "target") == 1 )
 		 and ni.spell.valid("target", deathcoil, true, true) then
 			ni.spell.cast(deathcoil, "target")
 			return true

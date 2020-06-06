@@ -1,5 +1,27 @@
 local data = {"DarhangeR.lua"}
 
+--Abilities convert
+local sealofwisdom = GetSpellInfo(20166)
+local sealoflight = GetSpellInfo(20165)
+local sacredshield = GetSpellInfo(53601)
+local layonhands = GetSpellInfo(48788)
+local divineprotection = GetSpellInfo(498)
+local divinesacrifice = GetSpellInfo(64205)
+local divineplea = GetSpellInfo(54428)
+local holywrath = GetSpellInfo(48817)
+local judgementoflight = GetSpellInfo(20271)
+local judgementofwisdom = GetSpellInfo(53408)
+local holyshield = GetSpellInfo(48952)
+local handoffreedom = GetSpellInfo(1044)
+local cleanse = GetSpellInfo(4987)
+local beaconoflight = GetSpellInfo(53563)
+local divinefavor = GetSpellInfo(20616)
+local holyshock = GetSpellInfo(48825)
+local holylight = GetSpellInfo(48782)
+local flashoflight = GetSpellInfo(48785)
+local infusionoflight = GetSpellInfo(54149)
+
+
 local popup_shown = false;
 local queue = {
 	"Window",
@@ -55,22 +77,22 @@ local abilities = {
 	end,
 -----------------------------------
 	["Seal of Wisdom/Light"] = function()
-		if ni.spell.available(20166)
+		if ni.spell.available(sealofwisdom)
 		 and ni.player.hasglyph(54940)
-		 and not ni.player.buff(20166) then 
-			ni.spell.cast(20166)
+		 and not ni.player.buff(sealofwisdom) then 
+			ni.spell.cast(sealofwisdom)
 			return true
 		end
-		if ni.spell.available(20165)
+		if ni.spell.available(sealoflight)
 		 and ni.player.hasglyph(54943)
-		 and not ni.player.buff(20165) then 
-			ni.spell.cast(20165)
+		 and not ni.player.buff(sealoflight) then 
+			ni.spell.cast(sealoflight)
 			return true
 		else
 		if not ni.player.hasglyph(54943)
 		 and not ni.player.hasglyph(54940)
-		 and not ni.player.buff(20166) then
-			ni.spell.cast(20166)
+		 and not ni.player.buff(sealofwisdom) then
+			ni.spell.cast(sealofwisdom)
 		    return true
 			end
 		end
@@ -187,11 +209,11 @@ local abilities = {
 	end,
 -----------------------------------
 	["Judgement of Light"] = function()
-		if ni.spell.available(20271)
+		if ni.spell.available(judgementoflight)
 		 and ni.members[1].hp > 75
-		 and ni.spell.isinstant(20271)
-		 and ni.spell.valid("target", 20271, false, true, true) then
-			ni.spell.cast(20271, "target")
+		 and ni.spell.isinstant(judgementoflight)
+		 and ni.spell.valid("target", judgementoflight, false, true, true) then
+			ni.spell.cast(judgementoflight, "target")
 			return true
 		end
 	end,
@@ -310,43 +332,43 @@ local abilities = {
 		local main = ni.tanks()
 		-- Main Tank Heal
 		if UnitExists(main) then
-		 local BofLtank, _, _, _, _, _, BofLtank_time = ni.unit.buff(main, 53563, "player")
-		 local SCtank, _, _, _, _, _, SCtank_time = ni.unit.buff(main, 53601, "player")
-		 local SelfSCtank = ni.unit.buff(main, 53601)
+		 local BofLtank, _, _, _, _, _, BofLtank_time = ni.unit.buff(main, beaconoflight, "player")
+		 local SCtank, _, _, _, _, _, SCtank_time = ni.unit.buff(main, sacredshield, "player")
+		 local SelfSCtank = ni.unit.buff(main, sacredshield)
 		 local forbtank = ni.unit.debuff(main, 25771)
 		if (not BofLtank
 		 or (BofLtank and BofLtank_time - GetTime() < 2))
-		 and ni.spell.isinstant(53563)
-		 and ni.spell.available(53563)
-		 and ni.spell.valid(main, 53563, false, true, true) then
-			ni.spell.cast(53563, main)
+		 and ni.spell.isinstant(beaconoflight)
+		 and ni.spell.available(beaconoflight)
+		 and ni.spell.valid(main, beaconoflight, false, true, true) then
+			ni.spell.cast(beaconoflight, main)
 			return true
 		end
 		 if not SelfSCtank
 		 and not (SCtank
 		 or (SCtank and SCtank_time - GetTime() < 2))
-		 and ni.spell.isinstant(53601)		 
-		 and ni.spell.available(53601)
-		 and ni.spell.valid(main, 53601, false, true, true) then
-			ni.spell.cast(53601, main)
+		 and ni.spell.isinstant(sacredshield)		 
+		 and ni.spell.available(sacredshield)
+		 and ni.spell.valid(main, sacredshield, false, true, true) then
+			ni.spell.cast(sacredshield, main)
 			return true
 		end
 		 if main ~= nil
 		 and ni.unit.hp(main) < 12
 		 and not forbtank
-		 and ni.spell.isinstant(48788)
-		 and ni.spell.available(48788)
-		 and ni.spell.valid(main, 48788, false, true, true) then
-			ni.spell.cast(48788, main)
+		 and ni.spell.isinstant(layonhands)
+		 and ni.spell.available(layonhands)
+		 and ni.spell.valid(main, layonhands, false, true, true) then
+			ni.spell.cast(layonhands, main)
 			return true
 		end
 		 if main ~= nil
 		 and ni.unit.hp(main) < 25
-		 and ni.spell.isinstant(20216)
-		 and ni.spell.available(20216)
-		 and ni.spell.available(48825)
-		 and ni.spell.valid(main, 48825, false, true, true) then
-			ni.spell.castspells("20216|48825", main)
+		 and ni.spell.isinstant(divinefavor)
+		 and ni.spell.available(divinefavor)
+		 and ni.spell.available(holyshock)
+		 and ni.spell.valid(main, holyshock, false, true, true) then
+			ni.spell.castspells("divinefavor|holyshock", main)
 			return true
 			end
 		end
@@ -354,66 +376,66 @@ local abilities = {
 -----------------------------------
 	["Holy Light"] = function()
 		if ni.members[1].hp < 40
-		 and ni.spell.available(48782)
+		 and ni.spell.available(holylight)
 		 and not ni.player.ismoving()
-		 and ni.spell.valid(ni.members[1].unit, 48782, false, true, true) then
-			ni.spell.cast(48782, ni.members[1].unit)
+		 and ni.spell.valid(ni.members[1].unit, holylight, false, true, true) then
+			ni.spell.cast(holylight, ni.members[1].unit)
 			return true
 		end
 	end,
 -----------------------------------
 	["Holy Shock"] = function()
-		if ni.spell.available(48825) then
+		if ni.spell.available(holyshock) then
 		-- Lowest member Tank but one member more need heal
 		 if ni.members[1].hp < 75
-		  and ni.unit.buff(ni.members[1].unit, 53563, "player")
+		  and ni.unit.buff(ni.members[1].unit, beaconoflight, "player")
 		  and ni.members[2].hp + 12.5 < 75
-		  and ni.spell.valid(ni.members[2].unit, 48825, false, true, true) then
-			ni.spell.cast(48825, ni.members[2].unit)
+		  and ni.spell.valid(ni.members[2].unit, holyshock, false, true, true) then
+			ni.spell.cast(holyshock, ni.members[2].unit)
 			return true
 		end
 		 -- Lowest member Tank and nobody else
 		 if ni.members[1].hp < 75
-		  and ni.unit.buff(ni.members[1].unit, 53563, "player")
+		  and ni.unit.buff(ni.members[1].unit, beaconoflight, "player")
 		  and ni.members[2].hp + 12.5 >= 75
-		  and ni.spell.valid(ni.members[1].unit, 48825, false, true, true) then
-			ni.spell.cast(48825, ni.members[1].unit)
+		  and ni.spell.valid(ni.members[1].unit, holyshock, false, true, true) then
+			ni.spell.cast(holyshock, ni.members[1].unit)
 			return true
 		end
 		 -- Lowest member isn't Tank
 		 if ni.members[1].hp < 75
-		  and not ni.unit.buff(ni.members[1].unit, 53563, "player")
-		  and ni.spell.valid(ni.members[1].unit, 48825, false, true, true) then
-			ni.spell.cast(48825, ni.members[1].unit)
+		  and not ni.unit.buff(ni.members[1].unit, beaconoflight, "player")
+		  and ni.spell.valid(ni.members[1].unit, holyshock, false, true, true) then
+			ni.spell.cast(holyshock, ni.members[1].unit)
 			return true
 			end
 		end
 	end,
 -----------------------------------
 	["Flash of Light"] = function()
-		if ni.spell.available(48785)
+		if ni.spell.available(flashoflight)
 		 and not ni.player.ismoving() 
-		 or ni.unit.buff("player", 54149) then
+		 or ni.unit.buff("player", infusionoflight) then
 		-- Lowest member Tank but one member more need heal
 		 if ni.members[1].hp < 85
-		  and ni.unit.buff(ni.members[1].unit, 53563, "player")
+		  and ni.unit.buff(ni.members[1].unit, beaconoflight, "player")
 		  and ni.members[2].hp + 5 < 85
-		  and ni.spell.valid(ni.members[2].unit, 48785, false, true, true) then
-			ni.spell.cast(48785, ni.members[2].unit)
+		  and ni.spell.valid(ni.members[2].unit, flashoflight, false, true, true) then
+			ni.spell.cast(flashoflight, ni.members[2].unit)
 			return true
 		end
 		 -- Lowest member Tank and nobody else
 		if ni.members[1].hp < 85
-		  and ni.unit.buff(ni.members[1].unit, 53563, "player")
+		  and ni.unit.buff(ni.members[1].unit, beaconoflight, "player")
 		  and ni.members[2].hp + 5 >= 85
-		  and ni.spell.valid(ni.members[1].unit, 48785, false, true, true) then
-			ni.spell.cast(48785, ni.members[1].unit)
+		  and ni.spell.valid(ni.members[1].unit, flashoflight, false, true, true) then
+			ni.spell.cast(flashoflight, ni.members[1].unit)
 			return true
 		end
 		 -- Lowest member isn't Tank
 		if ni.members[1].hp < 85
-		  and ni.spell.valid(ni.members[1].unit, 48785, false, true, true) then
-			ni.spell.cast(48785, ni.members[1].unit)
+		  and ni.spell.valid(ni.members[1].unit, flashoflight, false, true, true) then
+			ni.spell.cast(flashoflight, ni.members[1].unit)
 			return true
 			end
 		end

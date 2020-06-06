@@ -38,6 +38,7 @@ local queue = {
 	"Empower Rune Weapon",
 	"Icy Touch",
 	"Plague Strike",
+	"Blood Strike",
 	"Pestilence (AoE)",
 	"Pestilence (Renew)",
 	"Dance Rune",
@@ -303,7 +304,7 @@ local abilities = {
 		 and ni.spell.available(plaguestrike)	
 		 and ni.spell.isinstant(plaguestrike)
 		 and ni.spell.valid("target", plaguestrike, true, true) then
-			ni.spell.cast(plaguestrike "target")
+			ni.spell.cast(plaguestrike, "target")
 			return true
 		end
 	end,
@@ -381,7 +382,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Rune Strike"] = function()
-		if IsUsableSpell(GetSpellInfo(runestrike))
+		if IsUsableSpell(runestrike)
 		 and ni.spell.available(runestrike, true)
 		 and not IsCurrentSpell(runestrike)
 		 and ni.spell.valid("target", runestrike, true, true) then
@@ -390,6 +391,22 @@ local abilities = {
 		end
 	end,
 -----------------------------------
+	["Blood Strike"] = function()
+		local _, BR = ni.rune.bloodrunecd()
+		local icy = ni.data.darhanger.dk.icy()
+		local plague = ni.data.darhanger.dk.plague()
+		if BR >= 1
+		 and plague
+		 and icy
+		 and not ni.spell.available(heartstrike)
+		 and ni.player.power() < 95
+		 and ni.spell.isinstant(bloodstrike)
+		 and ni.spell.available(bloodstrike)
+		 and ni.spell.valid("target", bloodstrike, true, true) then
+			ni.spell.cast(bloodstrike, "target")
+			return true
+		end
+	end,
 	["Blood Boil"] = function()
 		local _, BR = ni.rune.bloodrunecd()
 		local icy = ni.data.darhanger.dk.icy()
