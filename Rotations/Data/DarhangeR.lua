@@ -125,6 +125,7 @@ if classlower == "deathknight" then
 end
 ni.data.darhanger[classlower] = { };
 if classlower == "dk" then
+	ni.data.darhanger[classlower].LastGrip = 0;
 	ni.data.darhanger[classlower].icy = function()
 		return select(7, ni.unit.debuff("target", 55095, "player")) 
 	end;
