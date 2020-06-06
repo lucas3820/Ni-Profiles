@@ -152,7 +152,7 @@ local abilities = {
 	["Seal of Command"] = function()
 		local enemies = ni.unit.enemiesinrange("player", 5)
 		if #enemies > 1	
-		 and IsSpellKnown(sealofcommand)
+		-- and IsSpellKnown(sealofcommand)
 		 and ni.spell.available(sealofcommand)
 		 and GetTime() - ni.data.darhanger.paladin.LastSeal > 3
 		 and not ni.player.buff(sealofcommand) then 
@@ -301,8 +301,8 @@ local abilities = {
 		if UnitExists("targettarget") 
 		 and not UnitIsDeadOrGhost("targettarget")
 		 and UnitAffectingCombat("player")
-		 and (ni.unit.debuff("targettarget", runeofblood) 
-		 or ni.unit.debuff("targettarget", runeofblood) 
+		 and (ni.unit.debuff("targettarget", 72410) 
+		 or ni.unit.debuff("targettarget", 72448) 
 		 or ni.unit.threat("player", "target") < 2 )
   		 and ni.spell.available(handofreckoning)
 		 and ni.spell.isinstant(handofreckoning)
