@@ -1,5 +1,49 @@
 local data = {"DarhangeR.lua"}
 
+local poisonsmainhand = 
+{43231, 43230, 21927, 8928, 8927, 8926, 6950, 6949, 6947}
+local poisonoffhand = 
+{43233, 43232, 22054, 22053, 20844, 8985, 8984, 2893, 2892 }
+
+local level = UnitLevel("player")
+local mainhandpoison = nil
+local offhandpoison = nil
+local function GetBestPoisonMainHand()
+for _, itemid in pairs(poisonsmainhand) do
+local name, _, _, req = GetItemInfo(itemid)
+	if mainhandpoison == name then -- we don't need to spam update out mainhand poison
+	return end
+	if name and req >= level then
+	mainhandpoison = name
+			end
+		end
+	end
+local function GetBestPoisonOffHand()
+for _, itemid in pairs(poisonsoffhand) do
+local name, _, _, req = GetItemInfo(itemid)
+	if offhandpoison == name then -- we don't need to spam update out offhand poison
+	return end
+	if name and req >= level then
+	offhandpoison = name
+			end
+		end
+	end
+
+--Items Converted to Name
+local instantpoison = GetItemInfo(43231)
+local deadlypoison = GetItemInfo(43233)
+
+--Spells Covnerted to Name
+local sinisterstrike = GetSpellInfo(48638)
+local fanofknives = GetSpellInfo(51723)
+local garrote = GetSpellInfo(48676)
+local ambush = GetSpellInfo(48691)
+local vanish = GetSpellInfo(26889)
+local rupture = GetSpellInfo(48672)
+local mutilate = GetSpellInfo(48666)
+local sliceanddice = GetSpellInfo(6774)
+local eviscerate = GetSpellInfo(48668)
+
 local popup_shown = false;
 local queue = {
 	"Window",
@@ -36,8 +80,8 @@ local abilities = {
 		 or UnitChannelInfo("player")
 		 or UnitCastingInfo("player")
 		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
+		 or ni.unit.buff("player", 430)
+		 or ni.unit.buff("player", 433)
 		 or (not UnitAffectingCombat("player")
 		 and ni.vars.followEnabled) then
 			return true
@@ -60,6 +104,8 @@ local abilities = {
 	end,
 -----------------------------------
     ["Poison Weapon"] = function()
+		GetBestPoisonMainHand();
+		GetBestPoisonOffHand();
 		local mh, _, _, oh = GetWeaponEnchantInfo()
 		if applypoison 
 		 and GetTime() - applypoison > 4 then 
@@ -69,14 +115,14 @@ local abilities = {
 		and applypoison == nil then
 		applypoison = GetTime()
 		if mh == nil 
-		 and ni.player.hasitem(43231) then
-			ni.player.useitem(43231)
+		 and ni.player.hasitem(mainhandpoison) then
+			ni.player.useitem(mainhandpoison)
 			ni.player.useinventoryitem(16)
 			return true
 		end
 		if oh == nil
-		 and ni.player.hasitem(43233) then
-			ni.player.useitem(43233)
+		 and ni.player.hasitem(offhandpoison) then
+			ni.player.useitem(offhandpoison)
 			ni.player.useinventoryitem(17)
 			return true
 			end
@@ -132,14 +178,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
-		 and IsSpellInRange(GetSpellInfo(48638), "target") == 1 then 
+		 and IsSpellInRange(sinisterstrike, "target") == 1 then 
 					ni.spell.cast(hracial[i])
 					return true
 			end
 		end
 		--- Ally race
 		for i = 1, #alracial do
-		if IsSpellInRange(GetSpellInfo(48638), "target") == 1
+		if IsSpellInRange(sinisterstrike, "target") == 1
 		 and ni.player.hp() < 20
 		 and IsSpellKnown(alracial[i])
 		 and ni.spell.available(alracial[i]) then 
@@ -153,7 +199,7 @@ local abilities = {
 		if ni.player.slotcastable(10) 
 		 and ni.player.slotcd(10) == 0
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
-		 and IsSpellInRange(GetSpellInfo(48638), "target") == 1 then
+		 and IsSpellInRange(sinisterstrike, "target") == 1 then
 			ni.player.useinventoryitem(10)
 			return true
 		end
@@ -163,13 +209,13 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
-		 and IsSpellInRange(GetSpellInfo(48638), "target") == 1 then
+		 and IsSpellInRange(sinisterstrike, "target") == 1 then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0
-		 and IsSpellInRange(GetSpellInfo(48638), "target") == 1 then
+		 and IsSpellInRange(sinisterstrike, "target") == 1 then
 			ni.player.useinventoryitem(14)
 			return true
 			end
@@ -211,10 +257,10 @@ local abilities = {
 -----------------------------------
 	["Fan of Knives"] = function()
 		if ni.vars.combat.aoe
-		 and ni.spell.available(51723)
-		 and ni.spell.isinstant(51723)
-		 and ni.spell.valid("target", 48638, true, true) then
-			ni.spell.castat(51723, "target")
+		 and ni.spell.available(fanofknives)
+		 and ni.spell.isinstant(fanofknives)
+		 and ni.spell.valid("target", sinisterstrike, true, true) then
+			ni.spell.castat(fanofknives, "target")
 			ni.player.runtext("/targetlasttarget")
 			return true
 		end
@@ -236,7 +282,7 @@ local abilities = {
 		 and ni.spell.available(13877)
 		 and ni.spell.isinstant(13877)
 		 and not ni.spell.available(51690)
-		 and IsSpellInRange(GetSpellInfo(48638), "target") == 1 then
+		 and IsSpellInRange(sinisterstrike, "target") == 1 then
 			ni.spell.cast(13877)
 			return true
 		end
@@ -248,7 +294,7 @@ local abilities = {
 		 and ni.spell.isinstant(13750)
 		 and ni.spell.available(13750)
 		 and not ni.spell.available(51690)
-		 and IsSpellInRange(GetSpellInfo(48638), "target") == 1 then
+		 and IsSpellInRange(sinisterstrike, "target") == 1 then
 			ni.spell.cast(13750)
 			return true
 		end
@@ -260,7 +306,7 @@ local abilities = {
 		 and ni.spell.isinstant(51690)
 		 and ni.spell.available(51690)
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
-		 and IsSpellInRange(GetSpellInfo(48638), "target") == 1 then
+		 and IsSpellInRange(sinisterstrike, "target") == 1 then
 			ni.spell.cast(51690, "target")
 			return true
 		end
@@ -270,10 +316,10 @@ local abilities = {
 		local SnD = ni.data.darhanger.rogue.SnD()
 		if GetComboPoints("player") > 3
 		 and( SnD == nil or ( SnD - GetTime() <= 4 ) )
-		 and ni.spell.isinstant(6774)
-		 and ni.spell.available(6774)
-		 and ni.spell.valid("target", 48638) then
-			ni.spell.cast(6774)
+		 and ni.spell.isinstant(sliceanddice)
+		 and ni.spell.available(sliceanddice)
+		 and ni.spell.valid("target", sinisterstrike) then
+			ni.spell.cast(sliceanddice)
 			return true
 		end
 	end,
@@ -281,11 +327,11 @@ local abilities = {
 	["Sinister Strike"] = function()
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		if GetComboPoints("player") < 5
-		 and ni.spell.isinstant(48638)
-		 and ni.spell.available(48638)
+		 and ni.spell.isinstant(sinisterstrike)
+		 and ni.spell.available(sinisterstrike)
 		 and ( #enemies == 1 or #enemies < 3 )
-		 and ni.spell.valid("target", 48638, true, true) then
-			ni.spell.cast(48638, "target")
+		 and ni.spell.valid("target", sinisterstrike, true, true) then
+			ni.spell.cast(sinisterstrike, "target")
 			return true
 		end
 	end,
@@ -297,10 +343,10 @@ local abilities = {
 		 and GetComboPoints("player") == 5
 		 and ( Rup == nil or ( Rup - GetTime() <= 3 ) )
 		 and ( SnD and ( SnD - GetTime() > 5 ) )
-		 and ni.spell.isinstant(48672)
-		 and ni.spell.available(48672)
-		 and ni.spell.valid("target", 48672, true, true) then
-			ni.spell.cast(48672, "target")
+		 and ni.spell.isinstant(rupture)
+		 and ni.spell.available(rupture)
+		 and ni.spell.valid("target", rupture, true, true) then
+			ni.spell.cast(rupture, "target")
 			return true
 		end
 	end,
@@ -312,10 +358,10 @@ local abilities = {
 		 and GetComboPoints("player") == 5
 		 and Rup
 		 and ( SnD and ( SnD - GetTime() > 5 ) )
-		 and ni.spell.isinstant(48668)
-		 and ni.spell.available(48668)
-		 and ni.spell.valid("target", 48668, true, true) then
-			ni.spell.cast(48668, "target")
+		 and ni.spell.isinstant(eviscerate)
+		 and ni.spell.available(eviscerate)
+		 and ni.spell.valid("target", eviscerate, true, true) then
+			ni.spell.cast(eviscerate, "target")
 			return true
 		end
 	end,
@@ -325,10 +371,10 @@ local abilities = {
 		if ni.player.hasglyph(56802)
 		 and GetComboPoints("player") == 5
 		 and ( SnD and ( SnD - GetTime() > 5 ) )
-		 and ni.spell.isinstant(48668)
-		 and ni.spell.available(48668)
-		 and ni.spell.valid("target", 48668, true, true) then
-			ni.spell.cast(48668, "target")
+		 and ni.spell.isinstant(eviscerate)
+		 and ni.spell.available(eviscerate)
+		 and ni.spell.valid("target", eviscerate, true, true) then
+			ni.spell.cast(eviscerate, "target")
 			return true
 		end
 	end,

@@ -8,6 +8,7 @@ local tbuff = { 642, 45438, 33786, 21892, 40733, 19263, 1022, 69051 };
 local forsdebuff = { 6215, 8122, 5484, 2637, 5246, 6358, 605 };
 local _, class = UnitClass("player");
 local renewBuild = nil;
+---Hunter Converts
 local moonfiredebuff = GetSpellInfo(48463)
 local insectswarmdebuff = GetSpellInfo(48468)
 local mangledebuff = GetSpellInfo(48564)
@@ -17,15 +18,24 @@ local ripdebuff = GetSpellInfo(49800)
 local rakedebuff = GetSpellInfo(48574)
 local tigerbuff = GetSpellInfo(50213)
 local savagebuff = GetSpellInfo(52610)
+---Hunter Converts
 local serpentstingdebuff = GetSpellInfo(49001)
 local viperstringdebuff = GetSpellInfo(3034)
 local scorpstringdebuff = GetSpellInfo(3043)
 local explobuff = GetSpellInfo(60053)
+----Mage Converts
 local scorchdebuff = GetSpellInfo(22959)
 local livingbombdebuff = GetSpellInfo(55360)
 local frostnovadebuff = GetSpellInfo(42917)
 local fingersoffrost = GetSpellInfo(44545)
 local renddebuff = GetSpellInfo(47465)
+---Rogue Converts
+local envenombuff = GetSpellInfo(57993)
+local sliceanddicebuff = GetSpellInfo(6774)
+local rupturedebuff = GetSpellInfo(48672)
+local garrotedebuff = GetSpellInfo(48676)
+
+
 
 	-- Debuger -- 
 local function changedebug(msg)
@@ -299,22 +309,22 @@ elseif classlower == "priest" then
 	end
 elseif classlower == "rogue" then
 	ni.data.darhanger[classlower].SnD = function() 
-		return select(7, ni.player.buff(6774))
+		return select(7, ni.player.buff(sliceanddicebuff))
 	end
 	ni.data.darhanger[classlower].Hunger = function() 
 		return select(7, ni.player.buff(63848)) 
 	end
 	ni.data.darhanger[classlower].envenom = function() 
-		return select(7, ni.player.buff(57993)) 
+		return select(7, ni.player.buff(envenombuff)) 
 	end
 	ni.data.darhanger[classlower].Rup = function() 
-		return select(7, ni.unit.debuff("target", 48672, "player")) 
+		return select(7, ni.unit.debuff("target", rupturedebuff, "player")) 
 	end
 	ni.data.darhanger[classlower].Gar = function() 
-		return select(7, ni.unit.debuff("target", 48676, "player")) 
+		return select(7, ni.unit.debuff("target", garrotedebuff, "player")) 
 	end
 	ni.data.darhanger[classlower].OGar = function() 
-		return select(7, ni.unit.debuff("target", 48676)) 
+		return select(7, ni.unit.debuff("target", garrotedebuff)) 
 	end	
 elseif classlower == "shaman" then
 	ni.data.darhanger[classlower].LastPurge = 0;
