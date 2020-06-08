@@ -30,7 +30,6 @@ local queue = {
 }
 local queue2 = {
 	"Window",	
-	"Stutter cast pause",
 	"Universal pause",
 	"Inner Fire",
 	"Prayer of Fortitude",
