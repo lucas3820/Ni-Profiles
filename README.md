@@ -21,9 +21,9 @@
 * [Feral_Bear_DarhangeR] -- 👷
 
 ### Hunter
-* [BeastMaster_DarhangeR]-- ⁉️
-* [Mark_DarhangeR]-- ⁉️
-* [Survival_DarhangeR]-- ⁉️
+* [BeastMaster_DarhangeR]--👷
+* [Mark_DarhangeR]--👷
+* [Survival_DarhangeR]--👷
 
 ### Mage
 * [Arcane_DarhangeR]-- ⁉️
