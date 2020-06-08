@@ -40,6 +40,7 @@ local envenom = GetSpellInfo(57993)
 local rupture = GetSpellInfo(48672)
 local mutilate = GetSpellInfo(48666)
 local sliceanddice = GetSpellInfo(6774)
+local eviscerate = GetSpellInfo(6760)
 
 local popup_shown = false;
 local queue = {	
@@ -64,8 +65,11 @@ local queue = {
 	"Rupture Dump",
 	"Hunger For Blood",
 	"Mutilate",
+	"Sinister Strike",
 	"Slice and Dice",
-	"Envenom",
+	"Eviscerate low T2D",
+	"Eviscerate",
+	"Envenom"
 }
 local abilities = {
 -----------------------------------
@@ -352,6 +356,39 @@ local abilities = {
 		end
 	end,
 -----------------------------------
+	["Sinister Strike"] = function()
+		if GetComboPoints("player") < 5
+		 and not ni.spell.available(mutilate)
+         and ni.spell.available(sinisterstrike)
+		 and ni.spell.isinstant(sinisterstrike)
+		 and ni.spell.valid("target", sinisterstrike, true, true) then
+			ni.spell.cast(sinisterstrike, "target")
+			return true
+		end
+	end,
+	
+	["Eviscerate"] = function()
+		if GetComboPoints("player") >= 5
+		 and not ni.spell.available(envenom)
+         and ni.spell.available(eviscerate)
+		 and ni.spell.isinstant(eviscerate)
+		 and ni.spell.valid("target", eviscerate, true, true) then
+			ni.spell.cast(eviscerate, "target")
+			return true
+		end
+	end,
+	
+	["Eviscerate low T2D"] = function()
+		if GetComboPoints("player") >= 2
+		 and not ni.spell.available(envenom)
+		 and ni.unit.ttd("target") < 5
+         and ni.spell.available(eviscerate)
+		 and ni.spell.isinstant(eviscerate)
+		 and ni.spell.valid("target", eviscerate, true, true) then
+			ni.spell.cast(eviscerate, "target")
+			return true
+		end
+	end,
 	["Mutilate"] = function()
 		if GetComboPoints("player") < 5
 		 and ni.spell.available(mutilate)
