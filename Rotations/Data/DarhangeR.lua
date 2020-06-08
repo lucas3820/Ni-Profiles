@@ -309,7 +309,7 @@ elseif classlower == "priest" then
 	end
 elseif classlower == "rogue" then
 	ni.data.darhanger[classlower].SnD = function() 
-		return select(7, ni.player.buff(sliceanddicebuff))
+		return select(7, ni.player.buff(sliceanddicebuff))	
 	end
 	ni.data.darhanger[classlower].Hunger = function() 
 		return select(7, ni.player.buff(63848)) 

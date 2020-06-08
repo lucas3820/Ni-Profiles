@@ -5,12 +5,12 @@ local poisonsmainhand =
 local poisonoffhand = 
 {43233, 43232, 22054, 22053, 20844, 8985, 8984, 2893, 2892 }
 
-local level = UnitLevel("player")
 local mainhandpoison = nil
 local offhandpoison = nil
 local function GetBestPoisonMainHand()
+local level = UnitLevel("player")
 for _, itemid in pairs(poisonsmainhand) do
-local name, _, _, req = GetItemInfo(itemid)
+local name, _, _, _, req = GetItemInfo(itemid)
 	if mainhandpoison == name then -- we don't need to spam update out mainhand poison
 	return end
 	if name and req >= level then
@@ -19,8 +19,9 @@ local name, _, _, req = GetItemInfo(itemid)
 		end
 	end
 local function GetBestPoisonOffHand()
+local level = UnitLevel("player")
 for _, itemid in pairs(poisonsoffhand) do
-local name, _, _, req = GetItemInfo(itemid)
+local name, _, _, _, req = GetItemInfo(itemid)
 	if offhandpoison == name then -- we don't need to spam update out offhand poison
 	return end
 	if name and req >= level then
@@ -41,7 +42,7 @@ local mutilate = GetSpellInfo(48666)
 local sliceanddice = GetSpellInfo(6774)
 
 local popup_shown = false;
-local queue = {
+local queue = {	
 	"Window",
 	"Stutter cast pause",
 	"Universal pause",

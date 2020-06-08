@@ -10,7 +10,7 @@ local mainhandpoison = nil
 local offhandpoison = nil
 local function GetBestPoisonMainHand()
 for _, itemid in pairs(poisonsmainhand) do
-local name, _, _, req = GetItemInfo(itemid)
+local name, _, _, _, req = GetItemInfo(itemid)
 	if mainhandpoison == name then -- we don't need to spam update out mainhand poison
 	return end
 	if name and req >= level then
@@ -20,7 +20,7 @@ local name, _, _, req = GetItemInfo(itemid)
 	end
 local function GetBestPoisonOffHand()
 for _, itemid in pairs(poisonsoffhand) do
-local name, _, _, req = GetItemInfo(itemid)
+local name, _, _, _, req = GetItemInfo(itemid)
 	if offhandpoison == name then -- we don't need to spam update out offhand poison
 	return end
 	if name and req >= level then
