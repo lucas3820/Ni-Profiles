@@ -1,5 +1,27 @@
 local data = {"DarhangeR.lua"}
 
+--Convert Abilities
+local battleshout = GetSpellInfo(47436)
+local blessingofmight = GetSpellInfo(48932)
+local greaterblessingofmight = GetSpellInfo(48934)
+local berserkerrage = GetSpellInfo(18499)
+local enragebuff = GetSpellInfo(57522)
+local fear = GetSpellInfo(6215)
+local psychicscream = GetSpellInfo(8122)
+local howlofterror = GetSpellInfo(5484)
+local hibernate = GetSpellInfo(2637)
+local intimidatingshout = GetSpellInfo(5246)
+local seduction = GetSpellInfo(6358)
+local rend = GetSpellInfo(47465)
+local victoryrush = GetSpellInfo(34428)
+local executespell = GetSpellInfo(47471)
+local mortalstrike = GetSpellInfo(47486)
+local thunderclap = GetSpellInfo(47502)
+local overpower = GetSpellInfo(7384)
+local slam = GetSpellInfo(47475)
+local cleave = GetSpellInfo(47520)
+local heroicstrike = GetSpellInfo(47450)
+
 local popup_shown = false;
 local queue = {
 	"Window",
@@ -39,8 +61,8 @@ local abilities = {
 		 or UnitChannelInfo("player")
 		 or UnitCastingInfo("player")
 		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
+		 or ni.unit.buff("player", 430)
+		 or ni.unit.buff("player", 433)
 		 or (not UnitAffectingCombat("player")
 		 and ni.vars.followEnabled) then
 			return true
@@ -64,25 +86,26 @@ local abilities = {
 -----------------------------------
 	["Battle Stance"] = function()
 		local BS = GetShapeshiftForm()
-		if BS ~= 1 then 
+		if BS ~= 1 
+		and ni.spell.available(2457) then 
 			ni.spell.cast(2457)
 			return true
 		end
 	end,
 -----------------------------------
 	["Battle Shout"] = function()
-		if ni.player.buffs("47436||48932||48934") then 
+		if ni.player.buffs("battleshout|blessingofmight||greaterblessingofmight") then 
 		 return false
 	end
-		if ni.spell.available(47436)
-		 and ni.spell.isinstant(47436) then
-			ni.spell.cast(47436)	
+		if ni.spell.available(battleshout)
+		 and ni.spell.isinstant(battleshout) then
+			ni.spell.cast(battleshout)	
 			return true
 		end
 	end,		 
 -----------------------------------
 	["Enraged Regeneration"] = function()
-		local enrage = { 18499, 12292, 29131, 14204, 57522 }
+		local enrage = { berserkerrage, 12292, 29131, 14204, enragebuff }
 		for i = 1, #enrage do
 		 if ni.player.buff(enrage[i])
 		 and ni.player.hp() < 25
@@ -104,12 +127,12 @@ local abilities = {
 	end,		 
 -----------------------------------
 	["Berserker Rage"] = function()
-		local bad = { 6215, 8122, 5484, 2637, 5246, 6358 }
+		local bad = { fear, psychicscream, howlofterror, hibernate, intimidatingshout, seduction }
 		for i = 1, #bad do
 		 if ni.player.debuff(bad[i])
-		  and ni.spell.isinstant(18499) 
-	          and ni.spell.available(18499) then
-		      ni.spell.cast(18499)
+		  and ni.spell.isinstant(berserkerrage) 
+	          and ni.spell.available(berserkerrage) then
+		      ni.spell.cast(berserkerrage)
 		      return true
 			end
 		end
@@ -190,7 +213,7 @@ local abilities = {
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
-		 and IsSpellInRange(GetSpellInfo(47465), "target") == 1 then
+		 and IsSpellInRange(rend, "target") == 1 then
 			ni.player.useinventoryitem(10)
 			return true
 		end
@@ -200,13 +223,13 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0
-		 and IsSpellInRange(GetSpellInfo(47465), "target") == 1 then
+		 and IsSpellInRange(rend, "target") == 1 then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
-		 and IsSpellInRange(GetSpellInfo(47465), "target") == 1 then
+		 and IsSpellInRange(rend, "target") == 1 then
 			ni.player.useinventoryitem(14)
 			return true
 			end
@@ -219,7 +242,7 @@ local abilities = {
 		 and ni.player.hasglyph(58096)
 		 and ni.spell.isinstant(2687) 
 		 and ni.spell.available(2687)
-		 and ni.spell.valid("target", 47465, true, true) then
+		 and ni.spell.valid("target", rend, true, true) then
 			ni.spell.cast(2687)
 			return true
 		end
@@ -231,17 +254,17 @@ local abilities = {
 		 and rend
 		 and not ni.player.buff(65156)
 		 and ni.spell.available(46924)
-		 and ni.spell.valid("target", 47465, true, true) then
+		 and ni.spell.valid("target", rend, true, true) then
 			ni.spell.cast(46924)
 			return true
 		end
 	end,
 -----------------------------------
 	["Victory Rush"] = function()
-		if IsUsableSpell(GetSpellInfo(34428))
-		 and ni.spell.isinstant(34428) 
-		 and ni.spell.valid("target", 34428, true, true) then
-			ni.spell.cast(34428, "target")
+		if IsUsableSpell(victoryrush)
+		 and ni.spell.isinstant(victoryrush) 
+		 and ni.spell.valid("target", victoryrush, true, true) then
+			ni.spell.cast(victoryrush, "target")
 			return true
 		end
 	end,
@@ -262,11 +285,11 @@ local abilities = {
 	["Execute"] = function()
 		if ni.player.power() > 30
 		 and (ni.unit.hp("target") <= 20
-		 or IsUsableSpell(GetSpellInfo(47471)))
-		 and ni.spell.cd(47486) ~= 0
-		 and ni.spell.isinstant(47471) 
-		 and ni.spell.valid("target", 47471, true, true) then
-			ni.spell.cast(47471)
+		 or IsUsableSpell(executespell))
+		 and ni.spell.cd(mortalstrike) ~= 0
+		 and ni.spell.isinstant(executespell) 
+		 and ni.spell.valid("target", executespell, true, true) then
+			ni.spell.cast(executespell)
 			return true
 		end
 	end,
@@ -275,7 +298,7 @@ local abilities = {
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		if #enemies >= 1
 		 and ni.spell.available(12328)
-		 and ni.spell.valid("target", 47465, true, true) then
+		 and ni.spell.valid("target", rend, true, true) then
 			ni.spell.cast(12328)
 			return true
 		end
@@ -284,9 +307,9 @@ local abilities = {
 	["Thunder Clap"] = function()
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		if #enemies >= 1
-		 and ni.spell.available(47502, true)
-		 and ni.spell.valid("target", 47465, true, true) then
-			ni.spell.cast(47502)
+		 and ni.spell.available(thunderclap, true)
+		 and ni.spell.valid("target", rend, true, true) then
+			ni.spell.cast(thunderclap)
 			return true
 		end
 	end,
@@ -307,16 +330,16 @@ local abilities = {
 	["Rend"] = function()
 		local rend = ni.data.darhanger.warrior.rend()
 		if (rend == nil or (rend - GetTime() <= 2))
-		 and ni.spell.isinstant(47465) 
-		 and ni.spell.available(47465, true)
-		 and ni.spell.valid("target", 47465, true, true) then
-			ni.spell.cast(47465)
+		 and ni.spell.isinstant(rend) 
+		 and ni.spell.available(rend, true)
+		 and ni.spell.valid("target", rend, true, true) then
+			ni.spell.cast(rend)
 			return true
 		end
 	end,
 -----------------------------------
 	["Overpower"] = function()
-		if IsUsableSpell(GetSpellInfo(7384))
+		if IsUsableSpell(overpower)
 		 and ni.spell.isinstant(7384) 
 		 and ni.spell.available(7384, true)
 		 and ni.spell.valid("target", 7384, true, true) then
@@ -326,29 +349,29 @@ local abilities = {
 	end,
 -----------------------------------
 	["Mortal Strike"] = function()
-		if ni.spell.available(47486, true)
-		 and ni.spell.isinstant(47486) 
-		 and ni.spell.valid("target", 47486, true, true) then
-			ni.spell.cast(47486)
+		if ni.spell.available(mortalstrike, true)
+		 and ni.spell.isinstant(mortalstrike) 
+		 and ni.spell.valid("target", mortalstrike, true, true) then
+			ni.spell.cast(mortalstrike)
 			return true
 		end
 	end,
 -----------------------------------
 	["Heroic Strike + Cleave (Filler)"] = function()
 		local enemies = ni.unit.enemiesinrange("target", 5)
-		if IsSpellInRange(GetSpellInfo(47475), "target") == 1
-		 and ni.spell.cd(47486) ~= 0 
+		if IsSpellInRange(slam, "target") == 1
+		 and ni.spell.cd(mortalstrike) ~= 0 
 		 and ni.player.power() > 35 then
 			if #enemies >= 1	
-			 and ni.spell.available(47520, true) 
-			 and not IsCurrentSpell(47520) then
-				ni.spell.cast(47520, "target")
+			 and ni.spell.available(cleave, true) 
+			 and not IsCurrentSpell(cleave) then
+				ni.spell.cast(cleave, "target")
 			return true
 		else
 			if #enemies == 0
-			 and ni.spell.available(47450, true)
-			 and not IsCurrentSpell(47450) then
-				ni.spell.cast(47450, "target")
+			 and ni.spell.available(heroicstrike, true)
+			 and not IsCurrentSpell(heroicstrike) then
+				ni.spell.cast(heroicstrike, "target")
 			return true
 				end
 			end

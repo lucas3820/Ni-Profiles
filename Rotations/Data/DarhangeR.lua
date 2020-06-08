@@ -25,6 +25,7 @@ local scorchdebuff = GetSpellInfo(22959)
 local livingbombdebuff = GetSpellInfo(55360)
 local frostnovadebuff = GetSpellInfo(42917)
 local fingersoffrost = GetSpellInfo(44545)
+local renddebuff = GetSpellInfo(47465)
 
 	-- Debuger -- 
 local function changedebug(msg)
@@ -387,7 +388,7 @@ elseif classlower == "warlock" then
 elseif classlower == "warrior" then
 	ni.data.darhanger[classlower].LastShout = 0;
 	ni.data.darhanger[classlower].rend = function() 
-		return select(7, ni.unit.debuff("target", 47465, "player"))
+		return select(7, ni.unit.debuff("target", renddebuff, "player"))
 	end
 	ni.data.darhanger[classlower].hams = function() 
 		return select(7, ni.unit.debuff("target", 1715, "player")) 

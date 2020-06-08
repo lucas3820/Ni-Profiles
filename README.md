@@ -55,6 +55,6 @@
 * [Destruction_DarhangeR]-- ⁉️
 
 ### Warrior
-* [Arms_DarhangeR] -- ⁉️
-* [Fury_DarhangeR] -- ⁉️
-* [Protection_DarhangeR] -- ⁉️
+* [Arms_DarhangeR] -- 👷
+* [Fury_DarhangeR] -- 👷
+* [Protection_DarhangeR] -- 👷
