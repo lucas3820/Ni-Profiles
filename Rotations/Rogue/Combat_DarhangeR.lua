@@ -5,10 +5,10 @@ local poisonsmainhand =
 local poisonoffhand = 
 {43233, 43232, 22054, 22053, 20844, 8985, 8984, 2893, 2892 }
 
-local level = UnitLevel("player")
 local mainhandpoison = nil
 local offhandpoison = nil
 local function GetBestPoisonMainHand()
+local level = UnitLevel("player")
 for _, itemid in pairs(poisonsmainhand) do
 local name, _, _, _, req = GetItemInfo(itemid)
 	if mainhandpoison == name then -- we don't need to spam update out mainhand poison
@@ -19,7 +19,8 @@ local name, _, _, _, req = GetItemInfo(itemid)
 		end
 	end
 local function GetBestPoisonOffHand()
-for _, itemid in pairs(poisonsoffhand) do
+local level = UnitLevel("player")
+for _, itemid in pairs(poisonoffhand) do
 local name, _, _, _, req = GetItemInfo(itemid)
 	if offhandpoison == name then -- we don't need to spam update out offhand poison
 	return end
@@ -28,10 +29,6 @@ local name, _, _, _, req = GetItemInfo(itemid)
 			end
 		end
 	end
-
---Items Converted to Name
-local instantpoison = GetItemInfo(43231)
-local deadlypoison = GetItemInfo(43233)
 
 --Spells Covnerted to Name
 local sinisterstrike = GetSpellInfo(48638)
@@ -114,6 +111,10 @@ local abilities = {
 		if UnitAffectingCombat("player") == nil 
 		and applypoison == nil then
 		applypoison = GetTime()
+		
+		if(mainhandpoison == nil or offhandpoison == nil) then
+		return end
+		
 		if mh == nil 
 		 and ni.player.hasitem(mainhandpoison) then
 			ni.player.useitem(mainhandpoison)

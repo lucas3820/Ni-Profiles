@@ -20,7 +20,7 @@ local name, _, _, _, req = GetItemInfo(itemid)
 	end
 local function GetBestPoisonOffHand()
 local level = UnitLevel("player")
-for _, itemid in pairs(poisonsoffhand) do
+for _, itemid in pairs(poisonoffhand) do
 local name, _, _, _, req = GetItemInfo(itemid)
 	if offhandpoison == name then -- we don't need to spam update out offhand poison
 	return end
@@ -111,6 +111,10 @@ local abilities = {
 		if UnitAffectingCombat("player") == nil 
 		and applypoison == nil then
 		applypoison = GetTime()
+		
+		if(mainhandpoison == nil or offhandpoison == nil) then
+		return end
+		
 		if mh == nil 
 		 and ni.player.hasitem(mainhandpoison) then
 			ni.player.useitem(mainhandpoison)
