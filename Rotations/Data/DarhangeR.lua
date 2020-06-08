@@ -15,6 +15,12 @@ local laceratedebuff = GetSpellInfo(48568)
 local manglecatdebuff = GetSpellInfo(48566)
 local ripdebuff = GetSpellInfo(49800)
 local rakedebuff = GetSpellInfo(48574)
+local tigerbuff = GetSpellInfo(50213)
+local savagebuff = GetSpellInfo(52610)
+local serpentstingdebuff = GetSpellInfo(49001)
+local viperstringdebuff = GetSpellInfo(3034)
+local scorpstringdebuff = GetSpellInfo(3043)
+local explobuff = GetSpellInfo(60053)
 
 	-- Debuger -- 
 local function changedebug(msg)
@@ -190,25 +196,25 @@ elseif classlower == "druid" then
 		return select(7, ni.unit.debuff("target", rakedebuff, "player"))
 	end
 	ni.data.darhanger[classlower].tiger = function() 
-		return ni.unit.buff("player", 50213) 
+		return ni.unit.buff("player", tigerbuff) 
 	end
 	ni.data.darhanger[classlower].savage = function() 
-		return select(7, ni.unit.buff("player", 52610)) 
+		return select(7, ni.unit.buff("player", savagebuff)) 
 	end
 elseif classlower == "hunter" then
 	ni.data.darhanger[classlower].LastMD = 0;
 	ni.data.darhanger[classlower].LastScat = 0;
 	ni.data.darhanger[classlower].serpstring = function() 
-		return select(7, ni.unit.debuff("target", 49001, "player")) 
+		return select(7, ni.unit.debuff("target", serpentstingdebuff, "player")) 
 	end
 	ni.data.darhanger[classlower].viperstring = function() 
-		return select(7, ni.unit.debuff("target", 3034, "player")) 
+		return select(7, ni.unit.debuff("target", viperstringdebuff, "player")) 
 	end
 	ni.data.darhanger[classlower].scorpstring = function() 
-		return select(7, ni.unit.debuff("target", 3043, "player")) 
+		return select(7, ni.unit.debuff("target", scorpstringdebuff, "player")) 
 	end
 	ni.data.darhanger[classlower].exploshot = function() 
-		return select(7, ni.unit.debuff("target", 60053, "player")) 
+		return select(7, ni.unit.debuff("target", explobuff, "player")) 
 	end
 elseif classlower == "mage" then
 	ni.data.darhanger[classlower].LastScorch = 0;

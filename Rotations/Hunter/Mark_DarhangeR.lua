@@ -1,5 +1,26 @@
 local data = {"DarhangeR.lua"}
 
+--Abilities 
+local aspectdragonhawk = GetSpellInfo(61847)
+local aspectviper = GetSpellInfo(34074)
+local mendpet = GetSpellInfo(48990)
+local huntersmark = GetSpellInfo(53338)
+local volley = GetSpellInfo(58434)
+local freezingarrow = GetSpellInfo(60192)
+local steadyshot = GetSpellInfo(49052)
+local killcommand = GetSpellInfo(34026)
+local mangoosebite = GetSpellInfo(53339)
+local raptorstrike = GetSpellInfo(48996)
+local killshot = GetSpellInfo(61006)
+local trueshot = GetSpellInfo(19506)
+local arcaneshot = GetSpellInfo(49045)
+local chimerashot = GetSpellInfo(53209)
+local aimedshot = GetSpellInfo(49050)
+local multishot = GetSpellInfo(49048)
+local serpentsting = GetSpellInfo(49001)
+
+
+
 local popup_shown = false;
 local queue = {
 	"Window",
@@ -53,8 +74,8 @@ local abilities = {
 		 or UnitChannelInfo("player")
 		 or UnitCastingInfo("player")
 		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
+		 or ni.unit.buff("player", 430)
+		 or ni.unit.buff("player", 433)
 		 or (not UnitAffectingCombat("player")
 		 and ni.vars.followEnabled) then
 			return true
@@ -87,21 +108,21 @@ local abilities = {
 	end,
 -----------------------------------
 	["Aspect of the Dragonhawk"] = function()
-		if not ni.player.buff(61847)
-		 and ni.spell.available(61847)
-		 and ni.spell.isinstant(61847)
+		if not ni.player.buff(aspectdragonhawk)
+		 and ni.spell.available(aspectdragonhawk)
+		 and ni.spell.isinstant(aspectdragonhawk)
 		 and ni.player.power() > 85 then
-			ni.spell.cast(61847)
+			ni.spell.cast(aspectdragonhawk)
 			return true
 		end
 	end,
 -----------------------------------
 	["Aspect of the Viper"] = function()
-		if not ni.player.buff(34074)
-		 and ni.spell.available(34074)
-		 and ni.spell.isinstant(61847)
+		if not ni.player.buff(aspectviper)
+		 and ni.spell.available(aspectviper)
+		 and ni.spell.isinstant(aspectdragonhawk)
 		 and ni.player.power() < 15 then
-			ni.spell.cast(34074)
+			ni.spell.cast(aspectviper)
 			return true
 		end
 	end,
@@ -128,24 +149,24 @@ local abilities = {
 -----------------------------------
 	["Mend Pet"] = function()
 		if ni.unit.hp("playerpet") < 80
-		 and not ni.unit.buff("pet", 48990)
+		 and not ni.unit.buff("pet", mendpet)
 		 and UnitExists("playerpet")
 		 and UnitInRange("playerpet")
-		 and ni.spell.isinstant(48990)
-		 and ni.spell.available(48990)
+		 and ni.spell.isinstant(mendpet)
+		 and ni.spell.available(mendpet)
 		 and not UnitIsDeadOrGhost("playerpet") then
-			ni.spell.cast(48990)
+			ni.spell.cast(mendpet)
 			return true
 		end
 	end,
 -----------------------------------
 	["Hunter's Mark"] = function()
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") ) 
-		 and not ni.unit.debuff("target", 53338)
-		 and ni.spell.available(53338)
-		 and ni.spell.isinstant(53338)		 
-		 and ni.spell.valid("target", 53338, true, true) then
-			ni.spell.cast(53338)
+		 and not ni.unit.debuff("target", huntersmark)
+		 and ni.spell.available(huntersmark)
+		 and ni.spell.isinstant(huntersmark)		 
+		 and ni.spell.valid("target", huntersmark, true, true) then
+			ni.spell.cast(huntersmark)
 			return true
 		end
 	end,
@@ -289,17 +310,17 @@ local abilities = {
 	["Volley"] = function()
 		if ni.vars.combat.aoe
 		 and not ni.player.ismoving()
-		 and ni.spell.available(58434) then
-			ni.spell.castat(58434, "target")
+		 and ni.spell.available(volley) then
+			ni.spell.castat(volley, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Freezing Arrow"] = function()
 		if ni.rotation.custommod()
-		 and ni.spell.isinstant(60192)
-		 and ni.spell.available(60192) then
-			ni.spell.castat(60192, "target")
+		 and ni.spell.isinstant(freezingarrow)
+		 and ni.spell.available(freezingarrow) then
+			ni.spell.castat(freezingarrow, "target")
 			return true
 		end
 	end,
@@ -307,10 +328,10 @@ local abilities = {
 	["Rapid Fire"] = function()
 		if ( ni.vars.CD or ni.unit.isboss("target") )
 		 and not ni.player.buff(3045)
-		 and ni.player.buff(61847)
+		 and ni.player.buff(aspectdragonhawk)
 		 and ni.spell.available(3045)
 		 and ni.spell.isinstant(3045)
-		 and ni.spell.valid("target", 49045) then
+		 and ni.spell.valid("target", arcaneshot) then
 			ni.spell.cast(3045)
 			return true
 		end
@@ -339,12 +360,12 @@ local abilities = {
 		 and not ni.player.buff(3045)
 		 and ni.spell.cd(3045) ~= 0
 		 and ni.spell.cd(3045) >= 10
-		 and ni.spell.cd(53209) ~= 0
-		 and ni.spell.cd(49050) ~= 0
-		 and ni.player.buff(61847)
+		 and ni.spell.cd(chimerashot) ~= 0
+		 and ni.spell.cd(aimedshot) ~= 0
+		 and ni.player.buff(aspectdragonhawk)
 		 and ni.spell.isinstant(23989)
 		 and ni.spell.available(23989)
-		 and ni.spell.valid("target", 49052, true, true) then
+		 and ni.spell.valid("target", steadyshot, true, true) then
 			ni.spell.cast(23989)
 			return true
 		end
@@ -353,10 +374,10 @@ local abilities = {
 	["Kill Command"] = function()
 		if ( ni.vars.CD or ni.unit.isboss("target") )
 		 and UnitExists("playerpet")
-		 and ni.spell.isinstant(34026)
-		 and ni.spell.available(34026)
-		 and ni.spell.valid("target", 49045) then
-			ni.spell.cast(34026)
+		 and ni.spell.isinstant(killcommand)
+		 and ni.spell.available(killcommand)
+		 and ni.spell.valid("target", arcaneshot) then
+			ni.spell.cast(killcommand)
 			return true
 		end
 	end,
@@ -400,30 +421,30 @@ local abilities = {
 	end,
 -----------------------------------
 	["Mongoose Bite"] = function()
-		if ni.spell.available(53339)
-		 and ni.spell.isinstant(48996)
-		 and ni.spell.available(48996)
-		 and ni.spell.valid("target", 53339, true, true) then
-			ni.spell.cast(53339, "target")
+		if ni.spell.available(mangoosebite)
+		 and ni.spell.isinstant(raptorstrike)
+		 and ni.spell.available(raptorstrike)
+		 and ni.spell.valid("target", mangoosebite, true, true) then
+			ni.spell.cast(mangoosebite, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Raptor Strike"] = function()
-		if ni.spell.available(48996, true)
-		 and ni.spell.valid("target", 53339, true, true) then
-			ni.spell.cast(48996, "target")
+		if ni.spell.available(raptorstrike, true)
+		 and ni.spell.valid("target", mangoosebite, true, true) then
+			ni.spell.cast(raptorstrike, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Kill Shot"] = function()
 		if (ni.unit.hp("target") <= 20
-		 or IsUsableSpell(GetSpellInfo(61006)))
-		 and ni.player.buff(61847)
-		 and ni.spell.available(61006)
-		 and ni.spell.valid("target", 61006, true, true) then
-			ni.spell.cast(61006, "target")
+		 or IsUsableSpell(killshot))
+		 and ni.player.buff(aspectdragonhawk)
+		 and ni.spell.available(killshot)
+		 and ni.spell.valid("target", killshot, true, true) then
+			ni.spell.cast(killshot, "target")
 			return true
 		end
 	end,
@@ -431,9 +452,9 @@ local abilities = {
 	["Multi-Shot (AoE)"] = function()
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		if #enemies >= 2
-		 and ni.spell.available(49048)
-		 and ni.spell.valid("target", 49048, true, true) then
-			ni.spell.cast(49048, "target")
+		 and ni.spell.available(multishot)
+		 and ni.spell.valid("target", multishot, true, true) then
+			ni.spell.cast(multishot, "target")
 			return true
 		end
 	end,
@@ -441,9 +462,9 @@ local abilities = {
 	["Serpent Sting"] = function()
 		local serpstring = ni.data.darhanger.hunter.serpstring()
 		if (serpstring == nil or (serpstring - GetTime() <= 2))	 
-		 and ni.spell.available(49001)
-		 and ni.spell.valid("target", 49001, true, true) then
-			ni.spell.cast(49001, "target")
+		 and ni.spell.available(serpentsting)
+		 and ni.spell.valid("target", serpentsting, true, true) then
+			ni.spell.cast(serpentsting, "target")
 			return true
 		end
 	end,
@@ -452,38 +473,38 @@ local abilities = {
 		local serpstring = ni.data.darhanger.hunter.serpstring()
 		local viperstring = ni.data.darhanger.hunter.viperstring()
 		local scorpstring = ni.data.darhanger.hunter.scorpstring()
-		if ni.spell.available(53209)
+		if ni.spell.available(chimerashot)
 		 and ( serpstring or viperstring or scorpstring )
-		 and ni.spell.valid("target", 53209, true, true) then
-			ni.spell.cast(53209, "target")
+		 and ni.spell.valid("target", chimerashot, true, true) then
+			ni.spell.cast(chimerashot, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Aimed Shot"] = function()
-		if ni.spell.available(49050)
-		 and ni.spell.valid("target", 49050, true, true) then
-			ni.spell.cast(49050, "target")
+		if ni.spell.available(aimedshot)
+		 and ni.spell.valid("target", aimedshot, true, true) then
+			ni.spell.cast(aimedshot, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Arcane Shot"] = function()
 		if GetCombatRating(25) < 350
-		 and ni.spell.available(49045)
-		 and ni.spell.valid("target", 49045, true, true) then
-			ni.spell.cast(49045, "target")
+		 and ni.spell.available(arcaneshot)
+		 and ni.spell.valid("target", arcaneshot, true, true) then
+			ni.spell.cast(arcaneshot, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Steady Shot"] = function()
 		if not ni.player.ismoving()
-		 and ni.spell.cd(53209)
-		 and ni.spell.cd(49050)
-		 and ni.spell.available(49052)
-		 and ni.spell.valid("target", 49052, true, true) then
-			ni.spell.cast(49052, "target")
+		 and ni.spell.cd(chimerashot)
+		 and ni.spell.cd(aimedshot)
+		 and ni.spell.available(steadyshot)
+		 and ni.spell.valid("target", steadyshot, true, true) then
+			ni.spell.cast(steadyshot, "target")
 			return true
 		end
 	end,
