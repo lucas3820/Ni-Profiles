@@ -41,8 +41,8 @@
 * [Shadow_DarhangeR] -- ⁉️
 
 ### Rogue
-* [Assassination_DarhangeR]-- ⁉️
-* [Combat_DarhangeR] -- ⁉️
+* [Assassination_DarhangeR]-- 👷
+* [Combat_DarhangeR] -- 👷
 
 ### Shaman
 * [Restoration_DarhangeR]-- ⁉️
