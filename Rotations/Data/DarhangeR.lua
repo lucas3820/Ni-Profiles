@@ -1,13 +1,14 @@
-local dontdispel = { 34916, 34917, 34919, 48159, 48160, 30404, 30405, 31117, 34438, 35183, 43522, 47841, 47843, 65812, 68154, 68155, 68156, 44461, 55359, 55360, 55361, 55362, 61429, 30108, 34914, 74562, 74792, 70867, 70338, 70405 };
+local dontdispel = { 68786, 34916, 34917, 34919, 48159, 48160, 30404, 30405, 31117, 34438, 35183, 43522, 47841, 47843, 65812, 68154, 68155, 68156, 44461, 55359, 55360, 55361, 55362, 61429, 30108, 34914, 74562, 74792, 70867, 70338, 70405 };
 for k, v in pairs(dontdispel) do
     ni.healing.debufftoblacklist(v);
 end
-local cbuff = { 642, 31224, 23920, 33786, 19263, 21892, 40733, 45438, 69051, 69056, 20223 };
-local mbuff = { 642, 45438, 33786, 21892, 40733, 69051 };
-local tbuff = { 642, 45438, 33786, 21892, 40733, 19263, 1022, 69051 };
-local forsdebuff = { 6215, 8122, 5484, 2637, 5246, 6358, 605 };
+local cbuff = { 59301, 642, 31224, 23920, 33786, 19263, 21892, 40733, 45438, 69051, 69056, 20223 };
+local mbuff = { 59301, 45438, 33786, 21892, 40733, 69051 };
+local tbuff = { 59301, 45438, 33786, 21892, 40733, 19263, 1022, 69051 };
+local forsdebuff = { 6215, 8122, 5484, 2637, 5246, 6358, 605, 22686 };
+local pbuff = { 430, 433, 25990, 58984 };
+local pdebuff = { 52509 };
 local _, class = UnitClass("player");
-local renewBuild = nil;
 
 	-- Debuger -- 
 local function changedebug(msg)
@@ -26,7 +27,35 @@ ni.data.darhanger = {
 	LastDispel = 0, 
 	LastInterrupt = 0,
 	
-    -- Vars for Combat Pause --
+		-- Vars for Universal Pause --
+	PlayerBuffs = function()
+		for _, v in ipairs(pbuff) do
+		 if ni.unit.buff("player", v) then 
+		     return true
+			end
+		end
+		     return false
+	end,
+	
+		-- Universal Pause --
+	UniPause = function()
+	if ni.spell.gcd()
+	 or IsMounted()
+	 or UnitInVehicle("player")
+	 or UnitIsDeadOrGhost("target") 
+	 or UnitIsDeadOrGhost("player")
+	 or UnitChannelInfo("player") ~= nil
+	 or UnitCastingInfo("player") ~= nil
+	 or ni.vars.combat.casting == true
+	 or ni.data.darhanger.PlayerBuffs()
+	 or (not UnitAffectingCombat("player")
+	 and ni.vars.followEnabled) then
+		     return true
+		end
+		     return false
+	end,
+	
+		-- Vars for Combat Pause --
 	casterStop = function()
 		for _, v in ipairs(cbuff) do
 		 if ni.unit.buff("target", v) then 
@@ -53,8 +82,17 @@ ni.data.darhanger = {
 		end
 		     return false
 	end,
+
+	PlayerDebuffs = function()
+		for _, v in ipairs(pdebuff) do
+		 if ni.unit.debuff("player", v) then 
+		     return true
+			end
+		end
+		     return false
+	end,
 	
-	-- Will of the Forsaken
+		-- Will of the Forsaken --
 	forsaken = function()
 		for _, v in ipairs(forsdebuff) do
 		 if ni.player.debuff(v) then 
@@ -64,7 +102,7 @@ ni.data.darhanger = {
 		    return false
 	end,
 	
-	-- Check Instance / Raid --
+		-- Check Instance / Raid --
 	youInInstance = function()
 		if IsInInstance()
 		 and select(2, GetInstanceInfo()) == "party" then
@@ -81,7 +119,7 @@ ni.data.darhanger = {
 		    return false
 	end,
 			
-	-- Pet Follow / Attack Function -- 
+		-- Pet Follow / Attack Function -- 
 	petFollow = function()
 		local pet = ni.objects["pet"]
 		if not pet:exists() then
@@ -118,7 +156,7 @@ if classlower == "deathknight" then
 end
 ni.data.darhanger[classlower] = { };
 if classlower == "dk" then
-	ni.data.darhanger[classlower].LastGrip = 0;
+	ni.data.darhanger[classlower].LastIcy = 0;
 	ni.data.darhanger[classlower].icy = function()
 		return select(7, ni.unit.debuff("target", 55095, "player")) 
 	end;

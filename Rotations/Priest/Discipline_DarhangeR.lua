@@ -3,7 +3,6 @@ local data = {"DarhangeR.lua"}
 local popup_shown = false;
 local queue = {
 	"Window",	
-	"Stutter cast pause",
 	"Universal pause",
 	"Inner Fire",
 	"Prayer of Fortitude",
@@ -36,24 +35,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+		if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -486,7 +468,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		  ni.debug.popup("Discipline Priest by DarhangeR", 
+		  ni.debug.popup("Discipline Priest by DarhangeR for 3.3.5a", 
 		 "Welcome to Discipline Priest Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For enable priority healing Main Tank & Off Tank put tank name to Tank Overrides and press Enable Main/Off")
 		popup_shown = true;
 		end 

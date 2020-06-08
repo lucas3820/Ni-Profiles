@@ -3,7 +3,6 @@ local data = {"DarhangeR.lua"}
 local popup_shown = false;
 local queue = {
 	"Window",
-	"Stutter cast pause",
 	"Universal pause",
 	"AutoTarget",
 	"Frost presence check",
@@ -14,7 +13,6 @@ local queue = {
 	"Potions (Use)",
 	"Racial Stuff",
 	"Mind Freeze (Interrupt)",
-	"Blood Tap",
 	"Hyst",
 	"Empower Rune Weapon",
 	"Icebound Fort",
@@ -27,6 +25,7 @@ local queue = {
 	"Death and Decay",
 	"Icy Touch",
 	"Plague Strike",
+	"Icy Touch (Agro)",
 	"Pestilence (AoE)",
 	"Pestilence (Renew)",
 	"Death Strike (Lich)",
@@ -41,24 +40,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+		if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -66,7 +48,8 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+		 and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
@@ -91,6 +74,7 @@ local abilities = {
 -----------------------------------
 	["Combat specific Pause"] = function()
 		if ni.data.darhanger.tankStop()
+		 or ni.data.darhanger.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -186,17 +170,6 @@ local abilities = {
 		end
 	end,
 -----------------------------------
-	["Blood Tap"] = function()
-		local _, BR = ni.rune.bloodrunecd()
-		local _, DR = ni.rune.deathrunecd()
-		if ( BR == 0 or DR == 0 )
-		 and ni.spell.isinstant(45529)
-		 and ni.spell.cd(45529) == 0 then
-			ni.spell.cast(45529)
-			return true
-		end
-	end,
------------------------------------
 	["Vamp Blood"] = function()
 		local _, BR = ni.rune.bloodrunecd()
 		if BR >= 1
@@ -220,13 +193,20 @@ local abilities = {
 	end,
 -----------------------------------
 	["Rune Tap"] = function()
-		local _, BR = ni.rune.bloodrunecd()
-		if BR >= 1
-		 and ni.player.hp() < 55
-		 and ni.spell.isinstant(48982)
-		 and ni.spell.available(48982) then
-			ni.spell.cast(48982, "target")
+		if ni.player.hp() < 55
+		 and ni.spell.isinstant(48982) then
+		  local _, BR = ni.rune.bloodrunecd()
+		  local _, DR = ni.rune.deathrunecd()
+		   if ( BR == 0 or DR == 0 )
+		   and ni.spell.isinstant(45529)
+		   and ni.spell.cd(45529) == 0 then 
+			ni.spell.cast(45529)
+                        ni.spell.cast(48982)
+                        return true
+                else
+		        ni.spell.cast(48982)
 			return true
+			end
 		end
 	end,
 -----------------------------------
@@ -251,9 +231,9 @@ local abilities = {
 -----------------------------------
 	["Death and Decay"] = function()
 		if ni.vars.combat.aoe
-		 and ni.spell.isinstant(49938)
-		 and ni.spell.available(49938) then
-			ni.spell.castat(49938, "target")
+		 and ni.spell.isinstant(49938) 
+		 and ni.spell.cd(49938) == 0 then
+			ni.spell.castatqueue(49938, "target")
 			return true
 		end
 	end,
@@ -288,6 +268,7 @@ local abilities = {
 		 and ni.spell.isinstant(49909)
 		 and ni.spell.valid("target", 49909, true, true) then
 			ni.spell.cast(49909, "target")
+			ni.data.darhanger.dk.LastIcy = GetTime()
 			return true
 		end
 	end,
@@ -299,6 +280,18 @@ local abilities = {
 		 and ni.spell.isinstant(49921)
 		 and ni.spell.valid("target", 49921, true, true) then
 			ni.spell.cast(49921, "target")
+			return true
+		end
+	end,
+-----------------------------------
+	["Icy Touch (Agro)"] = function()
+		if ni.unit.isboss("target")
+		 and ni.spell.available(49909)
+		 and ni.spell.isinstant(49909)
+		 and GetTime() - ni.data.darhanger.dk.LastIcy > 25
+		 and ni.spell.valid("target", 49909, true, true) then
+			ni.spell.cast(49909, "target")
+			ni.data.darhanger.dk.LastIcy = GetTime()
 			return true
 		end
 	end,
@@ -335,13 +328,19 @@ local abilities = {
 		local plague = ni.data.darhanger.dk.plague()
 		local _, BR = ni.rune.bloodrunecd()
 		local _, DR = ni.rune.deathrunecd()
-		if ( BR >= 1 or DR >= 1 )
-		 and ni.player.hasglyph(63334)
+		 if ni.player.hasglyph(63334)
 		 and ni.spell.valid("target", 50842, true, true)
 		 and ( ( icy ~= nil and icy - GetTime() <= 5 )
-		 or ( plague ~= nil and plague - GetTime() <= 5 ) ) then 
-			ni.spell.cast(50842, "target")
+		 or ( plague ~= nil and plague - GetTime() <= 5 ) ) then
+			if BR == 0 and DR == 0
+			and ni.spell.cd(45529) == 0 then
+				ni.spell.cast(45529)
+				ni.spell.cast(50842)
 			return true
+		else
+				ni.spell.cast(50842)
+			return true
+			end
 		end
 	end,
 -----------------------------------
@@ -393,7 +392,6 @@ local abilities = {
 		  and ni.data.darhanger.youInInstance()
    		  and ni.spell.valid(threatUnit, 49576, true, true) then
 			ni.spell.cast(49576, threatUnit)
-			ni.data.darhanger.dk.LastGrip = GetTime()
 			return true
 			end
 		end
@@ -525,7 +523,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Blood Tank Deathknight by DarhangeR", 
+		 ni.debug.popup("Blood Tank Deathknight by DarhangeR for 3.3.5a", 
 		 "Welcome to Blood Tank Deathknight Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Death and Decay configure AoE Toggle key.")
 		popup_shown = true;
 		end 

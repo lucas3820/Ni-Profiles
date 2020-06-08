@@ -2,8 +2,7 @@ local data = {"DarhangeR.lua"}
 
 local popup_shown = false;
 local queue = {
-	"Window",	
-	"Stutter cast pause",
+	"Window",
 	"AutoTarget",
 	"Universal pause",
 	"Life Tap (Regen)",
@@ -44,24 +43,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and not ni.vars.followEnabled == 1) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+		if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -69,7 +51,8 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+		 and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
@@ -212,6 +195,7 @@ local abilities = {
 -----------------------------------
 	["Combat specific Pause"] = function()
 		if ni.data.darhanger.casterStop()
+		 or ni.data.darhanger.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -336,7 +320,17 @@ local abilities = {
 			return true
 		end
 	end,
------------------------------------
+-----------------------------------	
+	["Fury"] = function()
+		if ni.rotation.custommod()
+		 and IsSpellKnown(47847)
+		 and ni.spell.available(47847)
+		 and ni.spell.valid("target", 47847) then
+			ni.spell.castat(47847, "target")
+			return true
+		end
+	end,
+-----------------------------------	
 	["Shadowflame"] = function()	
 		if ni.player.distance("target") < 6
 		 and ni.spell.available(61290)
@@ -482,7 +476,7 @@ local abilities = {
 				local tar = enemies[i].guid;
 				if ni.unit.creaturetype(enemies[i].guid) ~= 8
 				 and ni.unit.creaturetype(enemies[i].guid) ~= 11
-				 and not ni.unit.debuffs(tar, "23920||35399||69056")
+				 and not ni.unit.debuffs(tar, "23920||35399||69056", "EXACT")
 				 and not ni.unit.debuff(tar, 47811, "player")
 				 and ni.spell.valid(enemies[i].guid, 47811, true, true) then
 					ni.spell.cast(47811, tar)
@@ -542,7 +536,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Destruction Warlock by DarhangeR", 
+		 ni.debug.popup("Destruction Warlock by DarhangeR for 3.3.5a", 
 		 "Welcome to Destruction Warlock Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Immolate (AoE) mode configure Custom Key Modifier and hold it for put spell on nearest enemies.\n-For use Rain of Fire configure AoE Toggle key.\n-Focus target for use Soulstone.\n-For better experience make Pet passive.")
 		popup_shown = true;
 		end 

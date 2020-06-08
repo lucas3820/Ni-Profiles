@@ -3,7 +3,6 @@ local data = {"DarhangeR.lua"}
 local popup_shown = false;
 local queue = {
 	"Window",		
-	"Stutter cast pause",
 	"Universal pause",
 	"AutoTarget",
 	"Blood presence check",
@@ -19,7 +18,6 @@ local queue = {
 	"Icebound Fort",
 	"Death and Decay",
 	"Unbreakable Armor",
-	"Raise Dead",
 	"Empower Rune Weapon",
 	"Icy Touch",
 	"Plague Strike",
@@ -28,6 +26,7 @@ local queue = {
 	"Howling Blast",
 	"Howling Blast (AoE)",
 	"Frost Strike (Kill)",
+	"Death Strike",
 	"Obliterate Dump",
 	"Obliterate",
 	"Frost Strike",
@@ -38,24 +37,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------	
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+		if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -63,7 +45,8 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+		 and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
@@ -88,6 +71,7 @@ local abilities = {
 -----------------------------------
 	["Combat specific Pause"] = function()
 		if ni.data.darhanger.meleeStop()
+		 or ni.data.darhanger.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -221,9 +205,9 @@ local abilities = {
 -----------------------------------
 	["Death and Decay"] = function()
 		if ni.vars.combat.aoe
-		 and ni.spell.isinstant(49938)
-		 and ni.spell.available(49938) then
-			ni.spell.castat(49938, "target")
+		 and ni.spell.isinstant(49938) 
+		 and ni.spell.cd(49938) == 0 then
+			ni.spell.castatqueue(49938, "target")
 			return true
 		end
 	end,
@@ -244,21 +228,6 @@ local abilities = {
 				ni.spell.cast(51271)
 			return true
 			end
-		end
-	end,
------------------------------------
-	["Raise Dead"] = function()
-		if not UnitExists("playerpet")
-		 and not ni.player.buff(61431)
-		 and ni.spell.available(46584)
-		 and ni.spell.isinstant(46584)
-		 and not ni.spell.available(51271)
-		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
-		 and IsUsableSpell(GetSpellInfo(46584))
-		 and ( ni.player.hasitem(37201) 
-		 or	ni.player.hasglyph(60200) ) then
-			ni.spell.cast(46584)
-			return true
 		end
 	end,
 -----------------------------------
@@ -356,6 +325,29 @@ local abilities = {
 		 and ni.spell.isinstant(51411)
 		 and ni.spell.valid("target", 51411, true, true) then
 			ni.spell.cast(51411, "target")
+			return true
+		end
+	end,
+-----------------------------------
+	["Death Strike"] = function()
+		local _, FR = ni.rune.frostrunecd()
+		local _, UR = ni.rune.unholyrunecd()
+		local _, DR = ni.rune.deathrunecd()
+		local icy = ni.data.darhanger.dk.icy()
+		local plague = ni.data.darhanger.dk.plague()
+		if not (ni.data.darhanger.youInInstance()
+		 or not ni.data.darhanger.youInRaid() )
+		 and ni.player.hp() < 50
+		 and ((FR >= 1 and UR >= 1)
+		 or (FR >= 1 and DR >= 1)
+		 or (DR >= 1 and UR >= 1)
+		 or (DR == 2))
+		 and plague
+		 and icy
+	         and ni.spell.isinstant(49924)
+		 and ni.spell.available(49924)
+		 and ni.spell.valid("target", 49924, true, true) then
+			ni.spell.cast(49924, "target")
 			return true
 		end
 	end,
@@ -477,7 +469,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Frost Dual Wield DPS Deathknight by DarhangeR", 
+		 ni.debug.popup("Frost Dual Wield DPS Deathknight by DarhangeR for 3.3.5a", 
 		 "Welcome to Frost Dual Wield DPS Deathknight Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Death and Decay configure AoE Toggle key.")
 		popup_shown = true;
 		end 

@@ -3,7 +3,6 @@ local data = {"DarhangeR.lua"}
 local popup_shown = false;
 local queue = {
 	"Window",
-	"Stutter cast pause",
 	"Universal pause",
 	"Enchant Weapon",
 	"Water Shield",
@@ -13,7 +12,6 @@ local queue = {
 	"Mana Potions (Use)",
 	"Racial Stuff",
 	"Wind Shear (Interrupt)",
-	"Totems pull",
 	"Tank Heal",
 	"Lesser Healing Wave",
 	"Chain Heal Spam",
@@ -27,24 +25,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+		if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -155,23 +136,6 @@ local abilities = {
 		 and ni.spell.valid("target", 57994, true, true)  then
 			ni.spell.castinterrupt("target")
 			ni.data.darhanger.LastInterrupt = GetTime()
-			return true
-		end
-	end,
------------------------------------
-	["Totems pull"] = function()
-		 local fireTotem = select(2, GetTotemInfo(1))
-		 local totem_distance = ni.unit.distance("target", "totem1")
-		 local target_distance = ni.player.distance("target")
-		 if ni.spell.valid("target", 49238)
-		 and (fireTotem == ""
-		 or (fireTotem ~= ""
-		 and target_distance ~= nil
-		 and target_distance < 36
-		 and totem_distance ~= nil
-		 and totem_distance > 40))
-		 and not ni.player.ismoving() then
-			ni.spell.cast(66842)
 			return true
 		end
 	end,
@@ -374,7 +338,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Restoration Shaman by DarhangeR", 
+		 ni.debug.popup("Restoration Shaman by DarhangeR for 3.3.5a", 
 		 "Welcome to Restoration Shaman Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For enable priority healing Main Tank put tank name to Tank Overrides and press Enable Main.\n-For enable Chain of Heal Spam  configure AoE Toggle key.")		
 		popup_shown = true;
 		end 
