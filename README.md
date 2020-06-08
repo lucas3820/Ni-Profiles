@@ -26,9 +26,9 @@
 * [Survival_DarhangeR]--👷
 
 ### Mage
-* [Arcane_DarhangeR]-- ⁉️
-* [Fire_DarhangeR]-- ⁉️
-* [Frost_DarhangeR]-- ⁉️
+* [Arcane_DarhangeR]-- 👷
+* [Fire_DarhangeR]-- 👷
+* [Frost_DarhangeR]-- 👷
 
 ### Paladin
 * [Holy_DarhangeR]-- 👷

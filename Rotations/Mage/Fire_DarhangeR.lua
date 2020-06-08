@@ -1,5 +1,27 @@
 local data = {"DarhangeR.lua"}
 
+--Abilities Converted
+local arcanebrilliance = GetSpellInfo(43002)
+local dalaranbrilliance = GetSpellInfo(61316)
+local felIntelligence = GetSpellInfo(57567)
+local arcaneintellect = GetSpellInfo(42995)
+local dalaranintellect = GetSpellInfo(61024)
+local magearmor = GetSpellInfo(43024)
+local moltenarmor = GetSpellInfo(43046)
+local fireball = GetSpellInfo(42833)
+local arcaneblast = GetSpellInfo(42897)
+local arcanemissiles = GetSpellInfo(42846)
+local arcanebarrage = GetSpellInfo(44781)
+local flamestrike = GetSpellInfo(42926)
+local dragonsbreath = GetSpellInfo(42950)
+local scorch = GetSpellInfo(42859)
+local livingbomb = GetSpellInfo(55360)
+local pyroblast = GetSpellInfo(42891)
+local fireblast = GetSpellInfo(42873)
+local frostfirebolt = GetSpellInfo(47610)
+
+
+
 local popup_shown = false;
 local queue = {
 	"Window",	
@@ -47,8 +69,8 @@ local abilities = {
 		 or UnitChannelInfo("player")
 		 or UnitCastingInfo("player")
 		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
+		 or ni.unit.buff("player", 430)
+		 or ni.unit.buff("player", 433)
 		 or (not UnitAffectingCombat("player")
 		 and ni.vars.followEnabled) then
 			return true
@@ -71,22 +93,22 @@ local abilities = {
 	end,
 -----------------------------------
 	["Arcane Brilliance"] = function()
-		if ni.player.buffs("43002||61316||57567||42995||61024")
-		 or not IsUsableSpell(GetSpellInfo(43002)) then 
+		if ni.player.buffs("arcanebrilliance||dalaranbrilliance||felIntelligence||arcaneintellect||dalaranintellect")
+		 or not IsUsableSpell(GetSpellInfo(arcanebrilliance)) then 
 		 return false
 	end
-		if ni.spell.available(43002)
-		 and ni.spell.isinstant(43002) then
-			ni.spell.cast(43002)	
+		if ni.spell.available(arcanebrilliance)
+		 and ni.spell.isinstant(arcanebrilliance) then
+			ni.spell.cast(arcanebrilliance)	
 			return true
 		end
 	end,
 -----------------------------------
 	["Molten Armor"] = function()
-		if not ni.player.buff(43046)
-		 and ni.spell.isinstant(43046) 
-		 and ni.spell.available(43046) then
-			ni.spell.cast(43046)
+		if not ni.player.buff(moltenarmor)
+		 and ni.spell.isinstant(moltenarmor) 
+		 and ni.spell.available(moltenarmor) then
+			ni.spell.cast(moltenarmor)
 			return true
 		end
 	end,
@@ -298,7 +320,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(12043) 		 
 		 and ni.spell.available(11129)
-		 and ni.spell.valid("target", 42833) then
+		 and ni.spell.valid("target", fireball) then
 			ni.spell.cast(11129)
 			return true
 		end
@@ -309,7 +331,7 @@ local abilities = {
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(12472)
 		 and ni.spell.available(12472)
-		 and ni.spell.valid("target", 42833) then
+		 and ni.spell.valid("target", fireball) then
 			ni.spell.cast(12472)
 			return true
 		end
@@ -319,7 +341,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(55342)
 		 and ni.spell.available(55342)
-		 and ni.spell.valid("target", 42833) then
+		 and ni.spell.valid("target", fireball) then
 			ni.spell.cast(55342, "target")
 			ni.player.runtext("/petattack")
 			return true
@@ -327,11 +349,11 @@ local abilities = {
 	end,
 -----------------------------------
 	["Dragon's Breath"] = function()	
-		if IsSpellKnown(42950)
+		if IsSpellKnown(dragonsbreath)
 		 and ni.player.distance("target") < 6
-		 and ni.spell.available(42950)
-		 and ni.spell.isinstant(42950) then
-			ni.spell.cast(42950)
+		 and ni.spell.available(dragonsbreath)
+		 and ni.spell.isinstant(dragonsbreath) then
+			ni.spell.cast(dragonsbreath)
 			return true
 		end
 	end,
@@ -339,10 +361,10 @@ local abilities = {
 	["Scorch"] = function()
 		if not ni.unit.debuff("target", 22959)
 		 and not ni.unit.debuff("target", 17800)
-		 and ni.spell.available(42859)
-		 and ni.spell.valid("target", 42859, true, true)
+		 and ni.spell.available(scorch)
+		 and ni.spell.valid("target", scorch, true, true)
 		 and GetTime() - ni.data.darhanger.mage.LastScorch > 3 then
-			ni.spell.cast(42859, "target")
+			ni.spell.cast(scorch, "target")
 			ni.data.darhanger.mage.LastScorch = GetTime()
 			return true
 		end
@@ -351,10 +373,10 @@ local abilities = {
 	["Livingbomb"] = function()
 		local LBomb = ni.data.darhanger.mage.LBomb()		
 		if not LBomb
-		 and ni.spell.isinstant(55360) 
-		 and ni.spell.available(55360)
-		 and ni.spell.valid("target", 55360, false, true, true) then
-			ni.spell.cast(55360, "target")
+		 and ni.spell.isinstant(livingbomb) 
+		 and ni.spell.available(livingbomb)
+		 and ni.spell.valid("target", livingbomb, false, true, true) then
+			ni.spell.cast(livingbomb, "target")
 			return true
 		end
 	end,
@@ -363,18 +385,18 @@ local abilities = {
 		local enemies;
 		 if ni.rotation.custommod() 
 		 and UnitExists("target")
-		 and ni.spell.isinstant(55360) 
-		 and ni.spell.available(55360)
+		 and ni.spell.isinstant(livingbomb) 
+		 and ni.spell.available(livingbomb)
 		 and UnitCanAttack("player", "target") then
 			enemies = ni.unit.enemiesinrange("target", 12)
 			for i = 1, # enemies do
 				local tar = enemies[i].guid;
 				if ni.unit.creaturetype(enemies[i].guid) ~= 8
 				 and ni.unit.creaturetype(enemies[i].guid) ~= 11
-				 and not ni.unit.debuffs(tar, "23920||35399||69056")
-				 and not ni.unit.debuff(tar, 55360, "player") 
-				 and ni.spell.valid(enemies[i].guid, 55360, false, true, true) then
-					ni.spell.cast(55360, tar)
+				 and not ni.unit.debuffs(tar, "23920||35399||69056", "EXACT")
+				 and not ni.unit.debuff(tar, livingbomb, "player") 
+				 and ni.spell.valid(enemies[i].guid, livingbomb, false, true, true) then
+					ni.spell.cast(livingbomb, tar)
 					return true
 				end
 			end
@@ -384,48 +406,48 @@ local abilities = {
 	["Flamestrike"] = function()
 		if ni.vars.combat.aoe
 		 and not ni.player.ismoving()
-		 and ni.spell.available(42926) then
-			ni.spell.castat(42926, "target")
+		 and ni.spell.available(flamestrike) then
+			ni.spell.castat(flamestrike, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Pyroblast (Non Cast)"] = function()
 		if ni.player.buff(48108)
-		 and ni.spell.available(42891)
-		 and ni.spell.isinstant(48108) 
-		 and ni.spell.valid("target", 42891, true, true) then
-			ni.spell.cast(42891, "target")
+		 and ni.spell.available(pyroblast)
+		 and ni.spell.isinstant(pyroblast) 
+		 and ni.spell.valid("target", pyroblast, true, true) then
+			ni.spell.cast(pyroblast, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Fire Blast (Move)"] = function()
 		if ni.player.ismoving()
-		 and ni.spell.isinstant(42873) 
-		 and ni.spell.available(42873)
-		 and ni.spell.valid("target", 42873, true, true) then
-			ni.spell.cast(42873, "target")
+		 and ni.spell.isinstant(fireblast) 
+		 and ni.spell.available(fireblast)
+		 and ni.spell.valid("target", fireblast, true, true) then
+			ni.spell.cast(fireblast, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Frostfire Bolt"] = function()
 		if IsSpellKnown(12472)
-		 and ni.spell.available(47610)
+		 and ni.spell.available(frostfirebolt)
 		 and not ni.player.ismoving()
-		 and ni.spell.valid("target", 47610, true, true) then
-			ni.spell.cast(47610, "target")
+		 and ni.spell.valid("target", frostfirebolt, true, true) then
+			ni.spell.cast(frostfirebolt, "target")
 			return true
 		end
 	end,
 -----------------------------------
 	["Fireball"] = function()
 		if not IsSpellKnown(12472)
-		 and ni.spell.available(42833)
+		 and ni.spell.available(fireball)
 		 and not ni.player.ismoving()
-		 and ni.spell.valid("target", 42833, true, true) then
-			ni.spell.cast(42833, "target")
+		 and ni.spell.valid("target", fireball, true, true) then
+			ni.spell.cast(fireball, "target")
 			return true
 		end
 	end,

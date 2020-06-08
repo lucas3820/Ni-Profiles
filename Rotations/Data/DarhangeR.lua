@@ -21,6 +21,10 @@ local serpentstingdebuff = GetSpellInfo(49001)
 local viperstringdebuff = GetSpellInfo(3034)
 local scorpstringdebuff = GetSpellInfo(3043)
 local explobuff = GetSpellInfo(60053)
+local scorchdebuff = GetSpellInfo(22959)
+local livingbombdebuff = GetSpellInfo(55360)
+local frostnovadebuff = GetSpellInfo(42917)
+local fingersoffrost = GetSpellInfo(44545)
 
 	-- Debuger -- 
 local function changedebug(msg)
@@ -219,13 +223,13 @@ elseif classlower == "hunter" then
 elseif classlower == "mage" then
 	ni.data.darhanger[classlower].LastScorch = 0;
 	ni.data.darhanger[classlower].Scorch = function()
-		return ni.unit.debuff("target", 22959, "player")
+		return ni.unit.debuff("target", scorchdebuff, "player")
 	end
 	ni.data.darhanger[classlower].LBomb = function() 
-		return ni.unit.debuff("target", 55360, "player") 
+		return ni.unit.debuff("target", livingbombdebuff, "player") 
 	end
 	ni.data.darhanger[classlower].fnova = function() 
-		return ni.unit.debuff("target", 42917, "player") 
+		return ni.unit.debuff("target", frostnovadebuff, "player") 
 	end
 	ni.data.darhanger[classlower].fbite = function() 
 		return ni.unit.debuff("target", 12494, "player") 
@@ -234,7 +238,7 @@ elseif classlower == "mage" then
 		return ni.unit.debuff("target", 33395, "player") 
 	end
 	ni.data.darhanger[classlower].FoF = function() 
-		return ni.player.buff(44545) 
+		return ni.player.buff(fingersoffrost) 
 	end
 elseif classlower == "paladin" then
 	ni.data.darhanger[classlower].LastSeal = 0;

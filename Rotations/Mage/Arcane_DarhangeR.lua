@@ -1,5 +1,20 @@
 local data = {"DarhangeR.lua"}
 
+--Abilities Converted
+local arcanebrilliance = GetSpellInfo(43002)
+local dalaranbrilliance = GetSpellInfo(61316)
+local felIntelligence = GetSpellInfo(57567)
+local arcaneintellect = GetSpellInfo(42995)
+local dalaranintellect = GetSpellInfo(61024)
+local magearmor = GetSpellInfo(43024)
+local moltenarmor = GetSpellInfo(43046)
+local fireball = GetSpellInfo(42833)
+local arcaneblast = GetSpellInfo(42897)
+local arcanemissiles = GetSpellInfo(42846)
+local arcanebarrage = GetSpellInfo(44781)
+local flamestrike = GetSpellInfo(42926)
+
+
 local popup_shown = false;
 local queue = {
 	"Window",	
@@ -43,8 +58,8 @@ local abilities = {
 		 or UnitChannelInfo("player")
 		 or UnitCastingInfo("player")
 		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
+		 or ni.unit.buff("player", 430)
+		 or ni.unit.buff("player", 433)
 		 or (not UnitAffectingCombat("player")
 		 and ni.vars.followEnabled) then
 			return true
@@ -67,30 +82,30 @@ local abilities = {
 	end,
 -----------------------------------
 	["Arcane Brilliance"] = function()
-		if ni.player.buffs("43002||61316||57567||42995||61024")
-		 or not IsUsableSpell(GetSpellInfo(43002)) then 
+		if ni.player.buffs("arcanebrilliance||dalaranbrilliance||felIntelligence||arcaneintellect||dalaranintellect")
+		 or not IsUsableSpell(GetSpellInfo(arcanebrilliance)) then 
 		 return false
 	end
-		if ni.spell.available(43002)
-		 and ni.spell.isinstant(43002) then
-			ni.spell.cast(43002)	
+		if ni.spell.available(arcanebrilliance)
+		 and ni.spell.isinstant(arcanebrilliance) then
+			ni.spell.cast(arcanebrilliance)	
 			return true
 		end
 	end,
 -----------------------------------
 	["Mage / Molten Armor"] = function()
 		if not ni.player.hasglyph(56382) 
-		 and not ni.player.buff(43024)
-		 and ni.spell.isinstant(43024) 
-		 and ni.spell.available(43024) then
-			ni.spell.cast(43024)
+		 and not ni.player.buff(magearmor)
+		 and ni.spell.isinstant(magearmor) 
+		 and ni.spell.available(magearmor) then
+			ni.spell.cast(magearmor)
 			return true
 		else
 		if ni.player.hasglyph(56382)
-		 and not ni.player.buff(43046)
-		 and ni.spell.isinstant(43046) 
-		 and ni.spell.available(43046) then
-			ni.spell.cast(43046)
+		 and not ni.player.buff(moltenarmor)
+		 and ni.spell.isinstant(moltenarmor) 
+		 and ni.spell.available(moltenarmor) then
+			ni.spell.cast(moltenarmor)
 			return true
 			end
 		end
@@ -303,7 +318,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(55342) 
 		 and ni.spell.available(55342)
-		 and ni.spell.valid("target", 42833) then
+		 and ni.spell.valid("target", fireball) then
 			ni.spell.cast(55342, "target")
 			ni.player.runtext("/petattack")
 			return true
@@ -316,7 +331,7 @@ local abilities = {
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(12472) 
 		 and ni.spell.available(12472)
-		 and ni.spell.valid("target", 42833) then
+		 and ni.spell.valid("target", fireball) then
 			ni.spell.cast(12472)
 			return true
 		end
@@ -327,7 +342,7 @@ local abilities = {
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(12042) 
 		 and ni.spell.available(12042)
-		 and ni.spell.valid("target", 42833) then
+		 and ni.spell.valid("target", fireball) then
 			ni.spell.cast(12042)
 			return true
 		end
@@ -338,9 +353,9 @@ local abilities = {
 		 and not ni.unit.buff(44401)
 		 and ni.spell.isinstant(12043) 
 		 and ni.spell.available(12043)
-		 and ni.spell.available(42897)
-		 and ni.spell.valid("target", 42897, true, true) then
-			ni.spell.castspells("12043|42897", "target")
+		 and ni.spell.available(arcaneblast)
+		 and ni.spell.valid("target", arcaneblast, true, true) then
+			ni.spell.castspells("12043|arcaneblast", "target")
 			return true
 		end
 	end,	
@@ -350,9 +365,9 @@ local abilities = {
 		if (ABlast == nil
 		 or count < 4)
 		 and not ni.player.ismoving()
-		 and ni.spell.available(42897)
-		 and ni.spell.valid("target", 42897, true, true) then
-			ni.spell.cast(42897, "target")
+		 and ni.spell.available(arcaneblast)
+		 and ni.spell.valid("target", arcaneblast, true, true) then
+			ni.spell.cast(arcaneblast, "target")
 			return true
 		end
 	end,
@@ -362,9 +377,9 @@ local abilities = {
 		if count == 4
 		 and ni.player.buff(44401)
 		 and not ni.player.ismoving()
-		 and ni.spell.available(42846)
-		 and ni.spell.valid("target", 42846, true, true) then
-			ni.spell.cast(42846, "target")
+		 and ni.spell.available(arcanemissiles)
+		 and ni.spell.valid("target", arcanemissiles, true, true) then
+			ni.spell.cast(arcanemissiles, "target")
 			return true
 		end
 	end,
@@ -374,10 +389,10 @@ local abilities = {
 		if  count == 4
 		 and not ni.player.buff(44401) 
 		 or ni.player.ismoving()
-		 and ni.spell.isinstant(44781) 
-		 and ni.spell.available(44781)
-		 and ni.spell.valid("target", 44781, true, true) then
-			ni.spell.cast(44781, "target")
+		 and ni.spell.isinstant(arcanebarrage) 
+		 and ni.spell.available(arcanebarrage)
+		 and ni.spell.valid("target", arcanebarrage, true, true) then
+			ni.spell.cast(arcanebarrage, "target")
 			return true
 		end
 	end,
@@ -398,8 +413,8 @@ local abilities = {
 	["Flamestrike"] = function()
 		if ni.vars.combat.aoe
 		 and not ni.player.ismoving()
-		 and ni.spell.available(42926) then
-			ni.spell.castat(42926, "target")
+		 and ni.spell.available(flamestrike) then
+			ni.spell.castat(flamestrike, "target")
 			return true
 		end
 	end,
