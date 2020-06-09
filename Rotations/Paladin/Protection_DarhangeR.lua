@@ -24,6 +24,7 @@ local handoffreedom = GetSpellInfo(1044)
 local cleanse = GetSpellInfo(4987)
 local shieldofrighteousness = GetSpellInfo(61411)
 
+
 local function available(spell)
 	return ni.spell.available(spell, true);
 	end
@@ -363,7 +364,8 @@ local abilities = {
 		if ni.player.power() > 30
 		 and ni.spell.available(consecration)
 		 and ni.spell.isinstant(consecration)
-		 and ni.spell.valid("target", hammeroftherigheous) then
+		 and ni.unit.inmelee("player", "target") 
+		 and ni.spell.valid("target", judgementofwisdom) then
 			ni.spell.cast(consecration, "target")
 			return true
 		end
