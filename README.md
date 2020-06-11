@@ -4,8 +4,11 @@
 ## Adding custom leveling logic if needed.
 ## F.A.Q 
 -- Please use Warrior Arms until you are level 14+ on Warrior.
+
 -- Please use Assassination Rogue while leveling Rogue. You can swap to combat at around level 40+
+
 -- Please use Druid Boomkin until you have cat form for feral dps and bear form for feral tank.
+
 -- Please use Blood DPS until you are finished with Deathknight starter area.
 
 
