@@ -42,6 +42,7 @@ local queue = {
 	"Death Wish",
 	"Recklessness",
 	"Bloodrage",
+	"Low level Heroic Strike",
 	"Victory Rush",
 	"Heroic Strike + Cleave (Filler)",
 	"Execute",
@@ -303,6 +304,16 @@ local abilities = {
 			return true
 		end
 	end,
+-----------------------------------	
+	["Low level Heroic Strike"] = function()
+	if ni.spell.available(heroicstrike, true)
+			 and not IsCurrentSpell(heroicstrike) 
+			 and ni.spell.isinstant(heroicstrike)
+			 and UnitLevel("player") <= 15
+			 and UnitPower("player") >= 15 then
+				ni.spell.cast(heroicstrike, "target")
+			end
+			end,
 -----------------------------------
 	["Heroic Strike + Cleave (Filler)"] = function()
 		local enemies = ni.unit.enemiesinrange("target", 5)

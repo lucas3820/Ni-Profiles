@@ -39,6 +39,7 @@ local queue = {
 	"Last Stand",
 	"Enraged Regeneration",
 	"Shield Wall",
+	"Low level Heroic Strike",
 	"Taunt",
 	"Taunt (Ally)",
 	"Mocking Blow",
@@ -335,7 +336,7 @@ local abilities = {
 			for i = 1, # enemies do
 				local tar = enemies[i].guid;
 				if ni.unit.creaturetype(enemies[i].guid) ~= 8 
-				 and not ni.unit.debuff(tar, 	)
+				 and not ni.unit.debuff(tar, demoshout)
 				 and GetTime() - ni.data.darhanger.warrior.LastShout > 4
 				 and ni.spell.available(demoshout) then
 					ni.spell.cast(demoshout, tar)
@@ -354,6 +355,17 @@ local abilities = {
 			return true
 		end
 	end,
+	
+	["Low level Heroic Strike"] = function()
+	if ni.spell.available(heroicstrike, true)
+			 and not IsCurrentSpell(heroicstrike) 
+			 and ni.spell.isinstant(heroicstrike)
+			 and UnitLevel("player") <= 15
+			 and UnitPower("player") >= 15 then
+				ni.spell.cast(heroicstrike, "target")
+			end
+			end,
+				
 -----------------------------------
 	["Heroic Strike + Cleave (Filler)"] = function()
 		local enemies = ni.unit.enemiesinrange("target", 5)
