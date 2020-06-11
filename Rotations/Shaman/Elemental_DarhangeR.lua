@@ -3,10 +3,9 @@ local data = {"DarhangeR.lua"}
 local popup_shown = false;
 local queue = {
 	"Window",	
-	"Stutter cast pause",
 	"Universal pause",
 	"AutoTarget",
-	"Enchant Weapon",
+	--"Enchant Weapon",
 	"Water Shield",
 	"Thunderstorm (Regen)",
 	"Combat specific Pause",
@@ -30,24 +29,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+			if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -55,7 +37,8 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+		 and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
@@ -92,6 +75,7 @@ local abilities = {
 -----------------------------------
 	["Combat specific Pause"] = function()
 		if ni.data.darhanger.casterStop()
+		or ni.data.darhanger.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -140,8 +124,8 @@ local abilities = {
 		local hracial = { 33697, 20572, 33702, 26297 }
 		local alracial = { 20594, 28880 }
 		--- Undead
-		if ni.data.darhanger.forsaken()
-		 and IsSpellKnown(7744)
+		if IsSpellKnown(7744)
+		 and ni.data.darhanger.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -326,7 +310,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Elemental Shaman by DarhangeR", 
+		 ni.debug.popup("Elemental Shaman by DarhangeR  -- Modified by Xcesius for leveling",
 		 "Welcome to Elemental Shaman Profile! Support and more in Discord > https://discord.gg/u4mtjws.")
 		popup_shown = true;
 		end 

@@ -36,9 +36,9 @@
 * [Retri_DarhangeR] -- 👷
 
 ### Priest
-* [Discipline_DarhangeR] -- ⁉️
-* [Holy_DarhangeR] -- ⁉️
-* [Shadow_DarhangeR] -- ⁉️
+* [Discipline_DarhangeR] -- 👷
+* [Holy_DarhangeR] -- 👷
+* [Shadow_DarhangeR] -- 👷
 
 ### Rogue
 * [Assassination_DarhangeR]-- 👷

@@ -1,9 +1,28 @@
 local data = {"DarhangeR.lua"}
 
+local innerfire = GetSpellInfo(48168)
+local prayeroffortitude = GetSpellInfo(48162)
+local prayerofspirit = GetSpellInfo(48074)
+local felintelligence = GetSpellInfo(57567)
+local prayerofshadowprotection = GetSpellInfo(48170)
+local shadowfiend = GetSpellInfo(34433)
+local desperateprayer = GetSpellInfo(48173)
+local divinehymn = GetSpellInfo(64843)
+local painsupression = GetSpellInfo(33206)
+local powerwordshield = GetSpellInfo(48066)
+local prayerofmending = GetSpellInfo(48113)
+local prayerofhealing = GetSpellInfo(48072)
+local renew = GetSpellInfo(48068)
+local biningheal = GetSpellInfo(48120)
+local flashheal = GetSpellInfo(48071)
+local penance = GetSpellInfo(53007)
+local greaterheal = GetSpellInfo(48063)
+local circleofhealing = GetSpellInfo(48089)
+
+
 local popup_shown = false;
 local queue = {
 	"Window",	
-	"Stutter cast pause",
 	"Universal pause",
 	"Inner Fire",
 	"Prayer of Fortitude",
@@ -31,7 +50,6 @@ local queue = {
 }
 local queue2 = {
 	"Window",	
-	"Stutter cast pause",
 	"Universal pause",
 	"Inner Fire",
 	"Prayer of Fortitude",
@@ -61,68 +79,51 @@ local queue2 = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+			if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
 -----------------------------------
 	["Inner Fire"] = function()
-		if not ni.player.buff(48168)
-		 and ni.spell.available(48168) then
-			ni.spell.cast(48168)
+		if not ni.player.buff(innerfire)
+		 and ni.spell.available(innerfire) then
+			ni.spell.cast(innerfire)
 			return true
 		end
 	end,
 -----------------------------------
 	["Prayer of Fortitude"] = function()
-		if ni.player.buff(48162)
-		 or not IsUsableSpell(GetSpellInfo(48162)) then 
+		if ni.player.buff(prayeroffortitude)
+		 or not IsUsableSpell(prayeroffortitude) then 
 		 return false
 	end
-		if ni.spell.available(48162)
-		 and ni.spell.isinstant(48162) then
-			ni.spell.cast(48162)	
+		if ni.spell.available(prayeroffortitude)
+		 and ni.spell.isinstant(prayeroffortitude) then
+			ni.spell.cast(prayeroffortitude)	
 			return true
 		end
 	end,
 -----------------------------------
 	["Prayer of Spirit"] = function()
-		if ni.player.buffs("48074||57567")
-		 or not IsUsableSpell(GetSpellInfo(48074)) then 
+		if ni.player.buffs("prayerofspirit||felintelligence")
+		 or not IsUsableSpell(prayerofspirit) then 
 		 return false
 	end
-		if ni.spell.available(48074) 
-		 and ni.spell.isinstant(48074) then
-			ni.spell.cast(48074)	
+		if ni.spell.available(prayerofspirit) 
+		 and ni.spell.isinstant(prayerofspirit) then
+			ni.spell.cast(prayerofspirit)	
 			return true
 		end
 	end,
 -----------------------------------
 	["Prayer of Shadow Protection"] = function()
-		if ni.player.buff(48170)
-		 or not IsUsableSpell(GetSpellInfo(48170)) then 
+		if ni.player.buff(prayerofshadowprotection)
+		 or not IsUsableSpell(prayerofshadowprotection) then 
 		 return false
 	end
-		if ni.spell.available(48170)
-		 and ni.spell.isinstant(48170) then
-			ni.spell.cast(48170)	
+		if ni.spell.available(prayerofshadowprotection)
+		 and ni.spell.isinstant(prayerofshadowprotection) then
+			ni.spell.cast(prayerofshadowprotection)	
 			return true
 		end
 	end,
@@ -188,8 +189,8 @@ local abilities = {
 		local hracial = { 33697, 20572, 33702, 26297 }
 		local alracial = { 20594, 28880 }
 		--- Undead
-		if ni.data.darhanger.forsaken()
-		 and IsSpellKnown(7744)
+		if IsSpellKnown(7744)
+		 and ni.data.darhanger.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -229,19 +230,19 @@ local abilities = {
 -----------------------------------
 	["Desperate Prayer"] = function()
 		if ni.player.hp() < 20
-		 and IsSpellKnown(48173)
-		 and ni.spell.isinstant(48173) 
-		 and ni.spell.available(48173) then
-			ni.spell.cast(48173)
+		 and IsSpellKnown(desperateprayer)
+		 and ni.spell.isinstant(desperateprayer) 
+		 and ni.spell.available(desperateprayer) then
+			ni.spell.cast(desperateprayer)
 			return true
 		end
 	end,
 -----------------------------------
 	["Shadowfiend"] = function()
 		if ni.player.power() < 37
-		 and ni.spell.isinstant(34433)
-		 and ni.spell.available(34433) then
-			ni.spell.cast(34433, "target")
+		 and ni.spell.isinstant(shadowfiend)
+		 and ni.spell.available(shadowfiend) then
+			ni.spell.cast(shadowfiend, "target")
 			return true
 		end
 	end,
@@ -250,12 +251,12 @@ local abilities = {
 		if ni.healing.averagehp(9) < 35
 		 and ni.spell.isinstant(14751)
 		 and ni.spell.available(14751)
-		 and ni.spell.isinstant(48066)
-		 and ni.spell.available(48066)
-		 and ni.spell.available(64843)
+		 and ni.spell.isinstant(powerwordshield)
+		 and ni.spell.available(powerwordshield)
+		 and ni.spell.available(divinehymn)
 		 and not ni.unit.debuff("player", 6788)
-		 and not ni.unit.buff("player", 48066, "player") then
-			ni.spell.cast(48066, "player")
+		 and not ni.unit.buff("player", powerwordshield, "player") then
+			ni.spell.cast(powerwordshield, "player")
 			ni.spell.cast(14751)
 			return true
 		end
@@ -264,9 +265,9 @@ local abilities = {
 	["Divine Hymn"] = function()
 		if ni.player.buff(14751)
 		 and not ni.player.ismoving()
-		 and ni.spell.available(64843)
+		 and ni.spell.available(divinehymn)
 		 and UnitChannelInfo("player") == nil then
-			ni.spell.cast(64843)
+			ni.spell.cast(divinehymn)
 			return true
 		end
 	end,
@@ -276,37 +277,37 @@ local abilities = {
 		local seren, _, _, count = ni.player.buff(63734)
 		-- Main Tank Heal
 		if UnitExists(tank) then
-		 local rnewtank, _, _, _, _, _, rnewtank_time = ni.unit.buff(tank, 48068, "player")
-		 local pwstank, _, _, _, _, _, pwstank_time = ni.unit.buff(tank, 48066, "player")
-		 local pmendtank = ni.unit.buff(tank, 48113, "player")
+		 local rnewtank, _, _, _, _, _, rnewtank_time = ni.unit.buff(tank, renew, "player")
+		 local pwstank, _, _, _, _, _, pwstank_time = ni.unit.buff(tank, powerwordshield, "player")
+		 local pmendtank = ni.unit.buff(tank, prayerofmending, "player")
 		 local ws = ni.unit.debuff(tank, 6788)
 		-- Heal MT with Renew 
-		if ni.spell.available(48068)
-		 and ni.spell.isinstant(48068)
+		if ni.spell.available(renew)
+		 and ni.spell.isinstant(renew)
 		 and (not rnewtank
 		 or (rnewtank and rnewtank_time - GetTime() < 2))
-		 and ni.spell.valid(tank, 48068, false, true, true) then
-			ni.spell.cast(48068, tank)
+		 and ni.spell.valid(tank, renew, false, true, true) then
+			ni.spell.cast(renew, tank)
 			return true
 		end
 		-- Put PW:S on MT
 		if ni.data.darhanger.youInInstance()
-		 and ni.spell.available(48066)
-		 and ni.spell.isinstant(48066)
+		 and ni.spell.available(powerwordshield)
+		 and ni.spell.isinstant(powerwordshield)
 		 and not ws
 		 and (not pwstank
 		 or (pwstank and pwstank_time - GetTime() < 0.7))
-		 and ni.spell.valid(tank, 48066, false, true, true) then
-			ni.spell.cast(48066, tank)
+		 and ni.spell.valid(tank, powerwordshield, false, true, true) then
+			ni.spell.cast(powerwordshield, tank)
 			return true
 		end
 		-- Put PoF Mending on MT
-		 if ni.spell.available(48113)
-		 and ni.spell.isinstant(48113)
+		 if ni.spell.available(prayerofmending)
+		 and ni.spell.isinstant(prayerofmending)
 		 and not pmendtank 
-		 and ni.spell.available(48113)
-		 and ni.spell.valid(tank, 48113, false, true, true) then
-			ni.spell.cast(48113, tank)
+		 and ni.spell.available(prayerofmending)
+		 and ni.spell.valid(tank, prayerofmending, false, true, true) then
+			ni.spell.cast(prayerofmending, tank)
 			return true
 		end
 		-- Greater Heal on MT
@@ -314,9 +315,9 @@ local abilities = {
 		 and ni.unit.hp(tank) < 50
 		 and (seren and count >= 2)
 		 and not ni.player.ismoving()
-		 and ni.spell.available(48063)
-		 and ni.spell.valid(tank, 48063, false, true, true) then		 
-			ni.spell.cast(48063, tank)
+		 and ni.spell.available(greaterheal)
+		 and ni.spell.valid(tank, greaterheal, false, true, true) then		 
+			ni.spell.cast(greaterheal, tank)
 			return true
 		end
 		-- Flash Heal on MT
@@ -324,8 +325,8 @@ local abilities = {
 		and ni.unit.hp(tank) < 80
 		and ni.spell.available()
 		and not ni.player.ismoving()
-		and ni.spell.valid(tank, 48071, false, true, true) then
-			ni.spell.cast(48071, tank)	
+		and ni.spell.valid(tank, flashheal, false, true, true) then
+			ni.spell.cast(flashheal, tank)	
 			return
 		end
 		-- Binding Heal on MT
@@ -333,36 +334,36 @@ local abilities = {
 		 and ni.unit.hp(tank) < 75
 		 and ni.player.hp() < 75	
 		 and not ni.player.ismoving()
-		 and ni.spell.available(48120)
-		 and ni.spell.valid(tank, 48120, false, true, true) then
-			ni.spell.cast(48120, tank)
+		 and ni.spell.available(biningheal)
+		 and ni.spell.valid(tank, biningheal, false, true, true) then
+			ni.spell.cast(biningheal, tank)
 			return
 			end			
 		end
 		-- Off Tank heal
 		if offTank ~= nil
 		 and UnitExists(offTank) then
-		 local rnewotank, _, _, _, _, _, rnewotank_time = ni.unit.buff(offTank, 48068, "player")
-		 local pwotank, _, _, _, _, _, pwotank_time = ni.unit.buff(offTank, 48066, "player")
+		 local rnewotank, _, _, _, _, _, rnewotank_time = ni.unit.buff(offTank, renew, "player")
+		 local pwotank, _, _, _, _, _, pwotank_time = ni.unit.buff(offTank, powerwordshield, "player")
 		 local ws = ni.unit.debuff(offTank, 6788)
 		-- Heal Off with Renew 
-		if ni.spell.available(48068)
-		 and ni.spell.isinstant(48068) 
+		if ni.spell.available(renew)
+		 and ni.spell.isinstant(renew) 
 		 and (not rnewotank
 		 or (rnewotank and rnewotank_time - GetTime() < 2))
-		 and ni.spell.valid(offTank, 48068, false, true, true) then
-			ni.spell.cast(48068, offTank)
+		 and ni.spell.valid(offTank, renew, false, true, true) then
+			ni.spell.cast(renew, offTank)
 			return true
 		 end
 		-- Put PW:S on Off
 		if ni.data.darhanger.youInInstance()
-		 and ni.spell.available(48066)
-		 and ni.spell.isinstant(48066)
+		 and ni.spell.available(powerwordshield)
+		 and ni.spell.isinstant(powerwordshield)
 		 and not ws
 		 and (not pwotank
 		 or (pwotank and pwotank_time - GetTime() < 0.7))
-		 and ni.spell.valid(offTank, 48066, false, true, true) then
-			ni.spell.cast(48066, offTank)
+		 and ni.spell.valid(offTank, powerwordshield, false, true, true) then
+			ni.spell.cast(powerwordshield, offTank)
 			return true
 		end
 		-- Greater Heal on Off
@@ -370,9 +371,9 @@ local abilities = {
 		 and ni.unit.hp(offTank) < 50
 		 and (seren and count >= 2)
 		 and not ni.player.ismoving()
-		 and ni.spell.available(48063)
-		 and ni.spell.valid(offTank, 48063, false, true, true) then		 
-			ni.spell.cast(48063, offTank)
+		 and ni.spell.available(greaterheal)
+		 and ni.spell.valid(offTank, greaterheal, false, true, true) then		 
+			ni.spell.cast(greaterheal, offTank)
 			return true
 		end
 		-- Flash Heal on Off
@@ -380,8 +381,8 @@ local abilities = {
 		and ni.unit.hp(offTank) < 80
 		and ni.spell.available()
 		and not ni.player.ismoving()
-		and ni.spell.valid(offTank, 48071, false, true, true) then
-			ni.spell.cast(48071, offTank)	
+		and ni.spell.valid(offTank, flashheal, false, true, true) then
+			ni.spell.cast(flashheal, offTank)	
 			return
 		end
 		-- Binding Heal on Off
@@ -389,9 +390,9 @@ local abilities = {
 		 and ni.unit.hp(offTank) < 75
 		 and ni.player.hp() < 75	
 		 and not ni.player.ismoving()
-		 and ni.spell.available(48120)
-		 and ni.spell.valid(offTank, 48120, false, true, true) then
-			ni.spell.cast(48120, offTank)
+		 and ni.spell.available(biningheal)
+		 and ni.spell.valid(offTank, biningheal, false, true, true) then
+			ni.spell.cast(biningheal, offTank)
 			return
 			end		
 		end
@@ -402,11 +403,11 @@ local abilities = {
 		if  ni.members[i].hp < 20
 		 and ni.spell.available(47788)
 		 and ni.spell.isinstant(47788)
-		 and ni.spell.available(48063)
+		 and ni.spell.available(greaterheal)
 		 and ni.spell.valid(ni.members[i].unit, 47788, false, true, true)
-		 and ni.spell.valid(ni.members[i].unit, 48063, false, true, true) then
+		 and ni.spell.valid(ni.members[i].unit, greaterheal, false, true, true) then
 			ni.spell.cast(47788, ni.members[i].unit)
-			ni.spell.cast(48063, ni.members[i].unit)
+			ni.spell.cast(greaterheal, ni.members[i].unit)
 			return true
 			end
 		end
@@ -414,13 +415,13 @@ local abilities = {
 -----------------------------------
 	["Circle of Healing"] = function()
 		for i = 1, #ni.members do
-		if ni.spell.available(48089)
-		 and ni.spell.isinstant(48089) then 
+		if ni.spell.available(circleofhealing)
+		 and ni.spell.isinstant(circleofhealing) then 
 		 -- Heal party with Circle
 		if ni.healing.averagehp(3) < 85
 		 and ni.members[i].hp < 85
-		 and ni.spell.valid(ni.members[i].unit, 48089, false, true, true) then
-			ni.spell.cast(48089, ni.members[i].unit)
+		 and ni.spell.valid(ni.members[i].unit, circleofhealing, false, true, true) then
+			ni.spell.cast(circleofhealing, ni.members[i].unit)
 			return true
 			end
 		end
@@ -429,8 +430,8 @@ local abilities = {
 		 and ni.data.darhanger.youInRaid()
 		 and ni.healing.averagehp(4) < 85
 		 and ni.members[i].hp < 85
-		 and ni.spell.valid(ni.members[i].unit, 48089, false, true, true) then
-			ni.spell.cast(48089, ni.members[i].unit)
+		 and ni.spell.valid(ni.members[i].unit, circleofhealing, false, true, true) then
+			ni.spell.cast(circleofhealing, ni.members[i].unit)
 			return true
 		end
 		-- Heal raid with Circle + Glyph
@@ -438,8 +439,8 @@ local abilities = {
 		 and ni.data.darhanger.youInRaid()
 		 and ni.members[i].hp < 85
 		 and ni.healing.averagehp(5) < 85
-		 and ni.spell.valid(ni.members[i].unit, 48089, false, true, true) then
-			ni.spell.cast(48089, ni.members[i].unit)
+		 and ni.spell.valid(ni.members[i].unit, circleofhealing, false, true, true) then
+			ni.spell.cast(circleofhealing, ni.members[i].unit)
 			return true
 			end
 		end
@@ -450,11 +451,11 @@ local abilities = {
 		 if ni.members[i].hp < 90
 		 and (ni.player.power() < 55
 		 or ni.player.ismoving())
-		 and ni.spell.available(48068)
-		 and ni.spell.isinstant(48068)
-		 and not ni.unit.buff(ni.members[i].unit, 48068, "player")
-		 and ni.spell.valid(ni.members[i].unit, 48068, false, true, true) then
-			ni.spell.cast(48068, ni.members[i].unit)
+		 and ni.spell.available(renew)
+		 and ni.spell.isinstant(renew)
+		 and not ni.unit.buff(ni.members[i].unit, renew, "player")
+		 and ni.spell.valid(ni.members[i].unit, renew, false, true, true) then
+			ni.spell.cast(renew, ni.members[i].unit)
 			return true
 			end
 		end
@@ -463,11 +464,11 @@ local abilities = {
 	["Renew All"] = function()
 		for i = 1, #ni.members do
 		 if ni.members[i].hp < 95
-		 and ni.spell.available(48068)
-		 and ni.spell.isinstant(48068)
-		 and not ni.unit.buff(ni.members[i].unit, 48068, "player")
-		 and ni.spell.valid(ni.members[i].unit, 48068, false, true, true) then
-			ni.spell.cast(48068, ni.members[i].unit)
+		 and ni.spell.available(renew)
+		 and ni.spell.isinstant(renew)
+		 and not ni.unit.buff(ni.members[i].unit, renew, "player")
+		 and ni.spell.valid(ni.members[i].unit, renew, false, true, true) then
+			ni.spell.cast(renew, ni.members[i].unit)
 			return true
 			end
 		end
@@ -476,22 +477,22 @@ local abilities = {
 	["Prayer of Healing (Renew Build)"] = function()
 		local seren, _, _, count = ni.player.buff(63734)
 		for i = 1, #ni.members do
-		if ni.spell.available(48072)
-		 and ni.spell.cd(48089) ~= 0
+		if ni.spell.available(prayerofhealing)
+		 and ni.spell.cd(circleofhealing) ~= 0
 		 and not ni.player.ismoving() then 
 		 -- Heal party with Prayer
 		if ni.healing.averagehp(3) < 75
 		 and ni.members[i].hp < 75
-		 and ni.spell.valid(ni.members[i].unit, 48072, false, true, true) then
-			ni.spell.cast(48072, ni.members[i].unit)
+		 and ni.spell.valid(ni.members[i].unit, prayerofhealing, false, true, true) then
+			ni.spell.cast(prayerofhealing, ni.members[i].unit)
 			return true
 		end
 		 -- Heal raid with Prayer
 		if ni.data.darhanger.youInRaid()
 		 and ni.healing.averagehp(4) < 75
 		 and ni.members[i].hp < 75
-		 and ni.spell.valid(ni.members[i].unit, 48072, false, true, true) then
-			ni.spell.cast(48072, ni.members[i].unit)
+		 and ni.spell.valid(ni.members[i].unit, prayerofhealing, false, true, true) then
+			ni.spell.cast(prayerofhealing, ni.members[i].unit)
 				return true
 				end
 			end
@@ -501,23 +502,23 @@ local abilities = {
 	["Prayer of Healing"] = function()
 		local seren, _, _, count = ni.player.buff(63734)
 		for i = 1, #ni.members do
-		if ni.spell.available(48072)
+		if ni.spell.available(prayerofhealing)
 		 and (seren and count >= 2)
-		 and ni.spell.cd(48089) ~= 0
+		 and ni.spell.cd(circleofhealing) ~= 0
 		 and not ni.player.ismoving() then 
 		 -- Heal party with Prayer
 		if ni.healing.averagehp(3) < 75
 		 and ni.members[i].hp < 75
-		 and ni.spell.valid(ni.members[i].unit, 48072, false, true, true) then
-			ni.spell.cast(48072, ni.members[i].unit)
+		 and ni.spell.valid(ni.members[i].unit, prayerofhealing, false, true, true) then
+			ni.spell.cast(prayerofhealing, ni.members[i].unit)
 			return true
 		end
 		 -- Heal raid with Prayer
 		if ni.data.darhanger.youInRaid()
 		 and ni.healing.averagehp(4) < 75
 		 and ni.members[i].hp < 75
-		 and ni.spell.valid(ni.members[i].unit, 48072, false, true, true) then
-			ni.spell.cast(48072, ni.members[i].unit)
+		 and ni.spell.valid(ni.members[i].unit, prayerofhealing, false, true, true) then
+			ni.spell.cast(prayerofhealing, ni.members[i].unit)
 				return true
 				end
 			end
@@ -529,9 +530,9 @@ local abilities = {
 		for i = 1, #ni.members do
 		if ni.members[i].hp < 50
 		 and (seren and count >= 2)
-		 and ni.spell.available(48063)
-		 and ni.spell.valid(ni.members[i].unit, 48063, false, true, true) then
-			ni.spell.cast(48063, ni.members[i].unit)
+		 and ni.spell.available(greaterheal)
+		 and ni.spell.valid(ni.members[i].unit, greaterheal, false, true, true) then
+			ni.spell.cast(greaterheal, ni.members[i].unit)
 			return true
 			end
 		end
@@ -579,9 +580,9 @@ local abilities = {
 	["Flash Heal"] = function()
 		for i = 1, #ni.members do
 		if ni.members[i].hp < 70
-		 and ni.spell.available(48071)
-		 and ni.spell.valid(ni.members[i].unit, 48071, false, true, true) then
-			ni.spell.cast(48071, ni.members[i].unit)
+		 and ni.spell.available(flashheal)
+		 and ni.spell.valid(ni.members[i].unit, flashheal, false, true, true) then
+			ni.spell.cast(flashheal, ni.members[i].unit)
 			return true
 			end
 		end
@@ -589,7 +590,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		  ni.debug.popup("Holy Priest by DarhangeR", 
+		  ni.debug.popup("Holy Priest by DarhangeR -- Modified by Xcesius for leveling",  
 		 "Welcome to Holy Priest Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For enable priority healing Main Tank & Off Tank put tank name to Tank Overrides and press Enable Main/Off\n-For chose Renew Build or Serendipity Build type: /renew")
 		popup_shown = true;
 		end 

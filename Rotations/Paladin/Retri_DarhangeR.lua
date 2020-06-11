@@ -14,6 +14,7 @@ local conc = GetSpellInfo(48819)
 local hammerofwrath = GetSpellInfo(48806)
 local crusaderstrike = GetSpellInfo(35395)
 local hammeroftherighteous = GetSpellInfo(53595)
+local scaredshield = GetSpellInfo(53601)
 
 
 
@@ -55,24 +56,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+			if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -80,13 +64,13 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+		 and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
 -----------------------------------
 	["Seal of Corruption/Vengeance"] = function()
-	
 		local enemies = ni.unit.enemiesinrange("player", 5)
 		if #enemies <= 1
 		 and ni.spell.available(sealofcorruption) then
@@ -222,8 +206,8 @@ local abilities = {
 		local hracial = { 33697, 20572, 33702, 26297 }
 		local alracial = { 20594, 28880 }
 		--- Undead
-		if ni.data.darhanger.forsaken()
-		 and IsSpellKnown(7744)
+		if IsSpellKnown(7744)
+		 and ni.data.darhanger.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -233,14 +217,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
-		 and IsSpellInRange(GetSpellInfo(35395), "target") == 1 then 
+		 and ni.unit.inmelee("player", "target")
 					ni.spell.cast(hracial[i])
 					return true
 			end
 		end
 		--- Ally race
 		for i = 1, #alracial do
-		if IsSpellInRange(GetSpellInfo(35395), "target") == 1
+		if ni.unit.inmelee("player", "target")
 		 and ni.player.hp() < 20
 		 and IsSpellKnown(alracial[i])
 		 and ni.spell.available(alracial[i]) then 
@@ -254,7 +238,7 @@ local abilities = {
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
-		 and IsSpellInRange(GetSpellInfo(35395), "target") == 1 then
+		 and ni.unit.inmelee("player", "target") then
 			ni.player.useinventoryitem(10)
 			return true
 		end
@@ -264,13 +248,13 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
-		 and IsSpellInRange(GetSpellInfo(35395), "target") == 1 then
+		 and ni.unit.inmelee("player", "target") then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
-		 and IsSpellInRange(GetSpellInfo(35395), "target") == 1 then
+		 and ni.unit.inmelee("player", "target") then
 			ni.player.useinventoryitem(14)
 			return true
 			end
@@ -477,7 +461,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Retribution Paladin by DarhangeR", 
+		 ni.debug.popup("Retribution Paladin by DarhangeR for 3.3.5a -- Modified by Xcesius for leveling", 
 		 "Welcome to Retribution Paladin Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Holy Wrath configure AoE Toggle key.")
 		popup_shown = true;
 		end 

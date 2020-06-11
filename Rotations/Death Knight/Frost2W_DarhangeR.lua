@@ -20,7 +20,6 @@ local froststrike = GetSpellInfo(55268)
 local popup_shown = false;
 local queue = {
 	"Window",		
-	"Stutter cast pause",
 	"Universal pause",
 	"AutoTarget",
 	"Blood presence check",
@@ -45,6 +44,7 @@ local queue = {
 	"Howling Blast",
 	"Howling Blast (AoE)",
 	"Frost Strike (Kill)",
+	"Death Strike",
 	"Obliterate Dump",
 	"Obliterate",
 	"Frost Strike",
@@ -55,24 +55,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", 430)
-		 or ni.unit.buff("player", 433)
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------	
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+			if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -80,7 +63,8 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+			and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
@@ -105,6 +89,7 @@ local abilities = {
 -----------------------------------
 	["Combat specific Pause"] = function()
 		if ni.data.darhanger.meleeStop()
+		or ni.data.darhanger.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -160,8 +145,8 @@ local abilities = {
 		local hracial = { 33697, 20572, 33702, 26297 }
 		local alracial = { 20594, 28880 }
 		--- Undead
-		if ni.data.darhanger.forsaken()
-		 and IsSpellKnown(7744)
+		if IsSpellKnown(7744)
+		 and ni.data.darhanger.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -178,7 +163,7 @@ local abilities = {
 		end
 		--- Ally race
 		for i = 1, #alracial do
-		if IsSpellInRange(GetSpellInfo(49930), "target") == 1
+		if IsSpellInRange(bloodstrike, "target") == 1
 		 and ni.player.hp() < 20
 		 and IsSpellKnown(alracial[i])
 		 and ni.spell.available(alracial[i]) then 
@@ -192,7 +177,7 @@ local abilities = {
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
-		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then
+		 and IsSpellInRange(bloodstrike, "target") == 1 then
 			ni.player.useinventoryitem(10)
 			return true
 		end
@@ -202,13 +187,13 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
-		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then
+		 and IsSpellInRange(bloodstrike, "target") == 1 then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
-		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then
+		 and IsSpellInRange(bloodstrike, "target") == 1 then
 			ni.player.useinventoryitem(14)
 			return true
 			end
@@ -239,8 +224,8 @@ local abilities = {
 	["Death and Decay"] = function()
 		if ni.vars.combat.aoe
 		 and ni.spell.isinstant(deathanddecay)
-		 and ni.spell.available(deathanddecay) then
-			ni.spell.castat(deathanddecay, "target")
+		 and ni.spell.cd(deathanddecay) == 0 then
+			ni.spell.castatqueue(deathanddecay, "target")
 			return true
 		end
 	end,
@@ -285,6 +270,29 @@ local abilities = {
 		 and ni.spell.isinstant(47568)
 		 and ni.spell.available(47568) then
 			ni.spell.cast(47568)
+			return true
+		end
+	end,
+	-----------------------------------
+	["Death Strike"] = function()
+		local _, FR = ni.rune.frostrunecd()
+		local _, UR = ni.rune.unholyrunecd()
+		local _, DR = ni.rune.deathrunecd()
+		local icy = ni.data.darhanger.dk.icy()
+		local plague = ni.data.darhanger.dk.plague()
+		if not (ni.data.darhanger.youInInstance()
+		 or not ni.data.darhanger.youInRaid() )
+		 and ni.player.hp() < 50
+		 and ((FR >= 1 and UR >= 1)
+		 or (FR >= 1 and DR >= 1)
+		 or (DR >= 1 and UR >= 1)
+		 or (DR == 2))
+		 and plague
+		 and icy
+	         and ni.spell.isinstant(deathstrike)
+		 and ni.spell.available(deathstrike)
+		 and ni.spell.valid("target", deathstrike, true, true) then
+			ni.spell.cast(deathstrike, "target")
 			return true
 		end
 	end,
@@ -348,7 +356,7 @@ local abilities = {
 		 and ni.spell.valid("target", pestilence, true, true)
 		 and ( ( icy ~= nil and icy - GetTime() <= 5 )
 		 or ( plague ~= nil and plague - GetTime() <= 5 ) ) then 
-			ni.spell.cast(pestilence, "target")
+			ni.spell.cast(pestilence)
 			return true
 		end
 	end,
@@ -494,7 +502,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Frost Dual Wield DPS Deathknight by DarhangeR", 
+		 ni.debug.popup("Frost DW DPS Deathknight by DarhangeR for 3.3.5a -- Modified by Xcesius for leveling", 
 		 "Welcome to Frost Dual Wield DPS Deathknight Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Death and Decay configure AoE Toggle key.")
 		popup_shown = true;
 		end 

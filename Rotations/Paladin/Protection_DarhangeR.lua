@@ -7,7 +7,7 @@ local sealofrighteousness = GetSpellInfo(21084)
 local sacredshield = GetSpellInfo(53601)
 local righteousfury = GetSpellInfo(25780)
 local hammeroftherigheous = GetSpellInfo(53595)
-local layonhands = GetSpellInfo(48788)
+local layonhands = GetSpellInfo(2800)
 local divineprotection = GetSpellInfo(498)
 local divinesacrifice = GetSpellInfo(64205)
 local divineplea = GetSpellInfo(54428)
@@ -23,7 +23,7 @@ local holyshield = GetSpellInfo(48952)
 local handoffreedom = GetSpellInfo(1044)
 local cleanse = GetSpellInfo(4987)
 local shieldofrighteousness = GetSpellInfo(61411)
-
+local conc = GetSpellInfo(26573)
 
 local function available(spell)
 	return ni.spell.available(spell, true);
@@ -38,7 +38,6 @@ local willoftheforsaken = GetSpellInfo(7744)
 local popup_shown = false;
 local queue = {
 	"Window",
-	"Stutter cast pause",
 	"Universal pause",
 	"AutoTarget",
 	"Seal of Corruption/Vengeance",
@@ -57,37 +56,20 @@ local queue = {
 	"Hand of Reckoning (Ally)",
 	"Hand of Reckoning",
 	"Righteous Defence",
+	"Hammer of the Righteous",
+	"Holy Shield",	
+	"Shield of Righteousness",
 	"Holy Wrath",
 	"Consecration",
-	"Avenger's Shield",
 	"Judgements (PRO)",
-	"Holy Shield",	
-	"Hammer of the Righteous",
-	"Hand of Freedom (Player)",
+	"Avenger's Shield",
+--	"Hand of Freedom (Player)",
 	"Cleanse (Player)",
-	"Shield of Righteousness",
 }
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", 430)
-		 or ni.unit.buff("player", 433)
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+			if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -95,13 +77,13 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+		 and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
 -----------------------------------
 	["Seal of Corruption/Vengeance"] = function()
-	
 		local enemies = ni.unit.enemiesinrange("player", 5)
 		if #enemies <= 1
 		 and ni.spell.available(sealofcorruption) then
@@ -129,6 +111,7 @@ local abilities = {
 		and not ni.spell.available(sealofvengance) 
 		and ni.spell.available(sealofrighteousness) then
 		if not ni.player.buff(sealofrighteousness) 
+		and UnitLevel("player") < 22
 		and GetTime() - ni.data.darhanger.paladin.LastSeal > 3 then
 		ni.spell.cast(sealofrighteousness)
 		ni.data.darhanger.paladin.LastSeal = GetTime()
@@ -141,27 +124,40 @@ local abilities = {
 		and not ni.spell.available(sealofcommand) 
 		and ni.spell.available(sealofrighteousness) then
 		if not ni.player.buff(sealofrighteousness) 
+		and not ni.player.buff(sealofcommand)
+		and UnitLevel("player") < 22
 		and GetTime() - ni.data.darhanger.paladin.LastSeal > 3 then
 		ni.spell.cast(sealofrighteousness)
 		ni.data.darhanger.paladin.LastSeal = GetTime()
 		return true
 		end
 		end
-		
-	end,
+	
+			if #enemies <= 1
+		and ni.spell.available(sealofvengance) then
+		if not ni.player.buff(sealofvengance) 
+		 and GetTime() - ni.data.darhanger.paladin.LastSeal > 3
+		 and not ni.player.buff(sealofcorruption) then
+			ni.spell.cast(sealofvengance)
+			ni.data.darhanger.paladin.LastSeal = GetTime()
+			return true
+			end
+		end
+		end,
 -----------------------------------
 	["Seal of Command"] = function()
 		local enemies = ni.unit.enemiesinrange("player", 5)
-		if #enemies > 1	
-		-- and IsSpellKnown(sealofcommand)
-		 and ni.spell.available(sealofcommand)
-		 and GetTime() - ni.data.darhanger.paladin.LastSeal > 3
-		 and not ni.player.buff(sealofcommand) then 
+		if (#enemies > 1 or 
+		UnitLevel("player") < 60) 
+		and ni.spell.available(sealofcommand) then
+		if not ni.player.buff(sealofcommand) 
+		 and GetTime() - ni.data.darhanger.paladin.LastSeal > 3 then
 			ni.spell.cast(sealofcommand)
 			ni.data.darhanger.paladin.LastSeal = GetTime()
 			return true
 		end
-	end,
+		end
+	end,	
 -----------------------------------
 	["Righteous Fury"] = function()
 		if not ni.player.buff(righteousfury)
@@ -180,7 +176,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger.tankStop() == true
+		if ni.data.darhanger.tankStop()
+		or ni.data.darhanger.PlayerDebuffs()
 		 or UnitCanAttack("player", "target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -229,10 +226,10 @@ local abilities = {
 		local hracial = { 33697, 20572, 33702, 26297 }
 		local alracial = { 20594, 28880 }
 		--- Undead
-		if ni.data.darhanger.forsaken()
-		 and IsSpellKnown(willoftheforsaken)
-		 and ni.spell.available(willoftheforsaken) then
-				ni.spell.cast(willoftheforsaken)
+		if IsSpellKnown(7744)
+		 and ni.data.darhanger.forsaken()
+		 and ni.spell.available(7744) then
+				ni.spell.cast(7744)
 				return true
 		end
 		--- Horde race
@@ -362,13 +359,14 @@ local abilities = {
 -----------------------------------
 	["Consecration"] = function()
 		if ni.player.power() > 30
-		 and ni.spell.available(consecration)
-		 and ni.spell.isinstant(consecration)
+		 and ni.spell.available(conc)
+		 and ni.spell.isinstant(conc)
 		 and ni.unit.inmelee("player", "target") 
+		 and not ni.unit.ismoving("target")
 		 and ni.spell.valid("target", judgementofwisdom) then
-			ni.spell.cast(consecration, "target")
+			ni.spell.cast(conc, "target")
 			return true
-		end
+			end
 	end,
 -----------------------------------
 	["Avenger's Shield"] = function()
@@ -386,8 +384,8 @@ local abilities = {
 		if ni.spell.available(judgementoflight)
 		 and ni.spell.isinstant(judgementoflight)		
 		 and ni.spell.valid("target", judgementoflight, false, true, true) then
-			if ni.player.power() < 30
-			and ni.player.hp() >= 70 then
+			if ni.player.power() < 90
+			and ni.player.hp() >= 50 then
 				ni.spell.cast(judgementofwisdom, "target")
 			else
 				ni.spell.cast(judgementoflight, "target")
@@ -400,7 +398,8 @@ local abilities = {
 		if not ni.player.buff(holyshield)
 		 and ni.spell.isinstant(holyshield)
 		 and ni.spell.available(holyshield)
-		 and ni.spell.valid("target", hammeroftherigheous) then
+		 and ni.unit.inmelee("player", "target")
+		 and ni.spell.valid("target", judgementofwisdom) then
 			ni.spell.cast(holyshield, "target")
 			return true
 		end
@@ -455,7 +454,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Protection Paladin by DarhangeR", 
+		 ni.debug.popup("Protection Paladin by DarhangeR for 3.3.5a -- Modified by Xcesius for leveling",  
 		 "Welcome to Protection Paladin Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Holy Wrath configure AoE Toggle key.")
 		popup_shown = true;
 		end 

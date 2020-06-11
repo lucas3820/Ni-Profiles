@@ -10,16 +10,17 @@ local maul = GetSpellInfo(48480)
 local manglebear = GetSpellInfo(48564)
 local lacerate = GetSpellInfo(48568)
 local demoroar = GetSpellInfo(48560)
+local rip = GetSpellInfo(49800)
 
 local popup_shown = false;
 local queue = {
 	"Window",
-	"Stutter cast pause",
 	"Universal pause",
 	"AutoTarget",
 	"Gift of the Wild",
 --	"Thorns",
---	"Bear Form",
+	"Bear Form",
+	"Dire Bear Form",
 	"Combat specific Pause",
 	"Healthstone (Use)",
 	"Potions (Use)",
@@ -40,24 +41,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+			if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -65,7 +49,8 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+		 and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
@@ -93,6 +78,15 @@ local abilities = {
 	end,
 -----------------------------------
 	["Bear Form"] = function()
+		if not ni.spell.available(9634)
+		 not not ni.player.buff(5487)
+		 and ni.spell.available(5487) then
+			ni.spell.cast(5487)
+			return true
+		end
+	end,
+-----------------------------------
+	["Dire Bear Form"] = function()
 		if not ni.player.buff(9634)
 		 and ni.spell.available(9634) then
 			ni.spell.cast(9634)
@@ -102,6 +96,7 @@ local abilities = {
 -----------------------------------
 	["Combat specific Pause"] = function()
 		if ni.data.darhanger.tankStop()
+		or ni.data.darhanger.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -138,8 +133,8 @@ local abilities = {
 		local hracial = { 33697, 20572, 33702, 26297 }
 		local alracial = { 20594, 28880 }
 		--- Undead
-		if ni.data.darhanger.forsaken()
-		 and IsSpellKnown(7744)
+		if IsSpellKnown(7744)
+		 and ni.data.darhanger.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -149,14 +144,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
-		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then 
+		 and IsSpellInRange(rip, "target") == 1 then 
 					ni.spell.cast(hracial[i])
 					return true
 			end
 		end
 		--- Ally race
 		for i = 1, #alracial do
-		if IsSpellInRange(GetSpellInfo(49800), "target") == 1
+		if IsSpellInRange(rip, "target") == 1
 		 and ni.player.hp() < 20
 		 and IsSpellKnown(alracial[i])
 		 and ni.spell.available(alracial[i]) then 
@@ -317,7 +312,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Feral Bear Druid by DarhangeR", 
+		 ni.debug.popup("Feral Bear Druid by DarhangeR for 3.3.5a -- Modified by Xcesius for leveling", 
 		 "Welcome to Feral Bear Druid Profile! Support and more in Discord > https://discord.gg/u4mtjws.")
 		popup_shown = true;
 		end 

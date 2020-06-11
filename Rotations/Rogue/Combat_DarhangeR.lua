@@ -44,10 +44,9 @@ local eviscerate = GetSpellInfo(48668)
 local popup_shown = false;
 local queue = {
 	"Window",
-	"Stutter cast pause",
 	"Universal pause",
 	"AutoTarget",
-	"Poison Weapon",
+--	"Poison Weapon",
 	"Combat specific Pause",
 	"Healthstone (Use)",
 	"Potions (Use)",
@@ -70,24 +69,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", 430)
-		 or ni.unit.buff("player", 433)
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+			if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -95,7 +77,8 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+		 and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
@@ -382,7 +365,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Combat Rogue by DarhangeR", 
+		 ni.debug.popup("Combat Rogue by DarhangeR -- Modified by Xcesius for leveling", 
 		 "Welcome to Combat Rogue Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-Focus ally target for use TofT on it or put tank name to Tank Overrides and press Enable Main.\n-Rotation developed for Rupture or Eviscerate builds.\n-For chose build use Glyph of Rupture or Glyph of Eviscerate.\n-For use Fan of Knives configure AoE Toggle key.")
 		popup_shown = true;
 		end 

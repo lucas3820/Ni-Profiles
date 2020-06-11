@@ -16,12 +16,11 @@ local shred = GetSpellInfo(48572)
 local popup_shown = false;
 local queue = {
 	"Window",	
-	"Stutter cast pause",
 	"Universal pause",
 	"AutoTarget",
 	"Gift of the Wild",
 	--"Thorns",
-	--"Cat Form",
+	"Cat Form",
 	"Combat specific Pause",
 	"Healthstone (Use)",
 	"Potions (Use)",
@@ -45,24 +44,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-		if IsMounted()
-		 or UnitInVehicle("player")
-		 or UnitIsDeadOrGhost("target") 
-		 or UnitIsDeadOrGhost("player")
-		 or UnitChannelInfo("player")
-		 or UnitCastingInfo("player")
-		 or ni.unit.buff("target", 59301)
-		 or ni.unit.buff("player", GetSpellInfo(430))
-		 or ni.unit.buff("player", GetSpellInfo(433))
-		 or (not UnitAffectingCombat("player")
-		 and ni.vars.followEnabled) then
-			return true
-		end
-	end,
------------------------------------
-	["Stutter cast pause"] = function()
-		if ni.spell.gcd()
-		 or ni.vars.CastStarted == true then
+			if ni.data.darhanger.UniPause() then
 			return true
 		end
 	end,
@@ -70,19 +52,20 @@ local abilities = {
 	["AutoTarget"] = function()
 		if UnitAffectingCombat("player")
 		 and (not UnitExists("target")
-		 or (UnitExists("target") and not UnitCanAttack("player", "target"))) then
+		 or (UnitExists("target") 
+		 and not UnitCanAttack("player", "target"))) then
 			ni.player.runtext("/targetenemy")
 		end
 	end,
 -----------------------------------
 	["Gift of the Wild"] = function()
-		if ni.player.buff(48470)
-		 or not IsUsableSpell(GetSpellInfo(48470)) then 
+		if ni.player.buff(giftofthewild)
+		 or not IsUsableSpell(giftofthewild) then 
 		 return false
 	end
-		if ni.spell.available(48470)
-		 and ni.spell.isinstant(48470) then
-			ni.spell.cast(48470)	
+		if ni.spell.available(giftofthewild)
+		 and ni.spell.isinstant(giftofthewild) then
+			ni.spell.cast(giftofthewild)	
 			return true
 		end
 	end,
@@ -107,6 +90,7 @@ local abilities = {
 -----------------------------------
 	["Combat specific Pause"] = function()
 		if ni.data.darhanger.meleeStop()
+		or ni.data.darhanger.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -154,14 +138,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
-		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then 
+		 and IsSpellInRange(rip, "target") == 1 then 
 					ni.spell.cast(hracial[i])
 					return true
 			end
 		end
 		--- Ally race
 		for i = 1, #alracial do
-		if IsSpellInRange(GetSpellInfo(49800), "target") == 1
+		if IsSpellInRange(rip, "target") == 1
 		 and ni.player.hp() < 20
 		 and IsSpellKnown(alracial[i])
 		 and ni.spell.available(alracial[i]) then 
@@ -175,7 +159,7 @@ local abilities = {
 		if ni.player.slotcastable(10) 
 		 and ni.player.slotcd(10) == 0
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
-		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then
+		 and IsSpellInRange(rip, "target") == 1 then
 			ni.player.useinventoryitem(10)
 			return true
 		end
@@ -185,13 +169,13 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
-		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then
+		 and IsSpellInRange(rip, "target") == 1 then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0
-		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then
+		 and IsSpellInRange(rip, "target") == 1 then
 			ni.player.useinventoryitem(14)
 			return true
 			end
@@ -388,7 +372,7 @@ local abilities = {
 -----------------------------------
 	["Window"] = function()
 		if not popup_shown then
-		 ni.debug.popup("Feral Cat Druid by DarhangeR", 
+		 ni.debug.popup("Feral Cat Druid by DarhangeR for 3.3.5a -- Modified by Xcesius for leveling", 
 		 "Welcome to Feral Cat Druid Profile! Support and more in Discord > https://discord.gg/u4mtjws.")
 		popup_shown = true;
 		end 
