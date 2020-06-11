@@ -153,7 +153,7 @@ local abilities = {
 	["Fel Domination"] = function()
 		if not UnitExists("playerpet")
 		 and ni.spell.isinstant(18708) 
-	     and ni.spell.available(ni.data.darhanger.warlock.petDemo)
+	         and ni.spell.available(ni.data.darhanger.warlock.petDemo)
 		 and IsUsableSpell(GetSpellInfo(ni.data.darhanger.warlock.petDemo))
 		 and ni.spell.available(18708) then
 			ni.spell.cast(18708)
@@ -276,6 +276,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 47809) then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -296,6 +297,7 @@ local abilities = {
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.valid("target", 47809) then
 			ni.player.useinventoryitem(10)
@@ -307,12 +309,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 47809) then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 47809) then
 			ni.player.useinventoryitem(14)
 			return true
@@ -422,6 +426,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and corruption
 		 and ni.spell.available(47241)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 47809) then
 			ni.spell.cast(47241)
 			return true
@@ -451,6 +456,7 @@ local abilities = {
 		if ni.player.distance("target") < 3
 		 and ni.player.buff(47241)
 		 and ni.spell.isinstant(50589)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.available(50589) then
 			ni.spell.cast(50589)
 			return true
@@ -462,6 +468,7 @@ local abilities = {
 		 and UnitExists("playerpet")
 		 and ni.spell.available(47193)
 		 and ni.spell.isinstant(47193)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 47809) then
 			ni.spell.cast(47193)
 			return true
@@ -473,9 +480,12 @@ local abilities = {
 		local CotE = ni.data.darhanger.warlock.CotE()
 		local eplag = ni.data.darhanger.warlock.eplag()
 		local earmoon = ni.data.darhanger.warlock.earmoon()
-		if not (elem or CotE or eplag or earmoon)
+		if ( ni.vars.combat.cd or ni.unit.isboss("target") 
+		or UnitHealthMax("target") > 450000 )
+		 and not (elem or CotE or eplag or earmoon)
 		 and ni.spell.available(47865)
 		 and ni.spell.isinstant(47865)
+		 and ni.data.darhanger.CDsaver()
 		 and ni.spell.valid("target", 47865, false, true, true)	
 		 and GetTime() - ni.data.darhanger.warlock.LastCurse > 2 then
 			ni.spell.cast(47865, "target")
@@ -495,6 +505,7 @@ local abilities = {
 		 and ((CotE and not elem) or eplag or earmoon)
 		 and ni.spell.available(47867)
 		 and ni.spell.isinstant(47867)
+		 and ni.data.darhanger.CDsaver()
 		 and ni.spell.valid("target", 47867, false, true, true)	
 		 and GetTime() - ni.data.darhanger.warlock.LastCurse > 1 then
 			ni.spell.cast(47867, "target")

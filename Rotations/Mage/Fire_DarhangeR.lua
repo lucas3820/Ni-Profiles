@@ -159,6 +159,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42897) then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -180,6 +181,7 @@ local abilities = {
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42833) then
 			ni.player.useinventoryitem(10)
 			return true
@@ -190,12 +192,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42833) then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42833) then
 			ni.player.useinventoryitem(14)
 			return true
@@ -282,6 +286,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(12043) 		 
 		 and ni.spell.available(11129)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42833) then
 			ni.spell.cast(11129)
 			return true
@@ -293,6 +298,7 @@ local abilities = {
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(12472)
 		 and ni.spell.available(12472)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42833) then
 			ni.spell.cast(12472)
 			return true
@@ -303,6 +309,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(55342)
 		 and ni.spell.available(55342)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42833) then
 			ni.spell.cast(55342, "target")
 			ni.player.runtext("/petattack")

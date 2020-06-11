@@ -136,6 +136,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -156,6 +157,7 @@ local abilities = {
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then
 			ni.player.useinventoryitem(10)
@@ -167,12 +169,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then
 			ni.player.useinventoryitem(14)
 			return true
@@ -225,6 +229,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(49016)
 		 and ni.spell.available(49016)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then
 		  if not UnitExists("focus")
 		  and not ni.player.buff(49016) then
@@ -236,6 +241,7 @@ local abilities = {
 		 and not UnitIsDeadOrGhost("focus")
 		 and ni.spell.isinstant(49016)
 		 and ni.spell.available(49016)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and not ni.unit.buff("focus", 49016) then
 			ni.spell.cast(49016, "focus")
 			return true

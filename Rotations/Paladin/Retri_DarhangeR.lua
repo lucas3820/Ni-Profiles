@@ -182,6 +182,7 @@ local abilities = {
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellInRange(GetSpellInfo(35395), "target") == 1 then
 			ni.player.useinventoryitem(10)
@@ -193,12 +194,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(35395), "target") == 1 then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(35395), "target") == 1 then
 			ni.player.useinventoryitem(14)
 			return true
@@ -297,6 +300,7 @@ local abilities = {
 		if ( ni.vars.CD or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(31884) 
 		 and ni.spell.available(31884)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 35395) then
 			ni.spell.cast(31884)
 			return true

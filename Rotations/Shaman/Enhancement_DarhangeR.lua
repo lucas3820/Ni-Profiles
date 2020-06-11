@@ -153,6 +153,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 17364) then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -173,6 +174,7 @@ local abilities = {
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.valid("target", 17364) then
 			ni.player.useinventoryitem(10)
@@ -184,12 +186,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 17364) then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 17364) then
 			ni.player.useinventoryitem(14)
 			return true
@@ -267,6 +271,7 @@ local abilities = {
 		 and not UnitExists("playerpet")
 		 and ni.spell.isinstant(51533)
                  and ni.spell.available(51533)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 17364) then
 			ni.spell.cast(51533)
 			return true
@@ -305,7 +310,9 @@ local abilities = {
 -----------------------------------
 	["Healing Wave"] = function()
 		local maelstrom, _, _, maelstrom_stacks = ni.player.buff(53817)
-		if maelstrom_stacks == 5
+		if not (ni.data.darhanger.youInInstance()
+		 or not ni.data.darhanger.youInRaid() )
+		 and maelstrom_stacks == 5
 		 and ni.player.hp() < 60
 		 and ni.spell.isinstant(49273)
 		 and ni.spell.available(49273) then

@@ -125,6 +125,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -145,6 +146,7 @@ local abilities = {
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10) 
 		 and ni.player.slotcd(10) == 0
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then
 			ni.player.useinventoryitem(10)
@@ -155,13 +157,15 @@ local abilities = {
 	["Trinkets"] = function()
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
-		 and ni.player.slotcd(13) == 0 
+		 and ni.player.slotcd(13) == 0
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then
 			ni.player.useinventoryitem(14)
 			return true
@@ -223,7 +227,8 @@ local abilities = {
 		 and ni.spell.available(50334)
 		 and ni.player.power() < 35
 		 and ( savage ~= nil and savage - GetTime() > 8 )
-		 and ( rip ~= nil and rip - GetTime() > 8 ) then
+		 and ( rip ~= nil and rip - GetTime() > 8 ) 
+		 and ni.data.darhanger.CDsaverTTD() then
 			ni.spell.cast(50334)
 			return true
 		end

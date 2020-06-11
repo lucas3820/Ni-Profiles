@@ -122,6 +122,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49800), "target") == 1 then 
 					ni.spell.cast(hracial[i])
 					return true

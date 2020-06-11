@@ -21,6 +21,7 @@ local queue = {
 	"Hand of Reckoning (Ally)",
 	"Hand of Reckoning",
 	"Righteous Defence",
+	"Avenging Wrath",
 	"Holy Wrath",
 	"Consecration",
 	"Avenger's Shield",
@@ -272,6 +273,17 @@ local abilities = {
 				return true
 				end
 			end
+		end
+	end,
+-----------------------------------
+	["Avenging Wrath"] = function()
+		if ( ni.vars.CD or ni.unit.isboss("target") )
+		 and ni.spell.isinstant(31884) 
+		 and ni.spell.available(31884)
+		 and ni.data.darhanger.CDsaverTTD()
+		 and ni.spell.valid("target", 35395) then
+			ni.spell.cast(31884)
+			return true
 		end
 	end,
 -----------------------------------

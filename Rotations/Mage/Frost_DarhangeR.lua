@@ -170,6 +170,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42897) then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -190,6 +191,7 @@ local abilities = {
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.valid("target", 42842)  then
 			ni.player.useinventoryitem(10)
@@ -201,12 +203,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42842) then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42842) then
 			ni.player.useinventoryitem(14)
 			return true
@@ -303,6 +307,7 @@ local abilities = {
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(12472) 
 		 and ni.spell.available(12472)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42842) then
 			ni.spell.cast(12472)
 			return true
@@ -313,6 +318,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(55342) 
 		 and ni.spell.available(55342)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 42842) then
 			ni.spell.cast(55342, "target")
 			ni.player.runtext("/petattack")
@@ -325,6 +331,7 @@ local abilities = {
 		 and not UnitExists("playerpet")
 		 and ni.spell.isinstant(31687) 
 		 and ni.spell.available(31687)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsUsableSpell(GetSpellInfo(31687)) then
 			ni.spell.cast(31687)
 			return true
@@ -336,6 +343,7 @@ local abilities = {
 		 and not ni.player.buff(12472)
 		 and ni.spell.isinstant(11958) 
 		 and ni.spell.available(11958)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.valid("target", 42842) then
 			ni.spell.cast(11958)

@@ -147,6 +147,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 48461) then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -166,7 +167,8 @@ local abilities = {
 -----------------------------------
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10)
-		 and ni.player.slotcd(10) == 0 
+		 and ni.player.slotcd(10) == 0
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.valid("target", 48461) then
 			ni.player.useinventoryitem(10)
@@ -177,13 +179,15 @@ local abilities = {
 	["Trinkets"] = function()
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
-		 and ni.player.slotcd(13) == 0 
+		 and ni.player.slotcd(13) == 0
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 48461) then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
-		 and ni.player.slotcd(14) == 0 
+		 and ni.player.slotcd(14) == 0
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 48461) then
 			ni.player.useinventoryitem(14)
 			return true
@@ -235,6 +239,7 @@ local abilities = {
 	["Force of Nature"] = function()
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		and ni.spell.isinstant(33831)
+		and ni.data.darhanger.CDsaverTTD()
 		and ni.spell.available(33831) then
 			ni.spell.castat(33831, "target")
 			return true

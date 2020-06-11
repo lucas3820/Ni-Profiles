@@ -195,6 +195,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 49052) then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -214,7 +215,8 @@ local abilities = {
 -----------------------------------
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10)
-		 and ni.player.slotcd(10) == 0 
+		 and ni.player.slotcd(10) == 0
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.valid("target", 49052) then
 			ni.player.useinventoryitem(10)
@@ -225,13 +227,15 @@ local abilities = {
 	["Trinkets"] = function()
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
-		 and ni.player.slotcd(13) == 0 
+		 and ni.player.slotcd(13) == 0
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 49052) then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 49052) then
 			ni.player.useinventoryitem(14)
 			return true
@@ -293,6 +297,7 @@ local abilities = {
 		 and ni.player.buff(61847)
 		 and ni.spell.available(3045)
 		 and ni.spell.isinstant(3045)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 49045) then
 			ni.spell.cast(3045)
 			return true
@@ -302,6 +307,7 @@ local abilities = {
 	["Pet:Call of the Wild"] = function()
 		if ( ni.vars.CD or ni.unit.isboss("target") )
 		 and IsSpellKnown(53434, true)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and GetSpellCooldown(53434) == 0 then
 			ni.spell.cast(53434)
 			return true

@@ -255,6 +255,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 47809) then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -275,6 +276,7 @@ local abilities = {
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.valid("target", 47809) then
 			ni.player.useinventoryitem(10)
@@ -286,12 +288,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 47809) then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
+		 and ni.data.darhanger.CDsaverTTD()
 		 and ni.spell.valid("target", 47809) then
 			ni.player.useinventoryitem(14)
 			return true
@@ -420,6 +424,8 @@ local abilities = {
 		or UnitHealthMax("target") > 450000 )
 		 and not (elem or CotE or eplag or earmoon)
 		 and ni.spell.available(47865)
+		 and ni.spell.isinstant(47865)
+		 and ni.data.darhanger.CDsaver()
 		 and ni.spell.valid("target", 47865, false, true, true)	
 		 and GetTime() - ni.data.darhanger.warlock.LastCurse > 2 then
 			ni.spell.cast(47865, "target")

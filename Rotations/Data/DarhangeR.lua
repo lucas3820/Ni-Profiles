@@ -2,7 +2,7 @@ local dontdispel = { 68786, 34916, 34917, 34919, 48159, 48160, 30404, 30405, 311
 for k, v in pairs(dontdispel) do
     ni.healing.debufftoblacklist(v);
 end
-local cbuff = { 59301, 642, 31224, 23920, 33786, 19263, 21892, 40733, 45438, 69051, 69056, 20223 };
+local cbuff = { 60158, 59301, 642, 31224, 23920, 33786, 19263, 21892, 40733, 45438, 69051, 69056, 20223 };
 local mbuff = { 59301, 45438, 33786, 21892, 40733, 69051 };
 local tbuff = { 59301, 45438, 33786, 21892, 40733, 19263, 1022, 69051 };
 local forsdebuff = { 6215, 8122, 5484, 2637, 5246, 6358, 605, 22686 };
@@ -27,6 +27,25 @@ ni.data.darhanger = {
 	LastDispel = 0, 
 	LastInterrupt = 0,
 	
+		-- Check Start Fight --
+	CDsaver = function()
+		if ni.vars.combat.time ~= 0 
+		 and GetTime() - ni.vars.combat.time > 7 then
+		     return true
+		end
+		     return false
+	end,
+				
+		-- Check Start Fight with TTD --
+	CDsaverTTD = function()
+		if ni.vars.combat.time ~= 0 
+		 and GetTime() - ni.vars.combat.time > 5 
+		 and ni.unit.ttd("target") > 35 then
+		     return true
+		end
+		     return false
+	end,
+		
 		-- Vars for Universal Pause --
 	PlayerBuffs = function()
 		for _, v in ipairs(pbuff) do

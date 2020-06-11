@@ -141,6 +141,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then 
 					ni.spell.cast(hracial[i])
 					return true
@@ -232,7 +233,7 @@ local abilities = {
 	["Death and Decay"] = function()
 		if ni.vars.combat.aoe
 		 and ni.spell.isinstant(49938) 
-		 and ni.spell.cd(49938) == 0 then
+		 and ni.spell.available(49938) then
 			ni.spell.castatqueue(49938, "target")
 			return true
 		end
@@ -242,6 +243,7 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.spell.isinstant(49016)
 		 and ni.spell.available(49016)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and IsSpellInRange(GetSpellInfo(49930), "target") == 1 then
 		  if not UnitExists("focus")
 		  and not ni.player.buff(49016) then
@@ -253,6 +255,7 @@ local abilities = {
 		 and not UnitIsDeadOrGhost("focus")
 		 and ni.spell.isinstant(49016)
 		 and ni.spell.available(49016)
+		 and ni.data.darhanger.CDsaverTTD()
 		 and not ni.unit.buff("focus", 49016) then
 			ni.spell.cast(49016, "focus")
 			return true
