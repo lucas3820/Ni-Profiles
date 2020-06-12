@@ -647,7 +647,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		 ni.debug.popup("Demonology Warlock by DarhangeR for 3.3.5a", 
-		 "Welcome to Demonology Warlock Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Corruption (AoE) mode configure Custom Key Modifier and hold it for put spell on nearest enemies.\n-For use Rain of Fire configure AoE Toggle key.\n-Focus target for use Soulstone.\n-For better experience make Pet passive.")
+		 "Welcome to Demonology Warlock Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-For use Corruption (AoE) mode configure Custom Key Modifier and hold it for put spell on nearest enemies.\n-For use Rain of Fire configure AoE Toggle key.\n-Focus target for use Soulstone.\n-For better experience make Pet passive.")
 		popup_shown = true;
 		end 
 	end,

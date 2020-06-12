@@ -427,7 +427,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		 ni.debug.popup("Shadow Priest by DarhangeR for 3.3.5a", 
-		 "Welcome to Shadow Priest Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Mind Sear configure AoE Toggle key.\n-For use Shadow Word:Pain AoE mode configure Custom Key Modifier and hold it for put spell on nearest enemies.")
+		 "Welcome to Shadow Priest Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-For use Mind Sear configure AoE Toggle key.\n-For use Shadow Word:Pain AoE mode configure Custom Key Modifier and hold it for put spell on nearest enemies.")
 		popup_shown = true;
 		end 
 	end,

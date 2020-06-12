@@ -339,7 +339,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		 ni.debug.popup("Restoration Shaman by DarhangeR for 3.3.5a", 
-		 "Welcome to Restoration Shaman Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For enable priority healing Main Tank put tank name to Tank Overrides and press Enable Main.\n-For enable Chain of Heal Spam  configure AoE Toggle key.")		
+		 "Welcome to Restoration Shaman Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-For enable priority healing Main Tank put tank name to Tank Overrides and press Enable Main.\n-For enable Chain of Heal Spam  configure AoE Toggle key.")		
 		popup_shown = true;
 		end 
 	end,

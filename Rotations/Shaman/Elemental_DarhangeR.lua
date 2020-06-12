@@ -316,7 +316,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		 ni.debug.popup("Elemental Shaman by DarhangeR for 3.3.5a", 
-		 "Welcome to Elemental Shaman Profile! Support and more in Discord > https://discord.gg/u4mtjws.")
+		 "Welcome to Elemental Shaman Profile! Support and more in Discord > https://discord.gg/TEQEJYS.")
 		popup_shown = true;
 		end 
 	end,

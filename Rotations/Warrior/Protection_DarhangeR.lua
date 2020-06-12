@@ -357,7 +357,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		 ni.debug.popup("Protection Warrior by DarhangeR for 3.3.5a", 
-		 "Welcome to Protection Warrior Profile! Support and more in DiscordDiscord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-Focus ally target for use Vigilance on it")
+		 "Welcome to Protection Warrior Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-Focus ally target for use Vigilance on it")
 		popup_shown = true;
 		end 
 	end,

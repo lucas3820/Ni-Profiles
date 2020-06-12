@@ -437,7 +437,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		 ni.debug.popup("Fire Mage by DarhangeR for 3.3.5a", 
-		 "Welcome to Fire Mage Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Living Bomb (AoE) mode configure Custom Key Modifier and hold it for put spell on nearest enemies.\n-For use Flamestrike configure AoE Toggle key.\n-Focus target for use Focus Magic (If learned).")
+		 "Welcome to Fire Mage Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-For use Living Bomb (AoE) mode configure Custom Key Modifier and hold it for put spell on nearest enemies.\n-For use Flamestrike configure AoE Toggle key.\n-Focus target for use Focus Magic (If learned).")
 		popup_shown = true;
 		end 
 	end,

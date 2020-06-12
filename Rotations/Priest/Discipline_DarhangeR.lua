@@ -469,7 +469,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		  ni.debug.popup("Discipline Priest by DarhangeR for 3.3.5a", 
-		 "Welcome to Discipline Priest Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For enable priority healing Main Tank & Off Tank put tank name to Tank Overrides and press Enable Main/Off")
+		 "Welcome to Discipline Priest Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-For enable priority healing Main Tank & Off Tank put tank name to Tank Overrides and press Enable Main/Off")
 		popup_shown = true;
 		end 
 	end,

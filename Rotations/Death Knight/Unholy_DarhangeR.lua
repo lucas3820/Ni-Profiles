@@ -264,7 +264,7 @@ local abilities = {
 	["Death and Decay"] = function()
 		if ni.vars.combat.aoe
 		 and ni.spell.isinstant(49938) 
-		 and ni.spell.cd(49938) == 0 then
+		 and ni.spell.available(49938) then
 			ni.spell.castatqueue(49938, "target")
 			return true
 		end
@@ -474,7 +474,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		 ni.debug.popup("Unholy Deathknight by DarhangeR for 3.3.5a", 
-	       "Welcome to Unholy Deathknight Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Death and Decay configure AoE Toggle key.\n-For better experience make Pet passive.")
+	       "Welcome to Unholy Deathknight Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-For use Death and Decay configure AoE Toggle key.\n-For better experience make Pet passive.")
 		popup_shown = true;
 		end 
 	end,
