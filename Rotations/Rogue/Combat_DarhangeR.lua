@@ -1,33 +1,40 @@
 local data = {"DarhangeR.lua"}
-
 local poisonsmainhand = 
 {43231, 43230, 21927, 8928, 8927, 8926, 6950, 6949, 6947}
 local poisonoffhand = 
 {43233, 43232, 22054, 22053, 20844, 8985, 8984, 2893, 2892 }
 
-local mainhandpoison = nil
-local offhandpoison = nil
+
+local mainhandname = nil;
+local offhandname = nil;
 local function GetBestPoisonMainHand()
 local level = UnitLevel("player")
-for _, itemid in pairs(poisonsmainhand) do
+for _, itemid in pairs (poisonsmainhand) do
 local name, _, _, _, req = GetItemInfo(itemid)
-	if mainhandpoison == name then -- we don't need to spam update out mainhand poison
-	return end
-	if name and req >= level then
-	mainhandpoison = name
-			end
-		end
+	if GetItemCount(itemid, false, false) > 0 then
+	if name and level >= req then
+	mainhandname = name	
+	return true;
 	end
+	end
+	end
+	mainhandname = nil;
+	return false;
+	end
+	
 local function GetBestPoisonOffHand()
 local level = UnitLevel("player")
-for _, itemid in pairs(poisonoffhand) do
+for _, itemid in pairs (poisonsoffhand) do
 local name, _, _, _, req = GetItemInfo(itemid)
-	if offhandpoison == name then -- we don't need to spam update out offhand poison
-	return end
-	if name and req >= level then
-	offhandpoison = name
-			end
-		end
+	if GetItemCount(itemid, false, false) > 0 then
+	if name and level >= req then
+	offhandname = name	
+	return true;
+	end
+	end
+	end
+	offhandname = nil;
+	return false;
 	end
 
 --Spells Covnerted to Name
@@ -46,7 +53,7 @@ local queue = {
 	"Window",
 	"Universal pause",
 	"AutoTarget",
---	"Poison Weapon",
+	"Poison Weapon",
 	"Combat specific Pause",
 	"Healthstone (Use)",
 	"Potions (Use)",
@@ -83,35 +90,37 @@ local abilities = {
 		end
 	end,
 -----------------------------------
-    ["Poison Weapon"] = function()
-		GetBestPoisonMainHand();
-		GetBestPoisonOffHand();
-		local mh, _, _, oh = GetWeaponEnchantInfo()
-		if applypoison 
-		 and GetTime() - applypoison > 4 then 
-			applypoison = nil 
-		end
-		if UnitAffectingCombat("player") == nil 
-		and applypoison == nil then
-		applypoison = GetTime()
-		
-		if(mainhandpoison == nil or offhandpoison == nil) then
-		return end
-		
-		if mh == nil 
-		 and ni.player.hasitem(mainhandpoison) then
-			ni.player.useitem(mainhandpoison)
-			ni.player.useinventoryitem(16)
-			return true
-		end
-		if oh == nil
-		 and ni.player.hasitem(offhandpoison) then
-			ni.player.useitem(offhandpoison)
-			ni.player.useinventoryitem(17)
-			return true
-			end
-		end
-	end,
+		["Poison Weapon"] = function()
+        local mh, _, _, oh = GetWeaponEnchantInfo()
+        if applypoison 
+         and GetTime() - applypoison > 4 then 
+            applypoison = nil 
+        end
+        if UnitAffectingCombat("player") == nil 
+        and applypoison == nil then
+        applypoison = GetTime()
+        if not mh and GetBestPoisonMainHand() then
+            ni.player.useitem(mainhandname)
+            ni.player.useinventoryitem(16)
+            ni.player.runtext("/click StaticPopup1Button1")
+            return true
+        end
+        if not oh and GetBestPoisonOffHand()
+        and UnitLevel("player") > 30 then
+            ni.player.useitem(offhandpoison)
+            ni.player.useinventoryitem(17)
+			ni.player.runtext("/click StaticPopup1Button1")
+            return true
+            end
+            if not oh and GetBestPoisonMainHand()  
+            and UnitLevel("player") < 30 then
+            ni.player.useitem(mainhandname)
+            ni.player.useinventoryitem(17)
+            ni.player.runtext("/click StaticPopup1Button1")
+            return true
+        end
+        end
+    end,
 -----------------------------------
 	["Combat specific Pause"] = function()
 		if ni.data.darhanger.meleeStop()
