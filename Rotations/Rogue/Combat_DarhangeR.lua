@@ -1,7 +1,7 @@
 local data = {"DarhangeR.lua"}
 local poisonsmainhand = 
 {43231, 43230, 21927, 8928, 8927, 8926, 6950, 6949, 6947}
-local poisonoffhand = 
+local poisonsoffhand = 
 {43233, 43232, 22054, 22053, 20844, 8985, 8984, 2893, 2892 }
 
 

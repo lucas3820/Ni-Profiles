@@ -2,7 +2,7 @@ local data = {"DarhangeR.lua"}
 
 local poisonsmainhand = 
 {43231, 43230, 21927, 8928, 8927, 8926, 6950, 6949, 6947}
-local poisonoffhand = 
+local poisonsoffhand = 
 {43233, 43232, 22054, 22053, 20844, 8985, 8984, 2893, 2892 }
 
 
@@ -25,7 +25,7 @@ local name, _, _, _, req = GetItemInfo(itemid)
 	
 local function GetBestPoisonOffHand()
 local level = UnitLevel("player")
-for _, itemid in pairs (poisonsoffhand) do
+for _, itemid in pairs (poisonsoffhand ) do
 local name, _, _, _, req = GetItemInfo(itemid)
 	if GetItemCount(itemid, false, false) > 0 then
 	if name and level >= req then
