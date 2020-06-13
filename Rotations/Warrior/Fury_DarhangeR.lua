@@ -76,7 +76,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Battle Shout"] = function()
-		if ni.player.buffs("battleshout|blessingofmight||greaterblessingofmight") then 
+		if ni.player.buffs("battleshout|blessingofmight||greaterblessingofmight", "EXACT") then 
 		 return false
 	end
 		if ni.spell.available(battleshout)

@@ -78,7 +78,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Commanding Shout"] = function()
-		if ni.player.buffs("commandingshout||bloodpact") then 
+		if ni.player.buffs("commandingshout||bloodpact", "EXACT") then 
 		 return false
 	end
 		if ni.spell.available(commandingshout) 
