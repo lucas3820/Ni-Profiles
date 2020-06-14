@@ -334,6 +334,7 @@ local abilities = {
 		 if ni.members[i].range
 		 and not UnitIsDeadOrGhost(ni.members[i].unit) then
 		 local tarCount = #ni.unit.unitstargeting(ni.members[i].guid)
+		 end
 		  if tarCount ~= nil and tarCount >= 1
 		   and ni.spell.available(righteousdefence)
 		   and ni.spell.isinstant(righteousdefence)
@@ -344,7 +345,6 @@ local abilities = {
 				return true
 				end
 			end
-		end
 	end,
 -----------------------------------
 	["Holy Wrath"] = function()

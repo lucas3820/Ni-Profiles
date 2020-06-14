@@ -92,19 +92,6 @@ local abilities = {
 			return true
 			end
 		end
-		-- level shit
-		if #enemies <= 1 
-		and not ni.spell.available(sealofcorruption)
-		and not ni.spell.available(sealofvengance) 
-		and ni.spell.available(sealofrighteousness) then
-		if not ni.player.buff(sealofrighteousness) 
-		and UnitLevel("player") < 22
-		and GetTime() - ni.data.darhanger.paladin.LastSeal > 3 then
-		ni.spell.cast(sealofrighteousness)
-		ni.data.darhanger.paladin.LastSeal = GetTime()
-		return true
-		end
-		end
 		
 		if not ni.spell.available(sealofcorruption)
 		and not ni.spell.available(sealofvengance) 
@@ -120,7 +107,7 @@ local abilities = {
 		end
 		end
 	
-			if #enemies <= 1
+		if #enemies <= 1
 		and ni.spell.available(sealofvengance) then
 		if not ni.player.buff(sealofvengance) 
 		 and GetTime() - ni.data.darhanger.paladin.LastSeal > 3
