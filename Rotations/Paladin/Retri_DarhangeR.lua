@@ -408,7 +408,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		 ni.debug.popup("Retribution Paladin by DarhangeR for 3.3.5a", 
-		 "Welcome to Retribution Paladin Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Holy Wrath configure AoE Toggle key.")
+		 "Welcome to Retribution Paladin Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-For use Holy Wrath configure AoE Toggle key.")
 		popup_shown = true;
 		end 
 	end,

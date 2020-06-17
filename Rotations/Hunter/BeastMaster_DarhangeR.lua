@@ -460,7 +460,7 @@ local abilities = {
 	["Window"] = function()
 		if not popup_shown then
 		ni.debug.popup("Beast Mastery Hunter by DarhangeR for 3.3.5a", 
-		"Welcome to Beast Mastery Hunter Profile! Support and more in Discord > https://discord.gg/u4mtjws.\n\n--Profile Function--\n-For use Volley configure AoE Toggle key.\n-Focus target for use Misdirection & Feign Death.\n-For use Freezing Arrow configure Custom Key Modifier and hold it for use it.\n-For better experience make Pet passive.")	
+		"Welcome to Beast Mastery Hunter Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-For use Volley configure AoE Toggle key.\n-Focus target for use Misdirection & Feign Death.\n-For use Freezing Arrow configure Custom Key Modifier and hold it for use it.\n-For better experience make Pet passive.")	
 		popup_shown = true;
 		end 
 	end,
