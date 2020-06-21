@@ -55,3 +55,11 @@
 * [Arms_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#arms_darhanger--fury_darhanger--protection_darhanger) - ✔️
 * [Fury_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#arms_darhanger--fury_darhanger--protection_darhanger) - ✔️
 * [Protection_DarhangeR](https://github.com/darhanger/Ni-Profiles_Public/wiki/Profile-F.A.Q#arms_darhanger--fury_darhanger--protection_darhanger) - ✔️
+
+
+## Bots Profile Status
+### Support Status Meanings 
+* ✔️ - works well;
+* ⁉️ - currently unknown or in development;
+### Professions
+* [Fishing](https://github.com/darhanger/Ni-Profiles/wiki/How-use-Profile-Bots%3F#fishbot-by-darhanger-original-by-scott)
