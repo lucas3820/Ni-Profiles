@@ -46,7 +46,6 @@ local functionsent = 0;
 	---------------
 local queue = {
 	"Window",
-	"AFK",
 	"Combat",
 	"Revive",
 	"Lure",
@@ -55,7 +54,6 @@ local queue = {
 }
 local queue2 = {
 	"Window",
-	"AFK",
 	"Combat",
 	"Revive",
 	"Lure",
@@ -77,13 +75,6 @@ local abilities = {
 		"Welcome to Fishing Profile! Support and more in Discord > https://discord.gg/TEQEJYS.\n\n--Profile Function--\n-Open Fishing.lua and add proper ItemID.")
 		popup_shown = true;
 		end	
-	end,
------------------------------------	
-	["AFK"] = function()
-		if UnitIsAFK("player") then
-			ni.player.runtext("/afk")
-			return true
-		end
 	end,
 -----------------------------------	
 	["Combat"] = function()
@@ -170,6 +161,7 @@ local abilities = {
 			end
 		else
 			ni.spell.delaycast(Fishing, nil, 1.5);
+			ni.utils.resetlasthardwareaction();
 		end
 	end,
 -----------------------------------
@@ -203,6 +195,7 @@ local abilities = {
 			end
 		else
 			ni.spell.delaycast(Fishing, nil, 1.5);
+			ni.utils.resetlasthardwareaction();
 		end
 	end,
 }
