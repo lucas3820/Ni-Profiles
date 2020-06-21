@@ -31,7 +31,7 @@ local name, _, _, _, req = GetItemInfo(itemid)
 	if GetItemCount(itemid, false, false) > 0 then
 	if name and level >= req then
 	offhandname = name	
-	print(offhandname)
+	--print(offhandname)
 	return true;
 	end
 	end
@@ -76,7 +76,7 @@ local queue = {
 	"Hunger For Blood",
 	"Mutilate",
 	--"Backstab",
-	--"Sinister Strike",
+	"Sinister Strike",
 	"Slice and Dice",
 	"Eviscerate low T2D",
 	"Eviscerate",
