@@ -15,6 +15,7 @@ local name, _, _, _, req = GetItemInfo(itemid)
 	if GetItemCount(itemid, false, false) > 0 then
 	if name and level >= req then
 	mainhandname = name	
+	--print(mainhandname)
 	return true;
 	end
 	end
@@ -25,11 +26,12 @@ local name, _, _, _, req = GetItemInfo(itemid)
 	
 local function GetBestPoisonOffHand()
 local level = UnitLevel("player")
-for _, itemid in pairs (poisonsoffhand ) do
+for _, itemid in pairs (poisonsoffhand) do
 local name, _, _, _, req = GetItemInfo(itemid)
 	if GetItemCount(itemid, false, false) > 0 then
 	if name and level >= req then
 	offhandname = name	
+	print(offhandname)
 	return true;
 	end
 	end
@@ -49,14 +51,15 @@ local rupture = GetSpellInfo(48672)
 local mutilate = GetSpellInfo(48666)
 local sliceanddice = GetSpellInfo(6774)
 local eviscerate = GetSpellInfo(6760)
+local backstab = GetSpellInfo(2590)
 
 local popup_shown = false;
 local queue = {	
 	"Window",
-	"Universal pause",
-	"AutoTarget",
 	"Poison Weapon",
+	"Universal pause",
 	"Combat specific Pause",
+	"Auto Attack",
 	"Healthstone (Use)",
 	"Potions (Use)",
 	"Racial Stuff",
@@ -72,7 +75,8 @@ local queue = {
 	"Rupture Dump",
 	"Hunger For Blood",
 	"Mutilate",
-	"Sinister Strike",
+	--"Backstab",
+	--"Sinister Strike",
 	"Slice and Dice",
 	"Eviscerate low T2D",
 	"Eviscerate",
@@ -83,6 +87,14 @@ local abilities = {
 	["Universal pause"] = function()
 			if ni.data.darhanger.UniPause() then
 			return true
+		end
+	end,
+	
+-----------------------------------
+	["Auto Attack"] = function()
+		if not IsCurrentSpell(6603)
+		and not ni.player.buff(1784) then
+			ni.spell.cast(6603);
 		end
 	end,
 -----------------------------------
@@ -102,6 +114,7 @@ local abilities = {
             applypoison = nil 
         end
         if UnitAffectingCombat("player") == nil 
+		and ni.data.darhanger.UniPausenoatk()
         and applypoison == nil then
         applypoison = GetTime()
         if not mh and GetBestPoisonMainHand() then
@@ -111,8 +124,8 @@ local abilities = {
             return true
         end
         if not oh and GetBestPoisonOffHand()
-        and UnitLevel("player") > 30 then
-            ni.player.useitem(offhandpoison)
+        and UnitLevel("player") >= 30 then
+            ni.player.useitem(offhandname)
             ni.player.useinventoryitem(17)
 			ni.player.runtext("/click StaticPopup1Button1")
             return true
@@ -353,10 +366,23 @@ local abilities = {
 	["Sinister Strike"] = function()
 		if GetComboPoints("player") < 5
 		 and not ni.spell.available(mutilate)
+		 and UnitLevel("player") < 50
          and ni.spell.available(sinisterstrike)
 		 and ni.spell.isinstant(sinisterstrike)
 		 and ni.spell.valid("target", sinisterstrike, true, true) then
 			ni.spell.cast(sinisterstrike, "target")
+			return true
+		end
+	end,
+	-----------------------------------
+	["Backstab"] = function()
+		if GetComboPoints("player") < 5
+		 and not ni.spell.available(mutilate)
+		 and ni.player.isbehind("target")
+         and ni.spell.available(backstab)
+		 and ni.spell.isinstant(backstab)
+		 and ni.spell.valid("target", backstab, true, true, true) then
+			ni.spell.cast(backstab, "target")
 			return true
 		end
 	end,
@@ -407,20 +433,19 @@ local abilities = {
 -----------------------------------
 	["Envenom"] = function()
 		local Hunger = ni.data.darhanger.rogue.Hunger()
-		local envenom = ni.data.darhanger.rogue.envenom()
+		local envenomdata = ni.data.darhanger.rogue.envenom()
 		local SnD = ni.data.darhanger.rogue.SnD()
 		if ni.spell.available(envenom)
 		 and Hunger
 		 and ni.spell.isinstant(envenom)
-		 and IsUsableSpell(envenom) 
 		 and ni.spell.valid("target", envenom, true, true) then
 		  if GetComboPoints("player") >= 5
-		  and envenom == nil then
+		  and envenomdata == nil then
 			ni.spell.cast(envenom, "target")
 			return true
           end
 		  if GetComboPoints("player") >= 5
-		  and ni.player.power() > 80 then
+		  and ni.player.power() > 60 then
 			ni.spell.cast(envenom, "target")
 			return true
           end

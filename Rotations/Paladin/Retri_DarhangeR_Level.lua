@@ -16,17 +16,14 @@ local crusaderstrike = GetSpellInfo(35395)
 local hammeroftherighteous = GetSpellInfo(53595)
 local scaredshield = GetSpellInfo(53601)
 
-
-
 local popup_shown = false;
 local queue = {
 	"Window",
-	"Stutter cast pause",
 	"Universal pause",
-	"AutoTarget",
-	"Seal of Corruption/Vengeance",
-	"Seal of Command",
-	"Cancel Righteous Fury",
+	"Auto Attack",
+--	"AutoTarget",
+--	"Seal of Corruption/Vengeance",
+--	"Seal of Command",
 	"Combat specific Pause",
 	"Healthstone (Use)",
 	"Heal Potions (Use)",
@@ -58,6 +55,12 @@ local abilities = {
 	["Universal pause"] = function()
 			if ni.data.darhanger.UniPause() then
 			return true
+		end
+	end,
+-----------------------------------
+	["Auto Attack"] = function()
+		if not IsCurrentSpell(6603) then
+			ni.spell.cast(6603);
 		end
 	end,
 -----------------------------------
@@ -132,16 +135,6 @@ local abilities = {
 		end
 		end
 	end,	
------------------------------------
-	["Cancel Righteous Fury"] = function()
-		local p="player" for i = 1,40 
-		do local _,_,_,_,_,_,_,u,_,_,s=UnitBuff(p,i)
-			if u==p and s==25780 then
-				CancelUnitBuff(p,i) 
-				break;
-			end
-		end 
-	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
 		if ni.data.darhanger.meleeStop()
@@ -455,4 +448,4 @@ local abilities = {
 	end,
 }
 
-ni.bootstrap.rotation("Retri_DarhangeR", queue, abilities, data)
+ni.bootstrap.rotation("Retri_DarhangeR_Level", queue, abilities, data)
