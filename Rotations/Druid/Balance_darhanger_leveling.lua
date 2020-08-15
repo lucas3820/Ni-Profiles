@@ -1,4 +1,4 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
 
 --Ability Convert
 local giftofthewild = GetSpellInfo(48470)
@@ -329,4 +329,4 @@ local abilities = {
 	end,
 }
 
-ni.bootstrap.rotation("Balance_darhanger_leveling", queue, abilities, data)
+ni.bootstrap.profile("Balance_darhanger_leveling", queue, abilities);

@@ -1,4 +1,4 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
 
 local poisonsmainhand = 
 {43231, 43230, 21927, 8928, 8927, 8926, 6950, 6949, 6947}
@@ -466,4 +466,4 @@ local abilities = {
 	end,
 }
 	
-ni.bootstrap.rotation("Assassination_darhanger_leveling", queue, abilities, data)
+ni.bootstrap.profile("Assassination_darhanger_leveling", queue, abilities);

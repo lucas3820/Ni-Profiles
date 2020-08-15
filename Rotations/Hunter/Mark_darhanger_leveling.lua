@@ -1,4 +1,4 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
 
 --Abilities 
 local aspectdragonhawk = GetSpellInfo(61847)
@@ -523,4 +523,4 @@ local abilities = {
 	end,
 }
 
-ni.bootstrap.rotation("Mark_darhanger_leveling", queue, abilities, data)
+ni.bootstrap.profile("Mark_darhanger_leveling", queue, abilities);

@@ -1,4 +1,4 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
 
 local innerfire = GetSpellInfo(48168)
 local prayeroffortitude = GetSpellInfo(48162)
@@ -618,4 +618,4 @@ local dynamicqueue = function()
 		return queue2
 end
 
-ni.bootstrap.rotation("Holy_darhanger_leveling", dynamicqueue, abilities, data)
+ni.bootstrap.profile("Holy_darhanger_leveling", dynamicqueue, abilities);

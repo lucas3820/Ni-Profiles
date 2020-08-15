@@ -1,4 +1,4 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
 
 --Convert Abilities
 local battleshout = GetSpellInfo(47436)
@@ -345,4 +345,4 @@ local abilities = {
 	end,
 }
 
-ni.bootstrap.rotation("Fury_darhanger_leveling", queue, abilities, data)
+ni.bootstrap.profile("Fury_darhanger_leveling", queue, abilities);

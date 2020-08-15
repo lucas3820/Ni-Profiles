@@ -1,4 +1,4 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
 
 local hornofwinter = GetSpellInfo(57623)
 local deathanddecay = GetSpellInfo(49938)
@@ -509,4 +509,4 @@ local abilities = {
 	end,
 }
 
-ni.bootstrap.rotation("Frost2W_darhanger_leveling", queue, abilities, data)
+ni.bootstrap.profile("Frost2W_darhanger_leveling", queue, abilities);

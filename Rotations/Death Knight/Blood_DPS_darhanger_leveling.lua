@@ -1,4 +1,75 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
+
+local enemies = { };
+local function ActiveEnemies()
+	table.wipe(enemies);
+	enemies = ni.unit.enemiesinrange("target", 7);
+	for k, v in ipairs(enemies) do
+		if ni.player.threat(v.guid) == -1 then
+			table.remove(enemies, k);
+		end
+	end
+	return #enemies;
+end
+
+local items = {
+	settingsfile = "DarhangeR_DPS_Blood_Leveling.xml",
+	{ type = "title", text = "Blood DPS DK by |c0000CED1DarhangeR" },
+	{ type = "separator" },
+	{ type = "title", text = "|cffFFFF00Main Settings" },
+	{ type = "separator" },
+	{ type = "entry", text = "Raise Dead", tooltip = "Use spell on bosses or on cd active", enabled = false, key = "raisedead" },
+	{ type = "entry", text = "Auto Interrupt", tooltip = "Auto check and interrupt all interruptible spells", enabled = true, key = "autointerrupt" },	
+	{ type = "separator" },
+	{ type = "title", text = "|cff00C957Defensive Settings" },
+	{ type = "separator" },
+	{ type = "entry", text = "Rune Tap", tooltip = "Use spell when player HP < %", enabled = false, value = 70, key = "runetap" },
+	{ type = "entry", text = "Vampiric Blood", tooltip = "Use spell when player HP < %", enabled = false, value = 50, key = "vampblood" },
+	{ type = "entry", text = "Mark of Blood", tooltip = "Use spell when player HP < %", enabled = false, value = 35, key = "markofblood" },
+	{ type = "entry", text = "Icebound Fortitude", tooltip = "Use spell when player HP < %", enabled = true, value = 45, key = "iceboundfort" },
+	{ type = "entry", text = "Healthstone", tooltip = "Use Warlock Healthstone (if you have) when player HP < %", enabled = true, value = 35, key = "healthstoneuse" },
+	{ type = "entry", text = "Heal Potion", tooltip = "Use Heal Potions (if you have) when player HP < %", enabled = true, value = 30, key = "healpotionuse" },
+	{ type = "separator" },
+	{ type = "title", text = "|cffEE4000Rotation Settings"" },
+	{ type = "separator" },
+	{ type = "entry", text = "Blood Boil", tooltip = "Use spell when you have > 2 enemies instead of using Heart Strike", enabled = false, key = "boil" },	
+	{ type = "separator" },
+	{ type = "title", text = "Presence's" },
+	{ type = "dropdown", menu = {
+		{ selected = true, value = 48266, text = "Blood Presence" },
+		{ selected = false, value = 48263, text = "Frost Presence" },
+		{ selected = false, value = 48265, text = "Unholy Presence" },
+	}, key = "Presence" },
+};
+local function GetSetting(name)
+    for k, v in ipairs(items) do
+        if v.type == "entry"
+         and v.key ~= nil
+         and v.key == name then
+            return v.value, v.enabled
+        end
+        if v.type == "dropdown"
+         and v.key ~= nil
+         and v.key == name then
+            for k2, v2 in pairs(v.menu) do
+                if v2.selected then
+                    return v2.value
+                end
+            end
+        end
+        if v.type == "input"
+         and v.key ~= nil
+         and v.key == name then
+            return v.value
+        end
+    end
+end;
+local function OnLoad()
+	ni.GUI.AddFrame("Blood_DPS_darhanger_leveling", items);
+end
+local function OnUnLoad()  
+	ni.GUI.DestroyFrame("Blood_DPS_darhanger_leveling");
+end
 
 --Convert Abilities
 local hornofwinter = GetSpellInfo(57623)
@@ -13,6 +84,7 @@ local runestrike = GetSpellInfo(56815)
 local bloodboil = GetSpellInfo(49941)
 local heartstrike = GetSpellInfo(55262)
 local deathcoil = GetSpellInfo(49895)
+local runetap = GetSpellInfo(48982)
 
 local popup_shown = false;
 local queue = {
@@ -20,7 +92,7 @@ local queue = {
 	"Window",
 	"Universal pause",
 	"AutoTarget",
-	"Blood presence check",
+	"Presence check",
 	"Horn of Winter",
 	"Combat specific Pause",
 	"Pet Attack/Follow",
@@ -31,9 +103,12 @@ local queue = {
 	"Trinkets",
 	"Mind Freeze (Interrupt)",
 	"Icebound Fort",
+	"Mark of Blood",
+	"Rune Tap",
 	"Vamp Blood",
 	"Death and Decay",
 	"Hyst",
+	"Raise Dead",
 	"Empower Rune Weapon",
 	"Icy Touch",
 	"Plague Strike",
@@ -68,11 +143,12 @@ local abilities = {
 		end
 	end,
 -----------------------------------
-	["Blood presence check"] = function()
-		if not ni.player.buff(48266)
-		 and ni.spell.isinstant(48266) 
-		 and ni.spell.available(48266) then
-			ni.spell.cast(48266)
+	["Presence check"] = function()
+		local presence = GetSetting("Presence");		
+		if not ni.player.buff(presence)
+		 and ni.spell.isinstant(presence)
+		 and ni.spell.available(presence) then
+			ni.spell.cast(presence)
 			return true
 		end
 	end,
@@ -117,9 +193,11 @@ local abilities = {
 	end,
 -----------------------------------
 	["Healthstone (Use)"] = function()
+		local value, enabled = GetSetting("healthstoneuse");
 		local hstones = { 36892, 36893, 36894 }
 		for i = 1, #hstones do
-			if ni.player.hp() < 30
+			if enabled
+			 and ni.player.hp() < value
 			 and ni.player.hasitem(hstones[i]) 
 			 and ni.player.itemcd(hstones[i]) == 0 then
 				ni.player.useitem(hstones[i])
@@ -127,11 +205,30 @@ local abilities = {
 			end
 		end	
 	end,
+-----------------------------------	
+	["Raise Dead"] = function()
+		local _, enabled = GetSetting("raisedead")
+		if enabled
+		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
+		 and ni.data.darhanger.CDsaverTTD("target")
+		 and not ni.unit.exists("playerpet")
+		 and not ni.player.buff(61431)
+		 and ni.spell.isinstant(46584)
+		 and ni.spell.available(46584)
+		 and IsUsableSpell(GetSpellInfo(46584))
+		 and ( ni.player.hasitem(37201)
+		 or	ni.player.hasglyph(60200) ) then
+			ni.spell.cast(46584)
+			return true
+		end
+	end,
 -----------------------------------
 	["Potions (Use)"] = function()
+		local value, enabled = GetSetting("healpotionuse");
 		local hpot = { 33447, 43569, 40087, 41166, 40067 }
 		for i = 1, #hpot do
-			if ni.player.hp() < 35
+			if enabled
+			 and ni.player.hp() < value
 			 and ni.player.hasitem(hpot[i])
 			 and ni.player.itemcd(hpot[i]) == 0 then
 				ni.player.useitem(hpot[i])
@@ -175,6 +272,7 @@ local abilities = {
 	["Use enginer gloves"] = function()
 		if ni.player.slotcastable(10)
 		 and ni.player.slotcd(10) == 0 
+		 and ni.data.darhanger.CDsaverTTD("target")
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellInRange(bloodstrike, "target") == 1 then
 			ni.player.useinventoryitem(10)
@@ -186,12 +284,14 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(13)
 		 and ni.player.slotcd(13) == 0 
+		 and ni.data.darhanger.CDsaverTTD("target")
 		 and IsSpellInRange(bloodstrike, "target") == 1 then
 			ni.player.useinventoryitem(13)
 		else
 		 if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and ni.player.slotcastable(14)
 		 and ni.player.slotcd(14) == 0 
+		 and ni.data.darhanger.CDsaverTTD("target")
 		 and IsSpellInRange(bloodstrike, "target") == 1 then
 			ni.player.useinventoryitem(14)
 			return true
@@ -200,7 +300,9 @@ local abilities = {
 	end,
 -----------------------------------
 	["Mind Freeze (Interrupt)"] = function()
-		if ni.spell.shouldinterrupt("target")
+	local _, enabled = GetSetting("autointerrupt")
+		if enabled	
+		 and ni.spell.shouldinterrupt("target")
 		 and ni.spell.isinstant(47528)
 		 and ni.spell.available(47528)
 		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9
@@ -212,20 +314,26 @@ local abilities = {
 	end,
 -----------------------------------
 	["Icebound Fort"] = function()
-		if ni.player.hp() < 45
+		local value, enabled = GetSetting("iceboundfort");
+		if enabled
+		 and ni.player.hp() < value
 		 and ni.spell.isinstant(48792)
-		 and ni.spell.available(48792) then
+		 and ni.spell.available(48792) 
+		 and not ni.player.buff(48792) then
 			ni.spell.cast(48792)
 			return true
 		end
 	end,
 -----------------------------------
 	["Vamp Blood"] = function()
+		local value, enabled = GetSetting("vampblood");
 		local _, BR = ni.rune.bloodrunecd()
-		if BR >= 1
-		 and ni.player.hp() < 50
+		if enabled
+		 and ni.player.hp() < value
+		 and BR >= 1
 		 and ni.spell.isinstant(55233)
-		 and ni.spell.available(55233) then
+		 and ni.spell.available(55233)
+		 and not ni.player.buff(55233) then
 			ni.spell.cast(55233)
 			return true
 		end
@@ -246,12 +354,12 @@ local abilities = {
 		 and ni.spell.isinstant(hysteria)
 		 and ni.spell.available(hysteria)
 		 and IsSpellInRange(bloodstrike, "target") == 1 then
-		  if not UnitExists("focus")
+		  if not ni.unit.exists("focus")
 		  and not ni.player.buff(hysteria) then
 			ni.spell.cast(hysteria, "player")
 			return true
 		else
-		 if UnitExists("focus")
+		 if ni.unit.exists("focus")
 		 and UnitInRange("focus")
 		 and not UnitIsDeadOrGhost("focus")
 		 and ni.spell.isinstant(hysteria)
@@ -301,7 +409,6 @@ local abilities = {
 		local _, BR = ni.rune.bloodrunecd()
 		local icy = ni.data.darhanger_leveling.dk.icy()
 		local plague = ni.data.darhanger_leveling.dk.plague()
-		local enemies = ni.unit.enemiesinrange("target", 7)
 		if not IsSpellKnown(heartstrike)
 		 and BR >= 1
 		 and ( #enemies == 1 or #enemies < 2 )
@@ -314,28 +421,61 @@ local abilities = {
 			return true
 		end
 	end,	
+-------------------------------------------
+	["Mark of Blood"] = function()
+		local value, enabled = GetSetting("markofblood");
+		local _, BR = ni.rune.bloodrunecd()
+		if enabled
+		 and BR >= 1
+		 and ni.player.hp() < value
+		 and ni.spell.isinstant(49005)
+		 and ni.spell.available(49005)
+		 and not ni.unit.debuff("target", 49005, "player") then
+			ni.spell.cast(49005, "target")
+			return true
+		end
+	end,
+-------------------------------------------	
+	["Rune Tap"] = function()
+		local value, enabled = GetSetting("runetap");
+		local _, BR = ni.rune.bloodrunecd()
+		if enabled
+		 and ni.player.hp() < value then
+		  if BR >= 1
+		   and ni.spell.isinstant(runetap)
+		   and ni.spell.available(runetap) then 
+			ni.spell.cast(runetap)
+			return true
+		   end
+		  if BR < 1
+		   and ni.spell.isinstant(45529)
+		   and ni.spell.available(45529)
+		   and ni.spell.cd(48982) == 0 then
+			ni.spell.cast(45529)
+			return true
+			end
+		end
+	 end,
 
 -----------------------------------
 	["Pestilence (AoE)"] = function()
 		local icy = ni.data.darhanger_leveling.dk.icy()
 		local plague = ni.data.darhanger_leveling.dk.plague()
-		local enemies = ni.unit.enemiesinrange("target", 7)
+	    local enemies = ni.unit.enemiesinrange("target", 7)
 		local _, BR = ni.rune.bloodrunecd()
 		local _, DR = ni.rune.deathrunecd()
-		if #enemies >= 1 then
-		 if ( BR >= 1 or DR >= 1 )
+		if ( BR >= 1 or DR >= 1 )
 		 and icy
 		 and plague
-		 and  UnitExists("target")
-		 and UnitCanAttack("player", "target")
-		 and ni.spell.isinstant(pestilence)
-		 and ni.spell.valid("target", pestilence, true, true) then
+		 and ni.spell.isinstant(50842)
+		 and ni.spell.valid("target", 50842, true, true) then
+		 if ActiveEnemies() >= 1 then
 		  for i = 1, #enemies do
 		   if ni.unit.creaturetype(enemies[i].guid) ~= 8
 		    and ni.unit.creaturetype(enemies[i].guid) ~= 11
 		    and (not ni.unit.debuff(enemies[i].guid, 55078, "player")
 		    or not ni.unit.debuff(enemies[i].guid, 55095, "player")) then
-				ni.spell.cast(pestilence)
+				ni.spell.cast(50842, "target")
 						return true
 					end
 				end
@@ -350,8 +490,8 @@ local abilities = {
 		local _, DR = ni.rune.deathrunecd()
 		if ni.player.hasglyph(63334)
 		 and ni.spell.valid("target", pestilence, true, true)
-		 and ( ( icy ~= nil and icy - GetTime() <= 5 )
-		 or ( plague ~= nil and plague - GetTime() <= 5 ) ) then 
+		 and ( ( icy ~= nil and icy - GetTime() <= 4.5 )
+		 or ( plague ~= nil and plague - GetTime() <= 4.5 ) ) then 
 		 if BR == 0 and DR == 0
 		 and ni.spell.cd(45529) == 0 then
 			ni.spell.cast(45529)
@@ -386,6 +526,7 @@ local abilities = {
 		 or (DR == 2))			 
 		 and plague
 		 and icy
+		 and ni.player.power() < 80	
 		 and ni.spell.isinstant(deathstrike)
 		 and ni.spell.available(deathstrike)
 		 and ni.spell.valid("target", deathstrike, true, true) then
@@ -406,30 +547,35 @@ local abilities = {
 -----------------------------------
 	["Blood Boil"] = function()
 		local _, BR = ni.rune.bloodrunecd()
+		local _, DR = ni.rune.deathrunecd()
 		local icy = ni.data.darhanger_leveling.dk.icy()
 		local plague = ni.data.darhanger_leveling.dk.plague()
-		local enemies = ni.unit.enemiesinrange("target", 7)
-		if BR >= 1
-		 and #enemies > 2
+		local _, enabled = GetSetting("boil")
+		if enabled 
+		 and ( BR >= 1 or DR >= 1 )
+		 and ActiveEnemies() > 2
 		 and plague
 		 and icy
+		 and ni.player.power() < 80	
 		 and ni.spell.isinstant(bloodboil)
 		 and ni.spell.available(bloodboil)
 		 and ni.spell.valid("target", heartstrike, true, true) then
 			ni.spell.cast(bloodboil, "target")
 			return true
-		end
+		end	
 	end,
 -----------------------------------
 	["Heart Strike"] = function()
 		local _, BR = ni.rune.bloodrunecd()
+		local _, DR = ni.rune.deathrunecd()
 		local icy = ni.data.darhanger_leveling.dk.icy()
 		local plague = ni.data.darhanger_leveling.dk.plague()
-		local enemies = ni.unit.enemiesinrange("target", 7)
-		if BR >= 1
-		 and ( #enemies == 1 or #enemies < 3 )
+		local _, enabled = GetSetting("boil")
+		if ( BR >= 1 or DR >= 1 )
+		 and not enabled
 		 and plague
 		 and icy
+		 and ni.player.power() < 80
 		 and ni.spell.isinstant(heartstrike)
 		 and ni.spell.available(heartstrike)
 		 and ni.spell.valid("target", heartstrike, true, true) then
@@ -465,5 +611,4 @@ local abilities = {
 		end 
 	end,
 }
-
-ni.bootstrap.rotation("Blood_DPS_darhanger_leveling", queue, abilities, data)
+ni.bootstrap.profile("Blood_DPS_darhanger_leveling", queue, abilities, OnLoad, OnUnLoad);

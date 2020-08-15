@@ -1,4 +1,4 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
 --Abilities convert
 local sealofcorruption = GetSpellInfo(53736)
 local sealofvengance = GetSpellInfo(31801)
@@ -461,4 +461,4 @@ local abilities = {
 	end,
 }
 
-ni.bootstrap.rotation("Protection_darhanger_leveling", queue, abilities, data)
+ni.bootstrap.profile("Protection_darhanger_leveling", queue, abilities);

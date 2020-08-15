@@ -1,4 +1,4 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
 
 --Abilities Converted
 local arcanebrilliance = GetSpellInfo(43002)
@@ -458,4 +458,4 @@ local abilities = {
 	end,
 }
 
-ni.bootstrap.rotation("Fire_darhanger_leveling", queue, abilities, data)
+ni.bootstrap.profile("Fire_darhanger_leveling", queue, abilities);

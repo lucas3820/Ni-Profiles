@@ -64,6 +64,27 @@ ni.data.darhanger_leveling = {
 		end
 		     return false
 	end,
+	
+		-- Check Start Fight --
+	CDsaver = function(t)
+	if ni.vars.combat.time ~= 0 
+	 and GetTime() - ni.vars.combat.time > 7
+	 and ni.unit.hp(t) >= 5 then
+		     return true
+		end
+		     return false
+	end,
+				
+		-- Check Start Fight with TTD --
+	CDsaverTTD = function(t)
+	if ni.vars.combat.time ~= 0 
+	 and GetTime() - ni.vars.combat.time > 5 
+	 and ni.unit.ttd(t) > 35
+	 and ni.unit.hp(t) >= 5 then
+		     return true
+		end
+		     return false
+	end,
 
 		-- Universal Pause --
 	UniPause = function()

@@ -1,4 +1,4 @@
-local data = {"darhanger_leveling.lua"}
+local data = ni.utils.require("darhanger_leveling.lua");
 
 local popup_shown = false;
 local queue = {
@@ -630,4 +630,4 @@ local abilities = {
 
 
    
-ni.bootstrap.rotation("Demon_darhanger_leveling", queue, abilities, data)
+ni.bootstrap.profile("Demon_darhanger_leveling", queue, abilities);
