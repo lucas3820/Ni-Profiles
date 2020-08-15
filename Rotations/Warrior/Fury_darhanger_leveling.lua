@@ -53,7 +53,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -121,8 +121,8 @@ local abilities = {
 	end,	 
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.meleeStop()
-		or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.meleeStop()
+		or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -160,7 +160,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -218,10 +218,10 @@ local abilities = {
 		if ni.spell.shouldinterrupt("target")
 		 and ni.spell.isinstant(6552) 
 		 and ni.spell.available(6552)
-		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9
+		 and GetTime() - data.LastInterrupt > 9
 		 and ni.spell.valid("target", 6552, true, true)  then
 			ni.spell.castinterrupt("target")
-			ni.data.darhanger_leveling.LastInterrupt  = GetTime()
+			data.LastInterrupt  = GetTime()
 			return true
 		end
 	end,

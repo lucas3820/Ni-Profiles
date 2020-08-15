@@ -54,7 +54,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -123,8 +123,8 @@ local abilities = {
 	end,	 
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.meleeStop()
-		or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.meleeStop()
+		or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -162,7 +162,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -229,7 +229,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Bladestorm"] = function()
-		local rend = ni.data.darhanger_leveling.warrior.rend()
+		local rend = data.warrior.rend()
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and rend
 		 and not ni.player.buff(65156)
@@ -305,7 +305,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Hamstring"] = function()
-		local hams = ni.data.darhanger_leveling.warrior.hams()
+		local hams = data.warrior.hams()
 		if ni.unit.isplayer("target")
 		 and (hams == nil or (hams - GetTime() <= 2))
 		 and not ni.unit.isboss("target")
@@ -318,7 +318,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Rend"] = function()
-		local rend = ni.data.darhanger_leveling.warrior.rend()
+		local rend = data.warrior.rend()
 		if (rend == nil or (rend - GetTime() <= 2))
 		 and ni.spell.isinstant(rend) 
 		 and ni.spell.available(rend, true)

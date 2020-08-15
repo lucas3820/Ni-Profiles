@@ -44,7 +44,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -89,8 +89,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.meleeStop()
-		or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.meleeStop()
+		or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -127,7 +127,7 @@ local abilities = {
 		local hracial = { 33697, 20572, 33702, 26297 }
 		local alracial = { 20594, 28880 }
 		--- Undead
-		if ni.data.darhanger_leveling.forsaken()
+		if data.forsaken()
 		 and IsSpellKnown(7744)
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
@@ -201,8 +201,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Faerie Fire"] = function()
-		local mFaerieFire = ni.data.darhanger_leveling.druid.mFaerieFire() 
-		local fFaerieFire = ni.data.darhanger_leveling.druid.fFaerieFire() 
+		local mFaerieFire = data.druid.mFaerieFire() 
+		local fFaerieFire = data.druid.fFaerieFire() 
 		if not fFaerieFire
 		 and not mFaerieFire
 		 and ni.spell.isinstant(faeriefiredr)
@@ -213,7 +213,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Tigers Fury"] = function()
-		local berserk = ni.data.darhanger_leveling.druid.berserk()
+		local berserk = data.druid.berserk()
 		if berserk == nil
 		 and ni.spell.isinstant(tigersfury)
 		 and ni.spell.available(tigersfury)
@@ -224,11 +224,11 @@ local abilities = {
 	end,
 -----------------------------------
 	["Berserk"] = function()
-		local berserk = ni.data.darhanger_leveling.druid.berserk()
-		local savage = ni.data.darhanger_leveling.druid.savage() 
-		local tiger = ni.data.darhanger_leveling.druid.tiger() 
-		local rip = ni.data.darhanger_leveling.druid.rip()
-		local mangle = ni.data.darhanger_leveling.druid.mangle()
+		local berserk = data.druid.berserk()
+		local savage = data.druid.savage() 
+		local tiger = data.druid.tiger() 
+		local rip = data.druid.rip()
+		local mangle = data.druid.mangle()
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and tiger == nil
 		 and mangle
@@ -243,9 +243,9 @@ local abilities = {
 	end,
 -----------------------------------
 	["Ferocious Bite"] = function()
-		local savage = ni.data.darhanger_leveling.druid.savage() 
-		local rip = ni.data.darhanger_leveling.druid.rip()
-		local mangle = ni.data.darhanger_leveling.druid.mangle()
+		local savage = data.druid.savage() 
+		local rip = data.druid.rip()
+		local mangle = data.druid.mangle()
 		if ni.spell.available(ferociousbite)
 		 and mangle
 		 and ( savage ~= nil and ( savage - GetTime() > 11 ) )
@@ -259,8 +259,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Savage Roar"] = function()
-		local savage = ni.data.darhanger_leveling.druid.savage() 
-		local mangle = ni.data.darhanger_leveling.druid.mangle()
+		local savage = data.druid.savage() 
+		local mangle = data.druid.mangle()
 		if ni.spell.available(savageroar)
 		 and mangle
 		 and ( savage == nil or ( savage - GetTime() <= 2 ) )
@@ -273,8 +273,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Rip"] = function()
-		local mangle = ni.data.darhanger_leveling.druid.mangle()
-		local rip = ni.data.darhanger_leveling.druid.rip()
+		local mangle = data.druid.mangle()
+		local rip = data.druid.rip()
 		if GetComboPoints("player") >= 5
 		 and ni.spell.available(savageroar)
 		 and mangle
@@ -287,9 +287,9 @@ local abilities = {
 	end,
 -----------------------------------
 	["Savage Roar()"] = function()
-		local savage = ni.data.darhanger_leveling.druid.savage() 
-		local mangle = ni.data.darhanger_leveling.druid.mangle()
-		local rip = ni.data.darhanger_leveling.druid.rip()
+		local savage = data.druid.savage() 
+		local mangle = data.druid.mangle()
+		local rip = data.druid.rip()
 		if ni.spell.available(savageroar)
 		 and GetComboPoints("player") >= 3
 		 and mangle
@@ -304,7 +304,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Mangle (Cat)"] = function()
-		local mangle = ni.data.darhanger_leveling.druid.mangle()
+		local mangle = data.druid.mangle()
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		if ni.spell.available(mangle)
 		 and ( #enemies == 1 or #enemies < 2 )
@@ -328,8 +328,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Rake"] = function()
-		local mangle = ni.data.darhanger_leveling.druid.mangle()
-		local rake = ni.data.darhanger_leveling.druid.rake()
+		local mangle = data.druid.mangle()
+		local rake = data.druid.rake()
 		if ni.spell.available(rake)
 		 and mangle
 		 and ni.spell.isinstant(rake)	
@@ -341,11 +341,11 @@ local abilities = {
 	end,
 -----------------------------------
 	["Shred"] = function()
-		local savage = ni.data.darhanger_leveling.druid.savage()
-		local mangle = ni.data.darhanger_leveling.druid.mangle()
-		local rake = ni.data.darhanger_leveling.druid.rake()
-		local rip = ni.data.darhanger_leveling.druid.rip()
-		local berserk = ni.data.darhanger_leveling.druid.berserk()
+		local savage = data.druid.savage()
+		local mangle = data.druid.mangle()
+		local rake = data.druid.rake()
+		local rip = data.druid.rip()
+		local berserk = data.druid.berserk()
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		if ni.spell.available(shred)
 		 and mangle

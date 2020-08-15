@@ -69,7 +69,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -88,20 +88,20 @@ local abilities = {
 		if #enemies <= 1
 		 and ni.spell.available(sealofcorruption) then
 		 if not ni.player.buff(sealofcorruption)
-		 and GetTime() - ni.data.darhanger_leveling.paladin.LastSeal > 3
+		 and GetTime() - data.paladin.LastSeal > 3
 		 and not ni.player.buff(sealofvengance) then
 			ni.spell.cast(sealofcorruption)
-			ni.data.darhanger_leveling.paladin.LastSeal = GetTime()
+			data.paladin.LastSeal = GetTime()
 			return true
 		end
 	end
 		if #enemies <= 1
 		and ni.spell.available(sealofvengance) then
 		if not ni.player.buff(sealofvengance) 
-		 and GetTime() - ni.data.darhanger_leveling.paladin.LastSeal > 3
+		 and GetTime() - data.paladin.LastSeal > 3
 		 and not ni.player.buff(sealofcorruption) then
 			ni.spell.cast(sealofvengance)
-			ni.data.darhanger_leveling.paladin.LastSeal = GetTime()
+			data.paladin.LastSeal = GetTime()
 			return true
 			end
 		end
@@ -112,9 +112,9 @@ local abilities = {
 		and ni.spell.available(sealofrighteousness) then
 		if not ni.player.buff(sealofrighteousness) 
 		and UnitLevel("player") < 22
-		and GetTime() - ni.data.darhanger_leveling.paladin.LastSeal > 3 then
+		and GetTime() - data.paladin.LastSeal > 3 then
 		ni.spell.cast(sealofrighteousness)
-		ni.data.darhanger_leveling.paladin.LastSeal = GetTime()
+		data.paladin.LastSeal = GetTime()
 		return true
 		end
 		end
@@ -126,9 +126,9 @@ local abilities = {
 		if not ni.player.buff(sealofrighteousness) 
 		and not ni.player.buff(sealofcommand)
 		and UnitLevel("player") < 22
-		and GetTime() - ni.data.darhanger_leveling.paladin.LastSeal > 3 then
+		and GetTime() - data.paladin.LastSeal > 3 then
 		ni.spell.cast(sealofrighteousness)
-		ni.data.darhanger_leveling.paladin.LastSeal = GetTime()
+		data.paladin.LastSeal = GetTime()
 		return true
 		end
 		end
@@ -136,10 +136,10 @@ local abilities = {
 			if #enemies <= 1
 		and ni.spell.available(sealofvengance) then
 		if not ni.player.buff(sealofvengance) 
-		 and GetTime() - ni.data.darhanger_leveling.paladin.LastSeal > 3
+		 and GetTime() - data.paladin.LastSeal > 3
 		 and not ni.player.buff(sealofcorruption) then
 			ni.spell.cast(sealofvengance)
-			ni.data.darhanger_leveling.paladin.LastSeal = GetTime()
+			data.paladin.LastSeal = GetTime()
 			return true
 			end
 		end
@@ -151,9 +151,9 @@ local abilities = {
 		UnitLevel("player") < 60) 
 		and ni.spell.available(sealofcommand) then
 		if not ni.player.buff(sealofcommand) 
-		 and GetTime() - ni.data.darhanger_leveling.paladin.LastSeal > 3 then
+		 and GetTime() - data.paladin.LastSeal > 3 then
 			ni.spell.cast(sealofcommand)
-			ni.data.darhanger_leveling.paladin.LastSeal = GetTime()
+			data.paladin.LastSeal = GetTime()
 			return true
 		end
 		end
@@ -176,8 +176,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.tankStop()
-		or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.tankStop()
+		or data.PlayerDebuffs()
 		 or UnitCanAttack("player", "target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -227,7 +227,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -255,7 +255,7 @@ local abilities = {
 		end,
 -----------------------------------
 	["Lay on Hands (Self)"] = function()
-		local forb = ni.data.darhanger_leveling.paladin.forb()
+		local forb = data.paladin.forb()
 		if ni.player.hp() < 20
 		 and not forb
 		 and ni.spell.isinstant(layonhands)
@@ -266,7 +266,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Divine Protection"] = function()
-		local forb = ni.data.darhanger_leveling.paladin.forb()
+		local forb = data.paladin.forb()
 		if ni.player.hp() < 35
 		 and not forb
 		 and ni.spell.isinstant(divineprotection)
@@ -304,7 +304,7 @@ local abilities = {
 		 or ni.unit.threat("player", "target") < 2 )
   		 and ni.spell.available(handofreckoning)
 		 and ni.spell.isinstant(handofreckoning)
-		 and ni.data.darhanger_leveling.youInInstance()
+		 and data.youInInstance()
 		 and ni.spell.valid("target", handofreckoning, false, true, true) then
 			ni.spell.cast(handofreckoning)
 			return true
@@ -321,7 +321,7 @@ local abilities = {
    		  and not ni.spell.available(deathgripally)
   		  and ni.spell.available(handofreckoning)
 		  and ni.spell.isinstant(handofreckoning)
-		  and ni.data.darhanger_leveling.youInInstance()
+		  and data.youInInstance()
    		  and ni.spell.valid(threatUnit, handofreckoning, false, true, true) then
 			ni.spell.cast(handofreckoning, threatUnit)
 			return true
@@ -434,11 +434,11 @@ local abilities = {
 		end
 		 if ni.player.debufftype("Magic|Disease|Poison")
 		 and ni.spell.available(cleanse)
-		 and GetTime() - ni.data.darhanger_leveling.LastDispel > 2
+		 and GetTime() - data.LastDispel > 2
 		 and ni.healing.candispel("player")
 		 and ni.spell.valid("player", cleanse, false, true, true) then
 			ni.spell.cast(cleanse, "player")
-			ni.data.darhanger_leveling.LastDispel = GetTime()
+			data.LastDispel = GetTime()
 			return true
 		end
 	end,

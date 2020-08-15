@@ -83,7 +83,7 @@ local queue2 = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -173,7 +173,7 @@ local abilities = {
 		 and UnitExists("target")
 		 and UnitIsUnit("target", "pettarget")
 		 and not UnitIsDeadOrGhost("playerpet") then
-			ni.data.darhanger_leveling.petFollow()
+			data.petFollow()
 		 else
 		if UnitAffectingCombat("player")
 		 and UnitExists("playerpet")
@@ -181,14 +181,14 @@ local abilities = {
 		 and UnitExists("target")
 		 and not UnitIsUnit("target", "pettarget")
 		 and not UnitIsDeadOrGhost("playerpet") then 
-			ni.data.darhanger_leveling.petAttack()
+			data.petAttack()
 			end
 		end
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.casterStop()
-		 or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.casterStop()
+		 or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -238,7 +238,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -296,10 +296,10 @@ local abilities = {
 		if ni.spell.shouldinterrupt("target")
 		 and ni.spell.available(15487)
 		 and ni.spell.isinstant(15487)
-		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9
+		 and GetTime() - data.LastInterrupt > 9
 		 and ni.spell.valid("target", 15487, true, true)  then
 			ni.spell.castinterrupt("target")
-			ni.data.darhanger_leveling.LastInterrupt = GetTime()
+			data.LastInterrupt = GetTime()
 			return true
 		end
 	end,
@@ -354,7 +354,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Shadow Word: Pain"] = function()
-		local SWP = ni.data.darhanger_leveling.priest.SWP()		
+		local SWP = data.priest.SWP()		
 		local sWeaving, _, _, count = ni.player.buff(shadowweaving)
 		if not SWP
 		 and sWeaving
@@ -362,9 +362,9 @@ local abilities = {
 		 and ni.spell.available(shadowwordpain)
 		 and ni.spell.isinstant(shadowwordpain)
 		 and ni.spell.valid("target", shadowwordpain, false, true, true)
-		 and GetTime() - ni.data.darhanger_leveling.priest.lastSWP > 1 then
+		 and GetTime() - data.priest.lastSWP > 1 then
 			ni.spell.cast(shadowwordpain, "target")
-			ni.data.darhanger_leveling.priest.lastSWP = GetTime()
+			data.priest.lastSWP = GetTime()
 			return true
 		end
 	end,
@@ -396,9 +396,9 @@ local abilities = {
 		 and ni.unit.debuffremaining("target", vampirictouch, "player") < ni.spell.casttime(vampirictouch)
 		 and ni.spell.available(vampirictouch)
 		 and ni.spell.valid("target", vampirictouch, false, true, true)
-		 and GetTime() - ni.data.darhanger_leveling.priest.lastvamp > 2 then
+		 and GetTime() - data.priest.lastvamp > 2 then
 			ni.spell.cast(vampirictouch, "target")
-			ni.data.darhanger_leveling.priest.lastvamp = GetTime()
+			data.priest.lastvamp = GetTime()
 			return true
 		end
 	end,
@@ -442,7 +442,7 @@ local abilities = {
 }
 
 local dynamicqueue = function()
-    if ni.data.darhanger_leveling.priest.checkforSet(ni.data.darhanger_leveling.priest.itemsetT10, 4) then
+    if data.priest.checkforSet(data.priest.itemsetT10, 4) then
         return queue
     end
 		return queue2

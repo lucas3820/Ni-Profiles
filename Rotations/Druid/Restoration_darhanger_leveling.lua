@@ -44,7 +44,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -141,7 +141,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -205,10 +205,10 @@ local abilities = {
 		if ni.spell.available(regrowth)
 		 and (not rgtank
 		 or (rgtank and rgtank_time - GetTime() < 2))
-		 and GetTime() - ni.data.darhanger_leveling.druid.lastRegrowth > 2
+		 and GetTime() - data.druid.lastRegrowth > 2
 		 and not ni.player.ismoving() 
 		 and ni.spell.valid(tank, regrowth, false, true, true) then
-			ni.data.darhanger_leveling.druid.lastRegrowth = GetTime()
+			data.druid.lastRegrowth = GetTime()
 			ni.spell.cast(regrowth, tank)
 			return true
 		end
@@ -239,10 +239,10 @@ local abilities = {
 		if ni.spell.available(regrowth)
 		 and (not rgotank
 		 or (rgotank and rgotank_time - GetTime() < 2))
-		 and GetTime() - ni.data.darhanger_leveling.druid.lastRegrowth > 2
+		 and GetTime() - data.druid.lastRegrowth > 2
 		 and not ni.player.ismoving() 
 		 and ni.spell.valid(offTank, regrowth, false, true, true) then
-			ni.data.darhanger_leveling.druid.lastRegrowth = GetTime()
+			data.druid.lastRegrowth = GetTime()
 			ni.spell.cast(regrowth, offTank)
 			return true
 		end
@@ -353,10 +353,10 @@ local abilities = {
 		 and ni.spell.available(2782)
 		 and ni.spell.isinstant(2782)
 		 and ni.healing.candispel(ni.members[i].unit)
-		 and GetTime() - ni.data.darhanger_leveling.LastDispel > 2
+		 and GetTime() - data.LastDispel > 2
 		 and ni.spell.valid(ni.members[i].unit, 2782, false, true, true) then
 			ni.spell.cast(2782, ni.members[i].unit)
-			ni.data.darhanger_leveling.LastDispel = GetTime()
+			data.LastDispel = GetTime()
 			return true
 			end
 		end
@@ -372,11 +372,11 @@ local abilities = {
 		 and ni.spell.available(2893)
 		 and ni.spell.isinstant(2893)
 		 and ni.healing.candispel(ni.members[i].unit)
-		 and GetTime() - ni.data.darhanger_leveling.LastDispel > 2
+		 and GetTime() - data.LastDispel > 2
 		 and not ni.unit.buff(ni.members[i].unit, 2893)
 		 and ni.spell.valid(ni.members[i].unit, 2893, false, true, true) then
 			ni.spell.cast(2893, ni.members[i].unit)
-			ni.data.darhanger_leveling.LastDispel = GetTime()
+			data.LastDispel = GetTime()
 			return true
 			end
 		end

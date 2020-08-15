@@ -62,7 +62,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -104,7 +104,7 @@ local abilities = {
 		 and UnitIsUnit("target", "pettarget")
 		 and ni.unit.buff("pet", 48990)
 		 and not UnitIsDeadOrGhost("playerpet") then
-			ni.data.darhanger_leveling.petFollow()
+			data.petFollow()
 		 else
 		if UnitAffectingCombat("player")
 		 and UnitExists("playerpet")
@@ -112,7 +112,7 @@ local abilities = {
 		 and UnitExists("target")
 		 and not UnitIsUnit("target", "pettarget")
 		 and not UnitIsDeadOrGhost("playerpet") then 
-			ni.data.darhanger_leveling.petAttack()
+			data.petAttack()
 			end
 		end
 	end,
@@ -153,8 +153,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.meleeStop()
-		or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.meleeStop()
+		or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -204,7 +204,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -357,7 +357,7 @@ local abilities = {
 		 and ni.spell.available(34477)
 		 and not UnitIsDeadOrGhost("focus") then
 			ni.spell.cast(34477, "focus")
-			ni.data.darhanger_leveling.hunter.LastMD = GetTime()
+			data.hunter.LastMD = GetTime()
 			return true
 		else 
 		if ( ni.unit.threat("player", "target") >= 2
@@ -368,7 +368,7 @@ local abilities = {
 		  and ni.spell.available(34477)
 		  and not UnitIsDeadOrGhost("playerpet") then
 			ni.spell.cast(34477, "playerpet")
-			ni.data.darhanger_leveling.hunter.LastMD = GetTime()
+			data.hunter.LastMD = GetTime()
 			return true
 			end
 		end
@@ -380,7 +380,7 @@ local abilities = {
 		 and ni.spell.isinstant(5384)
 		 and ni.spell.available(5384)
 		 and not ni.spell.available(34477)
-		 and GetTime() - ni.data.darhanger_leveling.hunter.LastMD > 3
+		 and GetTime() - data.hunter.LastMD > 3
 		 and ni.spell.available(5384) then
 			ni.spell.cast(5384)
 			return true
@@ -427,7 +427,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Serpent Sting"] = function()
-		local serpstring = ni.data.darhanger_leveling.hunter.serpstring()
+		local serpstring = data.hunter.serpstring()
 		if (serpstring == nil or (serpstring - GetTime() <= 2))	 
 		 and ni.spell.available(serpentsting)
 		 and ni.spell.valid("target", serpentsting, true, true) then

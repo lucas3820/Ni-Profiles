@@ -43,7 +43,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -99,8 +99,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.casterStop()
-		or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.casterStop()
+		or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -150,7 +150,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -214,8 +214,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Faerie Fire"] = function()
-		local mFaerieFire = ni.data.darhanger_leveling.druid.mFaerieFire() 
-		local fFaerieFire = ni.data.darhanger_leveling.druid.fFaerieFire() 
+		local mFaerieFire = data.druid.mFaerieFire() 
+		local fFaerieFire = data.druid.fFaerieFire() 
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and not fFaerieFire
 		 and not mFaerieFire
@@ -255,8 +255,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Moonfire"] = function()
-		local mFire = ni.data.darhanger_leveling.druid.mFire()
-		local solar = ni.data.darhanger_leveling.druid.solar()
+		local mFire = data.druid.mFire()
+		local solar = data.druid.solar()
 		if ni.spell.available(moonfire)
 		 and (ni.player.ismoving()
 		 and (not mFire
@@ -272,8 +272,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Insect Swarm"] = function()
-		local iSwarm = ni.data.darhanger_leveling.druid.iSwarm()
-		local lunar = ni.data.darhanger_leveling.druid.lunar()
+		local iSwarm = data.druid.iSwarm()
+		local lunar = data.druid.lunar()
 		if ni.spell.available(insectswarm)
 		 and (ni.player.ismoving()
 		 and (not iSwarm

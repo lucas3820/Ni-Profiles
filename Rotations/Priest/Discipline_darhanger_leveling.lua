@@ -54,7 +54,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -165,7 +165,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -398,7 +398,7 @@ local abilities = {
 			return true
 		end
 		 -- Heal raid with Prayer
-		if ni.data.darhanger_leveling.youInRaid()
+		if data.youInRaid()
 		 and ni.healing.averagehp(4) < 75
 		 and ni.members[i].hp < 75
 		 and ni.spell.valid(ni.members[i].unit, prayerofhealing, false, true, true) then
@@ -445,11 +445,11 @@ local abilities = {
 		 and ni.spell.available(552)
 		 and ni.spell.isinstant(552)
 		 and ni.healing.candispel(ni.members[i].unit)
-		 and GetTime() - ni.data.darhanger_leveling.LastDispel > 2
+		 and GetTime() - data.LastDispel > 2
 		 and not ni.unit.buff(ni.members[i].unit, 552)
 		 and ni.spell.valid(ni.members[i].unit, 552, false, true, true) then
 			ni.spell.cast(552, ni.members[i].unit)
-			ni.data.darhanger_leveling.LastDispel = GetTime()
+			data.LastDispel = GetTime()
 			return true
 			end
 		end
@@ -465,10 +465,10 @@ local abilities = {
 		 and ni.spell.available(988)
 		 and ni.spell.isinstant(988)
 		 and ni.healing.candispel(ni.members[i].unit)
-		 and GetTime() - ni.data.darhanger_leveling.LastDispel > 2
+		 and GetTime() - data.LastDispel > 2
 		 and ni.spell.valid(ni.members[i].unit, 988, false, true, true) then
 			ni.spell.cast(988, ni.members[i].unit)
-			ni.data.darhanger_leveling.LastDispel = GetTime()
+			data.LastDispel = GetTime()
 			return true
 			end
 		end

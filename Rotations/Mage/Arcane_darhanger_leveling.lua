@@ -50,7 +50,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -118,8 +118,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.casterStop()
-		or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.casterStop()
+		or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -169,7 +169,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -229,7 +229,7 @@ local abilities = {
 		 and UnitExists("target")
 		 and UnitIsUnit("target", "pettarget")
 		 and not UnitIsDeadOrGhost("playerpet") then
-			ni.data.darhanger_leveling.petFollow()
+			data.petFollow()
 		 else
 		if UnitAffectingCombat("player")
 		 and UnitExists("playerpet")
@@ -237,7 +237,7 @@ local abilities = {
 		 and UnitExists("target")
 		 and not UnitIsUnit("target", "pettarget")
 		 and not UnitIsDeadOrGhost("playerpet") then 
-			ni.data.darhanger_leveling.petAttack()
+			data.petAttack()
 			end
 		end
 	end,
@@ -246,10 +246,10 @@ local abilities = {
 		if ni.spell.shouldinterrupt("target")
 		 and ni.spell.available(2139)
 		 and ni.spell.isinstant(2139) 
-		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9
+		 and GetTime() - data.LastInterrupt > 9
 		 and ni.spell.valid("target", 2139, true, true)  then
 			ni.spell.castinterrupt("target")
-			ni.data.darhanger_leveling.LastInterrupt = GetTime()
+			data.LastInterrupt = GetTime()
 			return true
 		end
 	end,
@@ -386,10 +386,10 @@ local abilities = {
 		  and ni.spell.isinstant(475)
 		  and ni.spell.available(475)
 		  and ni.healing.candispel("player")
-		  and GetTime() - ni.data.darhanger_leveling.LastDispel > 5
+		  and GetTime() - data.LastDispel > 5
 		  and ni.spell.valid("player", 475, false, true, true) then
 			ni.spell.cast(475, "player")
-			ni.data.darhanger_leveling.LastDispel = GetTime()
+			data.LastDispel = GetTime()
 			return true
 		end
 	end,

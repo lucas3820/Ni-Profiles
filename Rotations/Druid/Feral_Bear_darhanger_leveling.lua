@@ -41,7 +41,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -95,8 +95,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.tankStop()
-		or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.tankStop()
+		or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -134,7 +134,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -208,7 +208,7 @@ local abilities = {
 		 or ni.unit.threat("player", "target") < 2 )
 		 and ni.spell.available(6795)
 		 and ni.spell.isinstant(6795)
-		 and ni.data.darhanger_leveling.youInInstance()
+		 and data.youInInstance()
 		 and ni.spell.valid("target", 6795, false, true, true) then
 			ni.spell.cast(6795)
 			return true
@@ -224,7 +224,7 @@ local abilities = {
    		  and UnitAffectingCombat(threatUnit) 
 		  and ni.spell.available(6795)
 		  and ni.spell.isinstant(6795)
-		  and ni.data.darhanger_leveling.youInInstance()
+		  and data.youInInstance()
    		  and ni.spell.valid(threatUnit, 6795, false, true, true) then
 			ni.spell.cast(6795, threatUnit)
 			return true
@@ -233,8 +233,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Faerie Fire"] = function()
-		local mFaerieFire = ni.data.darhanger_leveling.druid.mFaerieFire() 
-		local fFaerieFire = ni.data.darhanger_leveling.druid.fFaerieFire() 
+		local mFaerieFire = data.druid.mFaerieFire() 
+		local fFaerieFire = data.druid.fFaerieFire() 
 		if not fFaerieFire
 		 and not mFaerieFire
 		 and ni.spell.isinstant(faeriefiredr)
@@ -270,7 +270,7 @@ local abilities = {
 -----------------------------------
 	["Lacerate"] = function()
 		local lacerate, _, _, count = ni.unit.debuff("target", lacerate, "player")
-		local bmangle = ni.data.darhanger_leveling.druid.bmangle()  
+		local bmangle = data.druid.bmangle()  
 		if (lacerate == nil
 		 or count < 5 or ni.unit.debuffremaining("target", lacerate, "player") < 3)
 		 and bmangle
@@ -291,10 +291,10 @@ local abilities = {
 				local tar = enemies[i].guid;
 				if ni.unit.creaturetype(enemies[i].guid) ~= 8 
 				 and not ni.unit.debuff(tar, demoroar)
-				 and GetTime() - ni.data.darhanger_leveling.druid.LastShout > 4
+				 and GetTime() - data.druid.LastShout > 4
 				 and ni.spell.available(demoroar) then
 					ni.spell.cast(demoroar, tar)
-					ni.data.darhanger_leveling.druid.LastShout = GetTime()
+					data.druid.LastShout = GetTime()
 					return true
 				end
 			end

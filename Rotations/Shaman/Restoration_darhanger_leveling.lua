@@ -26,7 +26,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -101,7 +101,7 @@ local abilities = {
 		local hracial = { 33697, 20572, 33702, 26297 }
 		local alracial = { 20594, 28880 }
 		--- Undead
-		if ni.data.darhanger_leveling.forsaken()
+		if data.forsaken()
 		 and IsSpellKnown(7744)
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
@@ -133,10 +133,10 @@ local abilities = {
 		if ni.spell.shouldinterrupt("target")
 		 and ni.spell.available(57994)
 		 and ni.spell.isinstant(57994)
-		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9
+		 and GetTime() - data.LastInterrupt > 9
 		 and ni.spell.valid("target", 57994, true, true)  then
 			ni.spell.castinterrupt("target")
-			ni.data.darhanger_leveling.LastInterrupt = GetTime()
+			data.LastInterrupt = GetTime()
 			return true
 		end
 	end,
@@ -265,10 +265,10 @@ local abilities = {
 		 and ni.spell.available(2782)
 		 and ni.spell.isinstant(2782)
 		 and ni.healing.candispel(ni.members[i].unit)
-		 and GetTime() - ni.data.darhanger_leveling.LastDispel > 2
+		 and GetTime() - data.LastDispel > 2
 		 and ni.spell.valid(ni.members[i].unit, 2782, false, true, true) then
 			ni.spell.cast(2782, ni.members[i].unit)
-			ni.data.darhanger_leveling.LastDispel = GetTime()
+			data.LastDispel = GetTime()
 			return true
 			end
 		end
@@ -285,10 +285,10 @@ local abilities = {
 		 and ni.spell.available(526)
 		 and ni.spell.isinstant(526)
 		 and ni.healing.candispel(ni.members[i].unit)
-		 and GetTime() - ni.data.darhanger_leveling.LastDispel > 2
+		 and GetTime() - data.LastDispel > 2
 		 and ni.spell.valid(ni.members[i].unit, 526, false, true, true) then
 			ni.spell.cast(526, ni.members[i].unit)
-			ni.data.darhanger_leveling.LastDispel = GetTime()
+			data.LastDispel = GetTime()
 			return true
 			end
 		end
@@ -299,12 +299,12 @@ local abilities = {
 		for i,v in ipairs(buff) do
 		 local name, icon, _, _, _, _, _, canPurge = ni.unit.buff("target",v)
 		 if canPurge
-		 and GetTime() - ni.data.darhanger_leveling.shaman.LastPurge > 2.5
+		 and GetTime() - data.shaman.LastPurge > 2.5
 		 and ni.spell.isinstant(8012)
 		 and ni.spell.available(8012)
 		 and ni.spell.valid("player", 8012, true, true)then
 			ni.spell.cast(8012, "target")
-			ni.data.darhanger_leveling.shaman.LastPurge = GetTime()
+			data.shaman.LastPurge = GetTime()
 			return true
 			end
 		end

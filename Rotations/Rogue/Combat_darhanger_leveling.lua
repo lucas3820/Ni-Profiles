@@ -76,7 +76,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data_leveling.UniPause() then
 			return true
 		end
 	end,
@@ -123,7 +123,7 @@ local abilities = {
     end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.meleeStop()
+		if data_leveling.meleeStop()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -160,7 +160,7 @@ local abilities = {
 		local hracial = { 33697, 20572, 33702, 26297 }
 		local alracial = { 20594, 28880 }
 		--- Undead
-		if ni.data.darhanger_leveling.forsaken()
+		if data_leveling.forsaken()
 		 and IsSpellKnown(7744)
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
@@ -219,10 +219,10 @@ local abilities = {
 		if ni.spell.shouldinterrupt("target")
 		 and ni.spell.available(1766)
 		 and ni.spell.isinstant(1766)
-		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9
+		 and GetTime() - data_leveling.LastInterrupt > 9
 		 and ni.spell.valid("target", 1766, true, true)  then
 			ni.spell.castinterrupt("target")
-			ni.data.darhanger_leveling.LastInterrupt  = GetTime()
+			data_leveling.LastInterrupt  = GetTime()
 			return true
 		end
 	end,
@@ -294,7 +294,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Killing Spree"] = function()
-		local SnD = ni.data.darhanger_leveling.rogue.SnD()
+		local SnD = data_leveling.rogue.SnD()
 		if SnD
 		 and ni.spell.isinstant(51690)
 		 and ni.spell.available(51690)
@@ -306,7 +306,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Slice and Dice"] = function()
-		local SnD = ni.data.darhanger_leveling.rogue.SnD()
+		local SnD = data_leveling.rogue.SnD()
 		if GetComboPoints("player") > 3
 		 and( SnD == nil or ( SnD - GetTime() <= 4 ) )
 		 and ni.spell.isinstant(sliceanddice)
@@ -330,8 +330,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Rupture"] = function()
-		local SnD = ni.data.darhanger_leveling.rogue.SnD()
-		local Rup = ni.data.darhanger_leveling.rogue.Rup()
+		local SnD = data_leveling.rogue.SnD()
+		local Rup = data_leveling.rogue.Rup()
 		if ni.player.hasglyph(56801)
 		 and GetComboPoints("player") == 5
 		 and ( Rup == nil or ( Rup - GetTime() <= 3 ) )
@@ -345,8 +345,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Eviscerate Dump"] = function()
-		local SnD = ni.data.darhanger_leveling.rogue.SnD()
-		local Rup = ni.data.darhanger_leveling.rogue.Rup()
+		local SnD = data_leveling.rogue.SnD()
+		local Rup = data_leveling.rogue.Rup()
 		if ni.player.hasglyph(56801)
 		 and GetComboPoints("player") == 5
 		 and Rup
@@ -360,7 +360,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Eviscerate"] = function()
-		local SnD = ni.data.darhanger_leveling.rogue.SnD()
+		local SnD = data_leveling.rogue.SnD()
 		if ni.player.hasglyph(56802)
 		 and GetComboPoints("player") == 5
 		 and ( SnD and ( SnD - GetTime() > 5 ) )

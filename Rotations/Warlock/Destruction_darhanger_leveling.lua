@@ -43,7 +43,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -98,7 +98,7 @@ local abilities = {
 -----------------------------------
 	["Healthstone"] = function()
 		local hstones = { 36892, 36893, 36894 }
-		if ni.data.darhanger_leveling.warlock.Stones == nil then
+		if data.warlock.Stones == nil then
 			for b = 0, 4 do
 			for s = 1, GetContainerNumSlots(b) do
 			for i = 1, #hstones do
@@ -132,8 +132,8 @@ local abilities = {
 	["Fel Domination"] = function()
 		if not UnitExists("playerpet")
 		 and ni.spell.isinstant(18708) 
-		 and ni.spell.available(ni.data.darhanger_leveling.warlock.petDest)
-		 and IsUsableSpell(GetSpellInfo(ni.data.darhanger_leveling.warlock.petDest))
+		 and ni.spell.available(data.warlock.petDest)
+		 and IsUsableSpell(GetSpellInfo(data.warlock.petDest))
 		 and ni.spell.available(18708) then
 			ni.spell.cast(18708)
 			return true
@@ -145,11 +145,11 @@ local abilities = {
 		 and not ni.player.buff(61431)
 		 and not ni.player.ismoving()
 		 and not UnitAffectingCombat("player")
-		 and IsUsableSpell(GetSpellInfo(ni.data.darhanger_leveling.warlock.petDest))
-		 and ni.spell.available(ni.data.darhanger_leveling.warlock.petDest)
-		 and GetTime() - ni.data.darhanger_leveling.warlock.LastSummon > 2 then
-			ni.spell.cast(ni.data.darhanger_leveling.warlock.petDest)
-			ni.data.darhanger_leveling.warlock.LastSummon = GetTime()
+		 and IsUsableSpell(GetSpellInfo(data.warlock.petDest))
+		 and ni.spell.available(data.warlock.petDest)
+		 and GetTime() - data.warlock.LastSummon > 2 then
+			ni.spell.cast(data.warlock.petDest)
+			data.warlock.LastSummon = GetTime()
 			return true
 		end
 	end,
@@ -170,7 +170,7 @@ local abilities = {
 		 and UnitExists("target")
 		 and UnitIsUnit("target", "pettarget")
 		 and not UnitIsDeadOrGhost("playerpet") then
-			ni.data.darhanger_leveling.petFollow()
+			data.petFollow()
 		 else
 		if UnitAffectingCombat("player")
 		 and UnitExists("playerpet")
@@ -178,7 +178,7 @@ local abilities = {
 		 and UnitExists("target")
 		 and not UnitIsUnit("target", "pettarget")
 		 and not UnitIsDeadOrGhost("playerpet") then 
-			ni.data.darhanger_leveling.petAttack()
+			data.petAttack()
 			end
 		end
 	end,
@@ -194,7 +194,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.casterStop()
+		if data.casterStop()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -244,7 +244,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -302,9 +302,9 @@ local abilities = {
 		if ni.spell.shouldinterrupt("target")
 		 and IsSpellKnown(19647, true)
 		 and GetSpellCooldown(19647) == 0
-		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9 then
+		 and GetTime() - data.LastInterrupt > 9 then
 			ni.spell.castinterrupt("target")
-			ni.data.darhanger_leveling.LastInterrupt = GetTime()
+			data.LastInterrupt = GetTime()
 			return true
 		end
 	end,
@@ -347,12 +347,12 @@ local abilities = {
 	end,
 -----------------------------------
 	["Life Tap (Moving)"] = function()
-		local elem = ni.data.darhanger_leveling.warlock.elem()
-		local CotE = ni.data.darhanger_leveling.warlock.CotE()
-		local eplag = ni.data.darhanger_leveling.warlock.eplag()
-		local earmoon = ni.data.darhanger_leveling.warlock.earmoon()
-		local agony = ni.data.darhanger_leveling.warlock.agony()
-		local doom = ni.data.darhanger_leveling.warlock.doom()
+		local elem = data.warlock.elem()
+		local CotE = data.warlock.CotE()
+		local eplag = data.warlock.eplag()
+		local earmoon = data.warlock.earmoon()
+		local agony = data.warlock.agony()
+		local doom = data.warlock.doom()
 		if ni.player.ismoving()
 		 and ni.player.power() < 75
 		 and ni.player.hp() > 50
@@ -393,51 +393,51 @@ local abilities = {
 	end,
 -----------------------------------
 	["Curse of Elements"] = function()
-		local elem = ni.data.darhanger_leveling.warlock.elem()
-		local CotE = ni.data.darhanger_leveling.warlock.CotE()
-		local eplag = ni.data.darhanger_leveling.warlock.eplag()
-		local earmoon = ni.data.darhanger_leveling.warlock.earmoon()
+		local elem = data.warlock.elem()
+		local CotE = data.warlock.CotE()
+		local eplag = data.warlock.eplag()
+		local earmoon = data.warlock.earmoon()
 		if not (elem or CotE or eplag or earmoon)
 		 and ni.spell.available(47865)
 		 and ni.spell.valid("target", 47865, false, true, true)	
-		 and GetTime() - ni.data.darhanger_leveling.warlock.LastCurse > 2 then
+		 and GetTime() - data.warlock.LastCurse > 2 then
 			ni.spell.cast(47865, "target")
-			ni.data.darhanger_leveling.warlock.LastCurse = GetTime()
+			data.warlock.LastCurse = GetTime()
 			return true
 		end
 	end,
 -----------------------------------
 	["Curse of Doom"] = function()
-		local elem = ni.data.darhanger_leveling.warlock.elem()
-		local CotE = ni.data.darhanger_leveling.warlock.CotE()
-		local eplag = ni.data.darhanger_leveling.warlock.eplag()
-		local earmoon = ni.data.darhanger_leveling.warlock.earmoon()
+		local elem = data.warlock.elem()
+		local CotE = data.warlock.CotE()
+		local eplag = data.warlock.eplag()
+		local earmoon = data.warlock.earmoon()
 		if (ni.unit.isboss("target") 
 		or UnitHealthMax("target") > 750000)
 		 and ni.unit.ttd("target") > 65
 		 and ((CotE and not elem) or eplag or earmoon)
 		 and ni.spell.available(47867)
 		 and ni.spell.valid("target", 47867, false, true, true)	
-		 and GetTime() - ni.data.darhanger_leveling.warlock.LastCurse > 1 then
+		 and GetTime() - data.warlock.LastCurse > 1 then
 			ni.spell.cast(47867, "target")
-			ni.data.darhanger_leveling.warlock.LastCurse = GetTime()
+			data.warlock.LastCurse = GetTime()
 			return true
 		end
 	end,
 -----------------------------------
 	["Curse of Agony"] = function()
-		local elem = ni.data.darhanger_leveling.warlock.elem()
-		local doom = ni.data.darhanger_leveling.warlock.doom()
-		local agony = ni.data.darhanger_leveling.warlock.agony()
+		local elem = data.warlock.elem()
+		local doom = data.warlock.doom()
+		local agony = data.warlock.agony()
 		if not elem
 		 and not doom
 		 and not agony
 		 and ni.unit.ttd("target") < 60
 		 and ni.spell.available(47864)
 		 and ni.spell.valid("target", 47864, false, true, true)
-		 and GetTime() - ni.data.darhanger_leveling.warlock.LastCurse > 1 then
+		 and GetTime() - data.warlock.LastCurse > 1 then
 			ni.spell.cast(47864, "target")
-			ni.data.darhanger_leveling.warlock.LastCurse = GetTime()
+			data.warlock.LastCurse = GetTime()
 			return true
 		end
 	end,
@@ -447,9 +447,9 @@ local abilities = {
 		 and ni.unit.debuffremaining("target", 47811, "player") < ni.spell.casttime(47811)
 		 and ni.spell.available(47811)
 		 and ni.spell.valid("target", 47811, true, true)
-		 and GetTime() - ni.data.darhanger_leveling.warlock.Lastimmolate > 2.1 then
+		 and GetTime() - data.warlock.Lastimmolate > 2.1 then
 			ni.spell.cast(47811, "target")
-			ni.data.darhanger_leveling.warlock.Lastimmolate = GetTime()
+			data.warlock.Lastimmolate = GetTime()
 			return true
 		end
 	end,
@@ -476,7 +476,7 @@ local abilities = {
 	end,
 ---------------------------
 	["Chaos Bolt"] = function()
-		local immolate = ni.data.darhanger_leveling.warlock.immolate()
+		local immolate = data.warlock.immolate()
 		if immolate
 		 and not ni.player.ismoving()
 		 and ni.spell.available(59172)
@@ -487,7 +487,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Conflagrate"] = function()
-		local immolate = ni.data.darhanger_leveling.warlock.immolate()
+		local immolate = data.warlock.immolate()
 		if immolate
 		 and IsUsableSpell(GetSpellInfo(17962))
 		 and ni.spell.available(17962)
@@ -498,22 +498,22 @@ local abilities = {
 	end,
 -----------------------------------
 	["Corruption"] = function()
-		local corruption = ni.data.darhanger_leveling.warlock.corruption()
-		local seed = ni.data.darhanger_leveling.warlock.seed()	
+		local corruption = data.warlock.corruption()
+		local seed = data.warlock.seed()	
 		if ni.spell.available(47813)
 		 and not corruption
 		 and not seed
 		 and ni.spell.isinstant(47813)
 		 and ni.spell.valid("target", 47813, false, true, true)
-		 and GetTime() - ni.data.darhanger_leveling.warlock.LastCorrupt > 1.5 then
+		 and GetTime() - data.warlock.LastCorrupt > 1.5 then
 			ni.spell.cast(47813, "target")
-			ni.data.darhanger_leveling.warlock.LastCorrupt = GetTime()
+			data.warlock.LastCorrupt = GetTime()
 			return true
 		end
 	end,
 -----------------------------------
 	["Incinerate"] = function()
-		local immolate = ni.data.darhanger_leveling.warlock.immolate()
+		local immolate = data.warlock.immolate()
 		if immolate
 		 and not ni.player.ismoving()
 		 and ni.spell.available(47838)

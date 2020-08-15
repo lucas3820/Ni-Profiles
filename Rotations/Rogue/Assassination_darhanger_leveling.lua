@@ -85,7 +85,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -114,7 +114,7 @@ local abilities = {
             applypoison = nil 
         end
         if UnitAffectingCombat("player") == nil 
-		and ni.data.darhanger_leveling.UniPausenoatk()
+		and data.UniPausenoatk()
         and applypoison == nil then
         applypoison = GetTime()
         if not mh and GetBestPoisonMainHand() then
@@ -141,8 +141,8 @@ local abilities = {
     end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.meleeStop()
-		 or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.meleeStop()
+		 or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -180,7 +180,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -238,10 +238,10 @@ local abilities = {
 		if ni.spell.shouldinterrupt("target")
 		 and ni.spell.available(1766)
 		 and ni.spell.isinstant(1766)
-		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9
+		 and GetTime() - data.LastInterrupt > 9
 		 and ni.spell.valid("target", 1766, true, true)  then
 			ni.spell.castinterrupt("target")
-			ni.data.darhanger_leveling.LastInterrupt  = GetTime()
+			data.LastInterrupt  = GetTime()
 			return true
 		end
 	end,
@@ -290,7 +290,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Garrote/Ambush"] = function()
-		local OGar = ni.data.darhanger_leveling.rogue.OGar()
+		local OGar = data.rogue.OGar()
 		if ni.player.buff(1784)
 		 and ( ni.vars.combat.cd or ni.unit.isboss("target") ) then
 		  if not OGar
@@ -336,8 +336,8 @@ local abilities = {
 -----------------------------------
 	["Rupture Dump"] = function()
 	--Use Rapture when Hunger not usable
-		local Rup = ni.data.darhanger_leveling.rogue.Rup()
-		local Hunger = ni.data.darhanger_leveling.rogue.Hunger()
+		local Rup = data.rogue.Rup()
+		local Hunger = data.rogue.Hunger()
 		 if GetComboPoints("player") > 1
 		 and not IsUsableSpell(GetSpellInfo(51662))
 		 and( Hunger == nil or ( Hunger - GetTime() <= 7 ) )
@@ -352,7 +352,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Hunger For Blood"] = function()
-		local Hunger = ni.data.darhanger_leveling.rogue.Hunger()
+		local Hunger = data.rogue.Hunger()
 		if IsUsableSpell(GetSpellInfo(51662))
 		 and ni.spell.available(51662)
 		 and ni.spell.isinstant(51662)
@@ -420,7 +420,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Slice and Dice"] = function()
-		local SnD = ni.data.darhanger_leveling.rogue.SnD()
+		local SnD = data.rogue.SnD()
 		if GetComboPoints("player") > 3
 		 and( SnD == nil or ( SnD - GetTime() <= 4 ) )
 		 and ni.spell.available(sliceanddice)
@@ -432,9 +432,9 @@ local abilities = {
 	end,
 -----------------------------------
 	["Envenom"] = function()
-		local Hunger = ni.data.darhanger_leveling.rogue.Hunger()
-		local envenomdata = ni.data.darhanger_leveling.rogue.envenom()
-		local SnD = ni.data.darhanger_leveling.rogue.SnD()
+		local Hunger = data.rogue.Hunger()
+		local envenomdata = data.rogue.envenom()
+		local SnD = data.rogue.SnD()
 		if ni.spell.available(envenom)
 		 and Hunger
 		 and ni.spell.isinstant(envenom)

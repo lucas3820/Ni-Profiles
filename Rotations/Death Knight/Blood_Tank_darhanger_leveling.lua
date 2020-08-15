@@ -54,7 +54,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 		["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -88,8 +88,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.tankStop()
-		or ni.data.darhanger_leveling.PlayerDebuffs()
+		if data.tankStop()
+		or data.PlayerDebuffs()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -104,7 +104,7 @@ local abilities = {
 		 and UnitExists("target")
 		 and UnitIsUnit("target", "pettarget")
 		 and not UnitIsDeadOrGhost("playerpet") then
-			ni.data.darhanger_leveling.petFollow()
+			data.petFollow()
 		 else
 		if UnitAffectingCombat("player")
 		 and UnitExists("playerpet")
@@ -112,7 +112,7 @@ local abilities = {
 		 and UnitExists("target")
 		 and not UnitIsUnit("target", "pettarget")
 		 and not UnitIsDeadOrGhost("playerpet") then 
-			ni.data.darhanger_leveling.petAttack()
+			data.petAttack()
 			end
 		end
 	end,
@@ -146,7 +146,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -177,10 +177,10 @@ local abilities = {
 		if ni.spell.shouldinterrupt("target")
 		 and ni.spell.isinstant(47528)
 		 and ni.spell.available(47528)
-		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9
+		 and GetTime() - data.LastInterrupt > 9
 		 and ni.spell.valid("target", 47528, true, true)  then
 			ni.spell.castinterrupt("target")
-			ni.data.darhanger_leveling.LastInterrupt = GetTime()
+			data.LastInterrupt = GetTime()
 			return true
 		end
 	end,
@@ -288,19 +288,19 @@ local abilities = {
 	end,
 -----------------------------------
 	["Icy Touch"] = function()
-		local icy = ni.data.darhanger_leveling.dk.icy()
+		local icy = data.dk.icy()
 		if ( icy == nil or ( icy - GetTime() <= 2 ) )
 		 and ni.spell.available(icytouch)
 		 and ni.spell.isinstant(icytouch)
 		 and ni.spell.valid("target", icytouch, true, true) then
 			ni.spell.cast(icytouch, "target")
-			ni.data.darhanger_leveling.dk.LastIcy = GetTime()
+			data.dk.LastIcy = GetTime()
 			return true
 		end
 	end,
 -----------------------------------
 	["Plague Strike"] = function()
-		local plague = ni.data.darhanger_leveling.dk.plague()
+		local plague = data.dk.plague()
 		if ( plague == nil or ( plague - GetTime() <= 2 ) )
 		 and ni.spell.available(plaguestrike)
 		 and ni.spell.isinstant(plaguestrike)
@@ -314,17 +314,17 @@ local abilities = {
 		if ni.unit.isboss("target")
 		 and ni.spell.available(icytouch)
 		 and ni.spell.isinstant(icytouch)
-		 and GetTime() - ni.data.darhanger_leveling.dk.LastIcy > 25
+		 and GetTime() - data.dk.LastIcy > 25
 		 and ni.spell.valid("target", icytouch, true, true) then
 			ni.spell.cast(icytouch, "target")
-			ni.data.darhanger_leveling.dk.LastIcy = GetTime()
+			data.dk.LastIcy = GetTime()
 			return true
 		end
 	end,
 -----------------------------------
 	["Pestilence (AoE)"] = function()
-		local icy = ni.data.darhanger_leveling.dk.icy()
-		local plague = ni.data.darhanger_leveling.dk.plague()
+		local icy = data.dk.icy()
+		local plague = data.dk.plague()
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		local _, BR = ni.rune.bloodrunecd()
 		local _, DR = ni.rune.deathrunecd()
@@ -350,8 +350,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Pestilence (Renew)"] = function()
-		local icy = ni.data.darhanger_leveling.dk.icy()
-		local plague = ni.data.darhanger_leveling.dk.plague()
+		local icy = data.dk.icy()
+		local plague = data.dk.plague()
 		local _, BR = ni.rune.bloodrunecd()
 		local _, DR = ni.rune.deathrunecd()
 		if ni.player.hasglyph(63334)
@@ -380,7 +380,7 @@ local abilities = {
 		 and not ni.spell.available(49576)
   		 and ni.spell.available(56222)
 		 and ni.spell.isinstant(56222)
-		 and ni.data.darhanger_leveling.youInInstance()
+		 and data.youInInstance()
 		 and ni.spell.valid("target", 56222, false, true, true) then
 			ni.spell.cast(56222)
 			return true
@@ -397,7 +397,7 @@ local abilities = {
    		  and not ni.spell.available(49576)
   		  and ni.spell.available(56222)
 		  and ni.spell.isinstant(56222)
-		  and ni.data.darhanger_leveling.youInInstance()
+		  and data.youInInstance()
 		  and not ni.unit.debuff(threatUnit, 49560)
    		  and ni.spell.valid(threatUnit, 56222, false, true, true) then
 			ni.spell.cast(56222, threatUnit)
@@ -415,7 +415,7 @@ local abilities = {
    		  and UnitAffectingCombat(threatUnit) 
    		  and ni.spell.available(49576)
 		  and ni.spell.isinstant(49576)
-		  and ni.data.darhanger_leveling.youInInstance()
+		  and data.youInInstance()
    		  and ni.spell.valid(threatUnit, 49576, true, true) then
 			ni.spell.cast(49576, threatUnit)
 			return true
@@ -427,8 +427,8 @@ local abilities = {
 		local _, FR = ni.rune.frostrunecd()
 		local _, UR = ni.rune.unholyrunecd()
 		local _, DR = ni.rune.deathrunecd()
-		local icy = ni.data.darhanger_leveling.dk.icy()
-		local plague = ni.data.darhanger_leveling.dk.plague()
+		local icy = data.dk.icy()
+		local plague = data.dk.plague()
 		if ni.player.hp() < 75 
 		 and ((FR >= 1 and UR >= 1)
 		 or (FR >= 1 and DR >= 1)
@@ -448,8 +448,8 @@ local abilities = {
 		local _, FR = ni.rune.frostrunecd()
 		local _, UR = ni.rune.unholyrunecd()
 		local _, DR = ni.rune.deathrunecd()
-		local icy = ni.data.darhanger_leveling.dk.icy()
-		local plague = ni.data.darhanger_leveling.dk.plague()
+		local icy = data.dk.icy()
+		local plague = data.dk.plague()
 		if ((FR >= 1 and UR >= 1)
 		 or (FR >= 1 and DR >= 1)
 		 or (DR >= 1 and UR >= 1)
@@ -476,8 +476,8 @@ local abilities = {
 -----------------------------------
 	["Blood Boil"] = function()
 		local _, BR = ni.rune.bloodrunecd()
-		local icy = ni.data.darhanger_leveling.dk.icy()
-		local plague = ni.data.darhanger_leveling.dk.plague()
+		local icy = data.dk.icy()
+		local plague = data.dk.plague()
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		if BR >= 1
 		 and #enemies > 1
@@ -493,8 +493,8 @@ local abilities = {
 -----------------------------------
 	["Blood Strike"] = function()
 		local _, BR = ni.rune.bloodrunecd()
-		local icy = ni.data.darhanger_leveling.dk.icy()
-		local plague = ni.data.darhanger_leveling.dk.plague()
+		local icy = data.dk.icy()
+		local plague = data.dk.plague()
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		if not IsSpellKnown(heartstrike)
 		 and BR >= 1
@@ -511,8 +511,8 @@ local abilities = {
 -----------------------------------
 	["Heart Strike"] = function()
 		local _, BR = ni.rune.bloodrunecd()
-		local icy = ni.data.darhanger_leveling.dk.icy()
-		local plague = ni.data.darhanger_leveling.dk.plague()
+		local icy = data.dk.icy()
+		local plague = data.dk.plague()
 		local enemies = ni.unit.enemiesinrange("target", 7)
 		if BR >= 1
 		 and ( #enemies == 1 or #enemies < 2 )

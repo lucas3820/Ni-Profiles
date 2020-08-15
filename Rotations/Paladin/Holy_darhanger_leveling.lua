@@ -53,7 +53,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -152,7 +152,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -180,7 +180,7 @@ local abilities = {
 		end,
 -----------------------------------
 	["Divine Shield"] = function()
-		local forb = ni.data.darhanger_leveling.paladin.forb()
+		local forb = data.paladin.forb()
 		if ni.player.hp() < 22
 		 and not forb
 		 and ni.spell.isinstant(642)
@@ -263,14 +263,14 @@ local abilities = {
 	end,
 -----------------------------------
 	["Avenging Wrath"] = function()
-		if ni.data.darhanger_leveling.youInInstance()
+		if data.youInInstance()
 		 and ni.healing.averagehp(4) < 50
 		 and ni.spell.isinstant(31821)
 		 and ni.spell.available(31821) then
 			ni.spell.cast(31821)
 			return true
 		end
-		if ni.data.darhanger_leveling.youInRaid()
+		if data.youInRaid()
 		 and ni.healing.averagehp(7) < 50
 		 and ni.spell.isinstant(31821)
 		 and ni.spell.available(31821) then
@@ -280,8 +280,8 @@ local abilities = {
 	end,
 -----------------------------------
 	["Divine Illumination T10"] = function()
-		if ni.data.darhanger_leveling.paladin.checkforSet(ni.data.darhanger_leveling.paladin.itemsetT10, 2) then 
-		 if ni.data.darhanger_leveling.youInInstance()
+		if data.paladin.checkforSet(data.paladin.itemsetT10, 2) then 
+		 if data.youInInstance()
 		 and ni.healing.averagehp(5) < 50
 		 and ni.spell.isinstant(31842)
 		 and ni.spell.available(31842) then
@@ -289,7 +289,7 @@ local abilities = {
 			return true
 			end
 		else
-		if ni.data.darhanger_leveling.youInRaid()
+		if data.youInRaid()
 		 and ni.healing.averagehp(9) < 50
 		 and ni.spell.isinstant(31842)
 		 and ni.spell.available(31842) then
@@ -433,10 +433,10 @@ local abilities = {
 		 and ni.spell.available(4987)
 		 and ni.spell.isinstant(4987)
 		 and ni.healing.candispel(ni.members[i].unit)
-		 and GetTime() - ni.data.darhanger_leveling.LastDispel > 2
+		 and GetTime() - data.LastDispel > 2
 		 and ni.spell.valid(ni.members[i].unit, 4987, false, true, true) then
 			ni.spell.cast(4987, ni.members[i].unit)
-			ni.data.darhanger_leveling.LastDispel = GetTime()
+			data.LastDispel = GetTime()
 			return true
 			end
 		end

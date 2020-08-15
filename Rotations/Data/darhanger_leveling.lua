@@ -51,7 +51,7 @@ end
 SLASH_DARDEBUG1 = "/dardebug";
 SlashCmdList["DARDEBUG"] = changedebug;
 
-ni.data.darhanger_leveling = {
+local data = {
 	LastDispel = 0, 
 	LastInterrupt = 0,
 	
@@ -96,7 +96,7 @@ ni.data.darhanger_leveling = {
 	 or UnitChannelInfo("player") ~= nil
 	 or UnitCastingInfo("player") ~= nil
 	 or ni.vars.combat.casting == true
-	 or ni.data.darhanger.PlayerBuffs()
+	 or data.PlayerBuffs()
 	 or (not UnitAffectingCombat("player")
 	 and ni.vars.followEnabled) then
 		     return true
@@ -206,13 +206,13 @@ local classlower = string.lower(class);
 if classlower == "deathknight" then
 	classlower = "dk";
 end
-ni.data.darhanger[classlower] = { };
+data[classlower] = { };
 if classlower == "dk" then
-	ni.data.darhanger[classlower].LastIcy = 0;
-	ni.data.darhanger[classlower].icy = function()
+	data[classlower].LastIcy = 0;
+	data[classlower].icy = function()
 		return select(7, ni.unit.debuff("target", 55095, "player")) 
 	end;
-	ni.data.darhanger[classlower].plague = function() 
+	data[classlower].plague = function() 
 		return select(7, ni.unit.debuff("target", 55078, "player")) 
 	end;
 		-- Sirus Custom T5 --
@@ -220,7 +220,7 @@ if classlower == "dk" then
 	81241, 80867, 80861, 80927, 82812
 	};
 		-- Check Item Set --
-	ni.data.darhanger[classlower].checkforSet = function(t, pieces)
+	data[classlower].checkforSet = function(t, pieces)
 		local count = 0
 		for _, v in ipairs(t) do
 			if IsEquippedItem(v) then
@@ -234,98 +234,98 @@ if classlower == "dk" then
 		end
 	end
 elseif classlower == "druid" then
-	ni.data.darhanger[classlower].LastShout = 0;
-	ni.data.darhanger[classlower].lastRegrowth = 0;
-	ni.data.darhanger[classlower].mFaerieFire = function() 
+	data[classlower].LastShout = 0;
+	data[classlower].lastRegrowth = 0;
+	data[classlower].mFaerieFire = function() 
 		return select(7, ni.unit.debuff("target", 770)) 
 	end;
-	ni.data.darhanger[classlower].fFaerieFire = function() 
+	data[classlower].fFaerieFire = function() 
 		return select(7, ni.unit.debuff("target", 16857)) 
 	end
-	ni.data.darhanger[classlower].iSwarm = function()
+	data[classlower].iSwarm = function()
 		return select(7, ni.unit.debuff("target", insectswarmdebuff, "player")) 
 	end
-	ni.data.darhanger[classlower].mFire = function() 
+	data[classlower].mFire = function() 
 		return select(7, ni.unit.debuff("target", moonfiredebuff, "player")) 
 	end
-	ni.data.darhanger[classlower].lunar = function() 
+	data[classlower].lunar = function() 
 		return select(7, ni.unit.buff("player", 48517)) 
 	end
-	ni.data.darhanger[classlower].solar = function() 
+	data[classlower].solar = function() 
 		return select(7, ni.unit.buff("player", 48518)) 
 	end
-	ni.data.darhanger[classlower].berserk = function() 
+	data[classlower].berserk = function() 
 		return select(11, ni.unit.buff("player", 50334))
 	end
-	ni.data.darhanger[classlower].bmangle = function()
+	data[classlower].bmangle = function()
 		return select(7, ni.unit.debuff("target", mangledebuff))
 	end
-	ni.data.darhanger[classlower].lacerate = function() 
+	data[classlower].lacerate = function() 
 		return select(7, ni.unit.debuff("target", laceratedebuff, "player"))
 	end
-	ni.data.darhanger[classlower].mangle = function() 
+	data[classlower].mangle = function() 
 		return select(7, ni.unit.debuff("target", manglecatdebuff)) 
 	end
-	ni.data.darhanger[classlower].rip = function() 
+	data[classlower].rip = function() 
 		return select(7, ni.unit.debuff("target", ripdebuff, "player")) 
 	end
-	ni.data.darhanger[classlower].rake = function() 
+	data[classlower].rake = function() 
 		return select(7, ni.unit.debuff("target", rakedebuff, "player"))
 	end
-	ni.data.darhanger[classlower].tiger = function() 
+	data[classlower].tiger = function() 
 		return ni.unit.buff("player", tigerbuff) 
 	end
-	ni.data.darhanger[classlower].savage = function() 
+	data[classlower].savage = function() 
 		return select(7, ni.unit.buff("player", savagebuff)) 
 	end
 elseif classlower == "hunter" then
-	ni.data.darhanger[classlower].LastMD = 0;
-	ni.data.darhanger[classlower].LastScat = 0;
-	ni.data.darhanger[classlower].serpstring = function() 
+	data[classlower].LastMD = 0;
+	data[classlower].LastScat = 0;
+	data[classlower].serpstring = function() 
 		return select(7, ni.unit.debuff("target", serpentstingdebuff, "player")) 
 	end
-	ni.data.darhanger[classlower].viperstring = function() 
+	data[classlower].viperstring = function() 
 		return select(7, ni.unit.debuff("target", viperstringdebuff, "player")) 
 	end
-	ni.data.darhanger[classlower].scorpstring = function() 
+	data[classlower].scorpstring = function() 
 		return select(7, ni.unit.debuff("target", scorpstringdebuff, "player")) 
 	end
-	ni.data.darhanger[classlower].exploshot = function() 
+	data[classlower].exploshot = function() 
 		return select(7, ni.unit.debuff("target", explobuff, "player")) 
 	end
 elseif classlower == "mage" then
-	ni.data.darhanger[classlower].LastScorch = 0;
-	ni.data.darhanger[classlower].Scorch = function()
+	data[classlower].LastScorch = 0;
+	data[classlower].Scorch = function()
 		return ni.unit.debuff("target", scorchdebuff, "player")
 	end
-	ni.data.darhanger[classlower].LBomb = function() 
+	data[classlower].LBomb = function() 
 		return ni.unit.debuff("target", livingbombdebuff, "player") 
 	end
-	ni.data.darhanger[classlower].fnova = function() 
+	data[classlower].fnova = function() 
 		return ni.unit.debuff("target", frostnovadebuff, "player") 
 	end
-	ni.data.darhanger[classlower].fbite = function() 
+	data[classlower].fbite = function() 
 		return ni.unit.debuff("target", 12494, "player") 
 	end
-	ni.data.darhanger[classlower].freeze = function() 
+	data[classlower].freeze = function() 
 		return ni.unit.debuff("target", 33395, "player") 
 	end
-	ni.data.darhanger[classlower].FoF = function() 
+	data[classlower].FoF = function() 
 		return ni.player.buff(fingersoffrost) 
 	end
 elseif classlower == "paladin" then
-	ni.data.darhanger[classlower].LastSeal = 0;
-	ni.data.darhanger[classlower].forb = function() 
+	data[classlower].LastSeal = 0;
+	data[classlower].forb = function() 
 		return ni.player.debuff(25771) 
 	end
-	ni.data.darhanger[classlower].aow = function() 
+	data[classlower].aow = function() 
 		return ni.player.buff(59578) 
 	end
-	ni.data.darhanger[classlower].itemsetT10 = { 
+	data[classlower].itemsetT10 = { 
 		51270, 51271, 51272, 51273, 51274, 51165, 51166, 51167, 51168, 51169, 50865, 50866, 50867, 50868, 50869
 	};
 	-- Check Item Set --
-	ni.data.darhanger[classlower].checkforSet = function(t, pieces)
+	data[classlower].checkforSet = function(t, pieces)
 		local count = 0
 		for _, v in ipairs(t) do
 			if IsEquippedItem(v) then
@@ -339,24 +339,24 @@ elseif classlower == "paladin" then
 		end
 	end
 elseif classlower == "priest" then
-	ni.data.darhanger[classlower].lastvamp = 0;
-	ni.data.darhanger[classlower].lastSWP = 0;
-	ni.data.darhanger[classlower].lastPlague = 0;
-	ni.data.darhanger[classlower].vamp = function()
+	data[classlower].lastvamp = 0;
+	data[classlower].lastSWP = 0;
+	data[classlower].lastPlague = 0;
+	data[classlower].vamp = function()
 		return select(7, ni.unit.debuff("target", 48160, "player")) 
 	end
-	ni.data.darhanger[classlower].SWP = function() 
+	data[classlower].SWP = function() 
 		return select(7, ni.unit.debuff("target", 48125, "player")) 
 	end
-	ni.data.darhanger[classlower].dplague = function() 
+	data[classlower].dplague = function() 
 		return select(7, ni.unit.debuff("target", 48300, "player")) 
 	end
 		-- Crimson Acolyte's Regalia --
-	ni.data.darhanger[classlower].itemsetT10 = {
+	data[classlower].itemsetT10 = {
 		51255, 51256, 51257, 51258, 51259, 51180, 51181, 51182, 51183, 51184, 50391, 50392, 50393, 50394, 50396
 	};
 	-- Check Item Set --
-	ni.data.darhanger[classlower].checkforSet = function(t, pieces)
+	data[classlower].checkforSet = function(t, pieces)
 		local count = 0
 		for _, v in ipairs(t) do
 			if IsEquippedItem(v) then
@@ -370,81 +370,81 @@ elseif classlower == "priest" then
 		end
 	end
 elseif classlower == "rogue" then
-	ni.data.darhanger[classlower].SnD = function() 
+	data[classlower].SnD = function() 
 		return select(7, ni.player.buff(sliceanddicebuff))	
 	end
-	ni.data.darhanger[classlower].Hunger = function() 
+	data[classlower].Hunger = function() 
 		return select(7, ni.player.buff(63848)) 
 	end
-	ni.data.darhanger[classlower].envenom = function() 
+	data[classlower].envenom = function() 
 		return select(7, ni.player.buff(envenombuff)) 
 	end
-	ni.data.darhanger[classlower].Rup = function() 
+	data[classlower].Rup = function() 
 		return select(7, ni.unit.debuff("target", rupturedebuff, "player")) 
 	end
-	ni.data.darhanger[classlower].Gar = function() 
+	data[classlower].Gar = function() 
 		return select(7, ni.unit.debuff("target", garrotedebuff, "player")) 
 	end
-	ni.data.darhanger[classlower].OGar = function() 
+	data[classlower].OGar = function() 
 		return select(7, ni.unit.debuff("target", garrotedebuff)) 
 	end	
 elseif classlower == "shaman" then
-	ni.data.darhanger[classlower].LastPurge = 0;
-	ni.data.darhanger[classlower].flameshock = function() 
+	data[classlower].LastPurge = 0;
+	data[classlower].flameshock = function() 
 		return select(7, ni.unit.debuff("target", 49233, "player")) 
 	end
 elseif classlower == "warlock" then
-	ni.data.darhanger[classlower].petAffli = 691;
-	ni.data.darhanger[classlower].petDest = 688;
-	ni.data.darhanger[classlower].petDemo = 30146;
-	ni.data.darhanger[classlower].LastSummon = 0;
-	ni.data.darhanger[classlower].LastCorrupt = 0;
-	ni.data.darhanger[classlower].LastCurse = 0;
-	ni.data.darhanger[classlower].LastShadowbolt = 0;
-	ni.data.darhanger[classlower].Lastimmolate = 0;
-	ni.data.darhanger[classlower].LastUA = 0;
-	ni.data.darhanger[classlower].LastHaunt = 0;
-	ni.data.darhanger[classlower].LastSeed = 0;
-	ni.data.darhanger[classlower].Stones = nil;
-	ni.data.darhanger[classlower].CotE = function()
+	data[classlower].petAffli = 691;
+	data[classlower].petDest = 688;
+	data[classlower].petDemo = 30146;
+	data[classlower].LastSummon = 0;
+	data[classlower].LastCorrupt = 0;
+	data[classlower].LastCurse = 0;
+	data[classlower].LastShadowbolt = 0;
+	data[classlower].Lastimmolate = 0;
+	data[classlower].LastUA = 0;
+	data[classlower].LastHaunt = 0;
+	data[classlower].LastSeed = 0;
+	data[classlower].Stones = nil;
+	data[classlower].CotE = function()
 		return select(7, ni.unit.debuff("target", 47865))
 	end
-	ni.data.darhanger[classlower].elem = function()
+	data[classlower].elem = function()
 		return select(7, ni.unit.debuff("target", 47865, "player"))
 	end
-	ni.data.darhanger[classlower].doom = function()
+	data[classlower].doom = function()
 		return select(7, ni.unit.debuff("target", 47867, "player"))
 	end
-	ni.data.darhanger[classlower].agony = function()
+	data[classlower].agony = function()
 		return select(7, ni.unit.debuff("target", 47864, "player"))
 	end
-	ni.data.darhanger[classlower].corruption = function()
+	data[classlower].corruption = function()
 		return select(7, ni.unit.debuff("target", 47813, "player"))
 	end
-	ni.data.darhanger[classlower].seed = function()
+	data[classlower].seed = function()
 		return select(7, ni.unit.debuff("target", 47836, "player"))
 	end
-	ni.data.darhanger[classlower].haunt = function()
+	data[classlower].haunt = function()
 		return select(7, ni.unit.debuff("target", 59164, "player"))
 	end
-	ni.data.darhanger[classlower].ua = function()
+	data[classlower].ua = function()
 		return select(7, ni.unit.debuff("target", 47843, "player"))
 	end
-	ni.data.darhanger[classlower].immolate = function()
+	data[classlower].immolate = function()
 		return select(7, ni.unit.debuff("target", 47811, "player"))
 	end
-	ni.data.darhanger[classlower].eplag = function() 
+	data[classlower].eplag = function() 
 		return  ni.unit.debuff("target", 51735) 
 	end
-	ni.data.darhanger[classlower].earmoon = function()
+	data[classlower].earmoon = function()
 		return ni.unit.debuff("target", 60433) 
 	end
 	-- Sirus Custom T4 --
-	ni.data.darhanger[classlower].itemsetT4 = {
+	data[classlower].itemsetT4 = {
 		28963, 28964, 28966, 28967, 28968, 100400, 100401, 100402, 100403, 100404
 	};
 	-- Check Item Set --
-	ni.data.darhanger[classlower].checkforSet = function(t, pieces)
+	data[classlower].checkforSet = function(t, pieces)
 		local count = 0
 		for _, v in ipairs(t) do
 			if IsEquippedItem(v) then
@@ -458,11 +458,12 @@ elseif classlower == "warlock" then
 		end
 	end
 elseif classlower == "warrior" then
-	ni.data.darhanger[classlower].LastShout = 0;
-	ni.data.darhanger[classlower].rend = function() 
+	data[classlower].LastShout = 0;
+	data[classlower].rend = function() 
 		return select(7, ni.unit.debuff("target", renddebuff, "player"))
 	end
-	ni.data.darhanger[classlower].hams = function() 
+	data[classlower].hams = function() 
 		return select(7, ni.unit.debuff("target", 1715, "player")) 
 	end
 end
+return data;

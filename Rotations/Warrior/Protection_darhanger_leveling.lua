@@ -55,7 +55,7 @@ local queue = {
 local abilities = {
 -----------------------------------
 	["Universal pause"] = function()
-			if ni.data.darhanger_leveling.UniPause() then
+			if data.UniPause() then
 			return true
 		end
 	end,
@@ -112,7 +112,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Combat specific Pause"] = function()
-		if ni.data.darhanger_leveling.tankStop()
+		if data.tankStop()
 		 or UnitCanAttack("player","target") == nil
 		 or (UnitAffectingCombat("target") == nil 
 		 and ni.unit.isdummy("target") == nil 
@@ -150,7 +150,7 @@ local abilities = {
 		local alracial = { 20594, 28880 }
 		--- Undead
 		if IsSpellKnown(7744)
-		 and ni.data.darhanger_leveling.forsaken()
+		 and data.forsaken()
 		 and ni.spell.available(7744) then
 				ni.spell.cast(7744)
 				return true
@@ -181,10 +181,10 @@ local abilities = {
 		if ni.spell.shouldinterrupt("target")
 		 and ni.spell.isinstant(72) 
 		 and ni.spell.available(72)
-		 and GetTime() - ni.data.darhanger_leveling.LastInterrupt > 9
+		 and GetTime() - data.LastInterrupt > 9
 		 and ni.spell.valid("target", 72)  then
 			ni.spell.castinterrupt("target")
-			ni.data.darhanger_leveling.LastInterrupt  = GetTime()
+			data.LastInterrupt  = GetTime()
 			return true
 		end
 	end,
@@ -238,7 +238,7 @@ local abilities = {
 		 or ni.unit.threat("player", "target") < 2 )
 		 and ni.spell.isinstant(355) 
 		 and ni.spell.available(355)
-		 and ni.data.darhanger_leveling.youInInstance()
+		 and data.youInInstance()
 		 and ni.spell.valid("target", 355, false, true, true) then
 			ni.spell.cast(355)
 			return true
@@ -254,7 +254,7 @@ local abilities = {
    		  and UnitAffectingCombat(threatUnit)
 		  and ni.spell.isinstant(355) 
    		  and ni.spell.available(355)
-		  and ni.data.darhanger_leveling.youInInstance()
+		  and data.youInInstance()
    		  and ni.spell.valid(threatUnit, 355, false, true, true) then
 			ni.spell.cast(355, threatUnit)
 			return true
@@ -289,7 +289,7 @@ local abilities = {
 	end,
 -----------------------------------
 	["Rend"] = function()
-		local rend = ni.data.darhanger_leveling.warrior.rend()
+		local rend = data.warrior.rend()
 		if ni.unit.isboss("target")
 		 and (rend == nil or (rend - GetTime() <= 2))
 		 and ni.spell.isinstant(rend) 
@@ -337,10 +337,10 @@ local abilities = {
 				local tar = enemies[i].guid;
 				if ni.unit.creaturetype(enemies[i].guid) ~= 8 
 				 and not ni.unit.debuff(tar, demoshout)
-				 and GetTime() - ni.data.darhanger_leveling.warrior.LastShout > 4
+				 and GetTime() - data.warrior.LastShout > 4
 				 and ni.spell.available(demoshout) then
 					ni.spell.cast(demoshout, tar)
-					ni.data.darhanger_leveling.warrior.LastShout = GetTime()
+					data.warrior.LastShout = GetTime()
 					return true
 				end
 			end
