@@ -36,47 +36,32 @@ local sliceanddicebuff = GetSpellInfo(6774)
 local rupturedebuff = GetSpellInfo(48672)
 local garrotedebuff = GetSpellInfo(48676)
 
-
-
-	-- Debuger -- 
-local function changedebug(msg)
-	if msg == "on" then
-	 ni.vars.debug = true;
-	elseif msg == "off" then
-	 ni.vars.debug = false;
-	 else
-	 print("Only commands are on/off\nFor example:\n/dardebug on\n/dardebug off");
-	end
-end
-SLASH_DARDEBUG1 = "/dardebug";
-SlashCmdList["DARDEBUG"] = changedebug;
-
-local data = {
-	LastDispel = 0, 
-	LastInterrupt = 0,
+local data = { };
+	data.LastDispel = 0
+	data.LastInterrupt = 0
 	
 		-- Vars for Universal Pause --
-	PlayerBuffs = function()
+	data.PlayerBuffs = function()
 		for _, v in ipairs(pbuff) do
 		 if ni.unit.buff("player", v) then 
 		     return true
 			end
 		end
 		     return false
-	end,
+	end
 	
 		-- Check Start Fight --
-	CDsaver = function(t)
+	data.CDsaver = function(t)
 	if ni.vars.combat.time ~= 0 
 	 and GetTime() - ni.vars.combat.time > 7
 	 and ni.unit.hp(t) >= 5 then
 		     return true
 		end
 		     return false
-	end,
+	end
 				
 		-- Check Start Fight with TTD --
-	CDsaverTTD = function(t)
+	data.CDsaverTTD = function(t)
 	if ni.vars.combat.time ~= 0 
 	 and GetTime() - ni.vars.combat.time > 5 
 	 and ni.unit.ttd(t) > 35
@@ -84,10 +69,10 @@ local data = {
 		     return true
 		end
 		     return false
-	end,
+	end
 
 		-- Universal Pause --
-	UniPause = function()
+	data.UniPause = function()
 	if ni.spell.gcd()
 	 or IsMounted()
 	 or UnitInVehicle("player")
@@ -102,47 +87,47 @@ local data = {
 		     return true
 		end
 		     return false
-	end,
+	end
 	
-	PlayerDebuffs = function()
+	data.PlayerDebuffs = function()
 		for _, v in ipairs(pdebuff) do
 		 if ni.unit.debuff("player", v) then 
 		     return true
 			end
 		end
 		     return false
-	end,
+	end
 	
 	
     -- Vars for Combat Pause --
-	casterStop = function()
+	data.casterStop = function()
 		for _, v in ipairs(cbuff) do
 		 if ni.unit.buff("target", v) then 
 		     return true
 			end
 		end
 		     return false
-	end,
+	end
 	
 	
 	
-	meleeStop = function()
+	data.meleeStop = function()
 		for _, v in ipairs(mbuff) do
 		 if ni.unit.buff("target", v) then 
 		     return true
 			end
 		end
 		     return false
-	end,
+	end
 	
-	tankStop = function()
+	data.tankStop = function()
 		for _, v in ipairs(tbuff) do
 		 if ni.unit.buff("target", v) then 
 		     return true
 			end
 		end
 		     return false
-	end,
+	end
 	
 	-- Will of the Forsaken
 	forsaken = function()
@@ -152,27 +137,27 @@ local data = {
 			end
 		end
 		    return false
-	end,
+	end
 	
 	-- Check Instance / Raid --
-	youInInstance = function()
+	data.youInInstance = function()
 		if IsInInstance()
 		 and select(2, GetInstanceInfo()) == "party" then
 		     return true
 		end
 		    return false
-	end,
+	end
 
-	youInRaid = function()
+	data.youInRaid = function()
 		if IsInInstance()
 		 and select(2, GetInstanceInfo()) == "raid" then
 		     return true
 		end
 		    return false
-	end,
+	end
 			
 	-- Pet Follow / Attack Function -- 
-	petFollow = function()
+	data.petFollow = function()
 		local pet = ni.objects["pet"]
 		if not pet:exists() then
 			return
@@ -184,9 +169,9 @@ local data = {
 		 or petDistance - oldPetDistance > distanceThreshold then
 			ni.player.runtext("/petfollow");
 		end
-	end,
+	end
 	
-	petAttack = function()
+	data.petAttack = function()
 		local pet = ni.objects["pet"]
 		if not pet:exists() then
 			return
@@ -201,7 +186,6 @@ local data = {
 			petDistance = nil
 		end
 	end	
-}
 local classlower = string.lower(class);
 if classlower == "deathknight" then
 	classlower = "dk";
@@ -210,29 +194,11 @@ data[classlower] = { };
 if classlower == "dk" then
 	data[classlower].LastIcy = 0;
 	data[classlower].icy = function()
-		return select(7, ni.unit.debuff("target", 55095, "player")) 
+		return ni.unit.debuffremaining("target", 55095, "player")
 	end;
 	data[classlower].plague = function() 
-		return select(7, ni.unit.debuff("target", 55078, "player")) 
+		return ni.unit.debuffremaining("target", 55078, "player")
 	end;
-		-- Sirus Custom T5 --
-	local itemsetT5 = {
-	81241, 80867, 80861, 80927, 82812
-	};
-		-- Check Item Set --
-	data[classlower].checkforSet = function(t, pieces)
-		local count = 0
-		for _, v in ipairs(t) do
-			if IsEquippedItem(v) then
-				count = count + 1;
-			end
-		end
-		if count >= pieces then
-			return true
-		else
-			return false
-		end
-	end
 elseif classlower == "druid" then
 	data[classlower].LastShout = 0;
 	data[classlower].lastRegrowth = 0;
