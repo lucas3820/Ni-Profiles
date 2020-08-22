@@ -370,7 +370,7 @@ local abilities = {
 	["Heroic Strike + Cleave (Filler)"] = function()
 		local enemies = ni.unit.enemiesinrange("target", 5)
 		if IsSpellInRange(slam, "target") == 1
-		 and ni.spell.cd(mortalstrike) ~= 0 
+		 and ni.spell.cd(shieldslam) ~= 0 
 		 and ni.player.power() > 35 then
 			if #enemies >= 1	
 			 and ni.spell.available(cleave, true) 
