@@ -303,7 +303,7 @@ local abilities = {
 	["Shield Block"] = function()
 		if ni.player.hp() < 80
 		 and ni.spell.available(2565, true)
-		 ni.spell.valid("target", rend, true, true) then
+		 and ni.spell.valid("target", rend, true, true) then
 			ni.spell.cast(2565)
 			return true
 		end
