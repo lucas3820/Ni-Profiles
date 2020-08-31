@@ -22,7 +22,7 @@ local queue = {
 	"Universal pause",
 	"Auto Attack",
 --	"AutoTarget",
---	"Seal of Corruption/Vengeance",
+	"Seal of Corruption/Vengeance",
 --	"Seal of Command",
 	"Combat specific Pause",
 	"Healthstone (Use)",
@@ -59,7 +59,10 @@ local abilities = {
 	end,
 -----------------------------------
 	["Auto Attack"] = function()
-		if not IsCurrentSpell(6603) then
+		if not IsCurrentSpell(6603) 
+		and UnitAffectingCombat("player")
+		and UnitExists("target") 
+		 and UnitCanAttack("player", "target") then
 			ni.spell.cast(6603);
 		end
 	end,
@@ -95,6 +98,19 @@ local abilities = {
 			return true
 			end
 		end
+		-- level shit
+		if #enemies <= 1 
+		and not ni.spell.available(sealofcorruption)
+		and not ni.spell.available(sealofvengance) 
+		and ni.spell.available(sealofrighteousness) then
+		if not ni.player.buff(sealofrighteousness) 
+		and UnitLevel("player") < 22
+		and GetTime() - data.paladin.LastSeal > 3 then
+		ni.spell.cast(sealofrighteousness)
+		data.paladin.LastSeal = GetTime()
+		return true
+		end
+		end
 		
 		if not ni.spell.available(sealofcorruption)
 		and not ni.spell.available(sealofvengance) 
@@ -110,7 +126,7 @@ local abilities = {
 		end
 		end
 	
-		if #enemies <= 1
+			if #enemies <= 1
 		and ni.spell.available(sealofvengance) then
 		if not ni.player.buff(sealofvengance) 
 		 and GetTime() - data.paladin.LastSeal > 3
@@ -197,14 +213,15 @@ local abilities = {
 		if ( ni.vars.combat.cd or ni.unit.isboss("target") )
 		 and IsSpellKnown(hracial[i])
 		 and ni.spell.available(hracial[i])
-		 and ni.unit.inmelee("player", "target")
+		 and ni.unit.inmelee("player", "target") then
 					ni.spell.cast(hracial[i])
 					return true
 			end
 		end
 		--- Ally race
 		for i = 1, #alracial do
-		if ni.unit.inmelee("player", "target")
+		if IsSpellKnown(alracial[i])
+		 and ni.unit.inmelee("player", "target")
 		 and ni.player.hp() < 20
 		 and IsSpellKnown(alracial[i])
 		 and ni.spell.available(alracial[i]) then 

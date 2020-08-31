@@ -244,9 +244,9 @@ local abilities = {
 		end
 		--- Ally race
 		for i = 1, #alracial do
-		if ni.spell.valid("target", judgementofwisdom, true, true)
+		if IsSpellKnown(alracial[i])
+		and ni.spell.valid("target", judgementofwisdom, true, true)
 		 and ni.player.hp() < 20
-		 and IsSpellKnown(alracial[i])
 		 and ni.spell.available(alracial[i]) then 
 					ni.spell.cast(alracial[i])
 					return true
