@@ -278,8 +278,8 @@ local abilities = {
 	if ni.spell.available(heroicstrike, true)
 			 and not IsCurrentSpell(heroicstrike) 
 			 and ni.spell.isinstant(heroicstrike)
-			 and UnitLevel("player") <= 15
-			 and UnitPower("player") >= 15 then
+			 and UnitLevel("player") <= 60
+			 and UnitPower("player") >= 60 then
 				ni.spell.cast(heroicstrike, "target")
 			end
 			end,
